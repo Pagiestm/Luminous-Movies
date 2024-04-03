@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'pages/page1.dart';
+import 'pages/Accueil.dart';
 import 'pages/Page2.dart';
 import 'pages/Page3.dart';
 import 'pages/Page4.dart';
@@ -17,7 +17,7 @@ class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Page1(),
+    Accueil(),
     Page2(),
     Page3(),
     Page4(),
