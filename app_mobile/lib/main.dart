@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'navbar.dart';
+import 'splash_screen.dart'; 
 
 void main() {
   runApp(MaterialApp(
-    home: NavBar(),
+    home: SplashScreen(),
+    theme: ThemeData(
+      scaffoldBackgroundColor: Colors.black,
+    ),
   ));
 }
