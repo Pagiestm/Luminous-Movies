@@ -17,7 +17,7 @@ router.post("", CategoriesController.addCategorie());
 // L'app peut modifier les informations d’une catégorie
 router.put("/:id", CategoriesController.updateCategorie());
 
-// L'app peut supprimer les informations d’un utilisateur
+// L'app peut supprimer une catégorie
 router.delete("/:id", CategoriesController.deleteCategorie());
 
 module.exports = router
