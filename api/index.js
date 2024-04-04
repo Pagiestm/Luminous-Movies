@@ -16,7 +16,9 @@ app.use(cors({
 
 //routes
 const UsersRouter = require("./src/routers/UsersRouter");
+const CategoriesRouter = require("./src/routers/CategoriesRouter");
 app.use('/users', UsersRouter);
+app.use('/categories', CategoriesRouter);
 
 // create server
 const server = http.createServer(app);
