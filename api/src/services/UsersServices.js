@@ -1,5 +1,5 @@
 const Users = require('../models/Users');
-const Services = require('../services/Services');
+const Services = require('./Services');
 
 class UsersServices extends Services {
     async getUsers(){
