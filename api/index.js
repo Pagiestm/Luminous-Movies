@@ -18,9 +18,11 @@ app.use(cors({
 const UsersRouter = require("./src/routers/UsersRouter");
 const CategoriesRouter = require("./src/routers/CategoriesRouter");
 const MoviesRouter = require("./src/routers/MoviesRouter");
+const FavoritesRouter = require("./src/routers/FavoritesRouter");
 app.use('/users', UsersRouter);
 app.use('/categories', CategoriesRouter);
 app.use('/movies', MoviesRouter);
+app.use('/favorites', FavoritesRouter);
 
 // create server
 const server = http.createServer(app);

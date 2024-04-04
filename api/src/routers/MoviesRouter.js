@@ -20,7 +20,7 @@ router.post("", MoviesController.addMovie());
 // L'app peut modifier les informations d’un film
 router.put("/:id", MoviesController.updateMovie());
 
-// L'app peut supprimer les informations d’un utilisateur
+// L'app peut supprimer un film
 router.delete("/:id", MoviesController.deleteMovie());
 
 module.exports = router
