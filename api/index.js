@@ -17,8 +17,10 @@ app.use(cors({
 //routes
 const UsersRouter = require("./src/routers/UsersRouter");
 const CategoriesRouter = require("./src/routers/CategoriesRouter");
+const MoviesRouter = require("./src/routers/MoviesRouter");
 app.use('/users', UsersRouter);
 app.use('/categories', CategoriesRouter);
+app.use('/movies', MoviesRouter);
 
 // create server
 const server = http.createServer(app);

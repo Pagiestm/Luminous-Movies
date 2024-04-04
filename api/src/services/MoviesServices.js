@@ -1,0 +1,88 @@
+const Movies = require('../models/Movies');
+const Categories = require('../services/CategoriesServices');
+const Services = require('./Services');
+
+class MoviesServices extends Services {
+    async getMovies(){
+        try {
+            const movies = await Movies.find(); 
+            return movies;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getMoviesByCategorie(categorieName){
+        try {
+            const categorie = await Categories.getCategorieByName(categorieName);
+            const movies = await Movies.find({categorie: categorie._id}); 
+            return movies;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getMoviesByTitle(title){
+        try {
+            const movies = await Movies.find({title: {$regex: title, $options: 'i'}});
+            return movies;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getMovieById(id){
+        try {
+            const movie = await Movies.findOne({_id: id});
+            return movie;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    async addMovie(title, synopsis, image, staring, release_date, length, categorie){
+        try {
+            const movie = new Movies({
+                title: title,
+                synopsis: synopsis,
+                image: image,
+                staring: staring,
+                release_date: release_date,
+                length: length,
+                categorie: categorie
+            });
+            await movie.save();
+            return movie;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateMovie(id, title, synopsis, image, staring, release_date, length, categorie){
+        try {
+            const movie = await Movies.findOneAndUpdate({_id: id}, {
+                title: title, 
+                synopsis: synopsis,
+                image: image,
+                staring: staring,
+                release_date: release_date,
+                length: length,
+                categorie: categorie
+            });
+            return movie;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async deleteMovie(id){
+        try {
+            const movie = await Movies.findByIdAndDelete({_id: id});
+            return movie;
+        } catch (error) {
+            throw error;
+        }
+    }
+}
+
+module.exports = new MoviesServices();

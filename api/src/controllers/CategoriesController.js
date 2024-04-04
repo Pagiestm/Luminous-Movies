@@ -48,7 +48,7 @@ class CategoriesControllers{
         return async (req, res) => {
             const id = req.params.id;
             const name = req.body.name;
-            const response = await CategoriesServices.updateUser(id, name);
+            const response = await CategoriesServices.updateCategorie(id, name);
             res.send(response);
         }
     }
