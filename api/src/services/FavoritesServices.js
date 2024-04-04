@@ -6,8 +6,8 @@ const Services = require('./Services');
 class FavoritesServices extends Services {
     async getFavorites(){
         try {
-            const Favorites = await Favorites.find(); 
-            return Favorites;
+            const favorites = await Favorites.find(); 
+            return favorites;
         } catch (error) {
             throw error;
         }
@@ -37,7 +37,7 @@ class FavoritesServices extends Services {
         try {
             const user = await Users.getUserById(userId);
             const movie = await Movies.getMovieById(movieId);
-            const favorite = await Favorites.find({users: user._id, movies: movie._id});
+            const favorite = await Favorites.findOne({users: user._id, movies: movie._id});
             return favorite;
         } catch (error) {
             throw error;
