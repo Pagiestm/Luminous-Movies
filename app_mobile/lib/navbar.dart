@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'pages/Accueil.dart';
-import 'pages/Page2.dart';
-import 'pages/Page3.dart';
-import 'pages/Page4.dart';
-import 'pages/Page5.dart';
+import 'pages/page2.dart';
+import 'pages/page3.dart';
+import 'pages/page4.dart';
+import 'pages/page5.dart';
 
 class NavBar extends StatefulWidget {
   NavBar({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _NavBarState extends State<NavBar> {
     Accueil(),
     Page2(),
     Page3(),
-    Page4(),
+    SearchBarApp(),
     Page5(),
   ];
 
