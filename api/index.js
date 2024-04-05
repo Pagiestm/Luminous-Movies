@@ -19,10 +19,12 @@ const UsersRouter = require("./src/routers/UsersRouter");
 const CategoriesRouter = require("./src/routers/CategoriesRouter");
 const MoviesRouter = require("./src/routers/MoviesRouter");
 const FavoritesRouter = require("./src/routers/FavoritesRouter");
+const RatingsRouter = require("./src/routers/RatingsRouter");
 app.use('/users', UsersRouter);
 app.use('/categories', CategoriesRouter);
 app.use('/movies', MoviesRouter);
 app.use('/favorites', FavoritesRouter);
+app.use('ratings', RatingsRouter);
 
 // create server
 const server = http.createServer(app);
