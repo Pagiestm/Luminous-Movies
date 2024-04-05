@@ -67,7 +67,7 @@ class RatingsServices extends Services {
         }
     }
 
-    async updateRating(id, rating){
+    async updateRating(id, user_rating){
         try {
             const rating = await Ratings.findOneAndUpdate({_id: id}, {
                 rating: user_rating
