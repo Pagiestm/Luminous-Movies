@@ -24,7 +24,7 @@ app.use('/users', UsersRouter);
 app.use('/categories', CategoriesRouter);
 app.use('/movies', MoviesRouter);
 app.use('/favorites', FavoritesRouter);
-app.use('ratings', RatingsRouter);
+app.use('/ratings', RatingsRouter);
 
 // create server
 const server = http.createServer(app);
