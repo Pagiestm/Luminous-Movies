@@ -219,6 +219,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  passwordfield:
+    dependency: "direct main"
+    description:
+      name: passwordfield
+      sha256: d7a1e81f0f5a2ab9404a3e595c27cc9405356f1d1ab8120ea81fe689ebbab29a
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   path:
     dependency: transitive
     description:
@@ -299,6 +307,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  session_manager:
+    dependency: "direct main"
+    description:
+      name: session_manager
+      sha256: fef21472524e69d355c01612ffb6de08d4bfe96134c85331dcce73ca4a430fff
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   sky_engine:
     dependency: transitive
     description: flutter

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Accueil extends StatelessWidget {
-  const Accueil({Key? key}) : super(key: key);
+  const Accueil({super.key});
 
   static const List<String> imageUrls = [
     'https://image.tmdb.org/t/p/w500/xD9mc8JCVXA8T8u4Od7qOUBuGH4.jpg',

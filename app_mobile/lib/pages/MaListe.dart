@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import '../sessions/user_session.dart';
+import 'Connexion.dart';
 
-class Page2 extends StatelessWidget {
-  const Page2({Key? key}) : super(key: key);
+class MaListe extends StatelessWidget {
+  const MaListe({super.key});
 
   @override
   Widget build(BuildContext context) {
+  String? user = UserSession.getUser();
+  if (user == null) {
+    return Connexion();
+  }
     return Center(
       child: Text(
         'Test page 2',

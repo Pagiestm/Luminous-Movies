@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const SearchBarApp());
+void main() => runApp(const Rechercher());
 
-class SearchBarApp extends StatefulWidget {
-  const SearchBarApp({Key? key}) : super(key: key);
+class Rechercher extends StatefulWidget {
+  const Rechercher({Key? key}) : super(key: key);
 
   @override
-  State<SearchBarApp> createState() => _SearchBarAppState();
+  State<Rechercher> createState() => _SearchBarAppState();
 }
 
-class _SearchBarAppState extends State<SearchBarApp> {
+class _SearchBarAppState extends State<Rechercher> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'pages/Accueil.dart';
-import 'pages/page2.dart';
-import 'pages/page3.dart';
-import 'pages/page4.dart';
-import 'pages/page5.dart';
+import 'pages/MaListe.dart';
+import 'pages/Decouvrir.dart';
+import 'pages/Rechercher.dart';
+import 'pages/Profil.dart';
 
 class NavBar extends StatefulWidget {
-  NavBar({Key? key}) : super(key: key);
+  NavBar({super.key});
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -18,10 +18,10 @@ class _NavBarState extends State<NavBar> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     Accueil(),
-    Page2(),
-    Page3(),
-    SearchBarApp(),
-    Page5(),
+    MaListe(),
+    Decouvrir(),
+    Rechercher(),
+    Profil(),
   ];
 
   void _onItemTapped(int index) {
@@ -48,28 +48,28 @@ class _NavBarState extends State<NavBar> {
                 child: BottomNavigationBar(
                   items: const <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home, color: Colors.white),
+                      icon: Icon(Icons.home),
                       label: 'Accueil',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home, color: Colors.white),
+                      icon: Icon(Icons.favorite_border),
                       label: 'Ma liste',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.business, color: Colors.white),
+                      icon: Icon(Icons.explore),
                       label: 'Découvrir',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.school, color: Colors.white),
+                      icon: Icon(Icons.search),
                       label: 'Rechercher',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.school, color: Colors.white),
+                      icon: Icon(Icons.person_outline),
                       label: 'Profil',
                     ),
                   ],
                   currentIndex: _selectedIndex,
-                  selectedItemColor: Colors.white,
+                  selectedItemColor: Colors.red.shade900,
                   unselectedItemColor: Colors.white,
                   backgroundColor: Colors.black.withOpacity(0.5),
                   onTap: _onItemTapped,
