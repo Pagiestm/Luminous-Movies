@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Connexion.dart';
+import '../services/users/users_register.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 
 class Inscription extends StatefulWidget {
   const Inscription({super.key});
@@ -12,10 +14,12 @@ class Inscription extends StatefulWidget {
 
 class InscriptionState extends State<Inscription> {
   final _formKey = GlobalKey<FormState>();
+
   bool passenable = true;
   bool passenableRepeated = true;
   bool isLoading = false;
   bool toLogin = false;
+
   TextEditingController pseudoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -91,7 +95,10 @@ class InscriptionState extends State<Inscription> {
               ),
               validator: (value){
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Entrer une adresse mail';
+                }
+                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                  return "Format de mail invalide";
                 }
                 return null;
               },
@@ -116,11 +123,11 @@ class InscriptionState extends State<Inscription> {
                 contentPadding: EdgeInsets.only(left: 20),
                 suffix: IconButton(onPressed: (){
                   setState(() {
-                      if(passenable){
-                        passenable = false;
-                      }else{
-                        passenable = true;
-                      }
+                    if(passenable){
+                      passenable = false;
+                    }else{
+                      passenable = true;
+                    }
                   });
                 }, icon: Icon(passenable == true?Icons.visibility:Icons.visibility_off), color: Colors.grey.shade400)
               ),
@@ -132,7 +139,7 @@ class InscriptionState extends State<Inscription> {
               },
             ),
           ),
-                    SizedBox(height: 20),
+          SizedBox(height: 20),
           Container(
             decoration: BoxDecoration(
               color: Colors.grey.shade700,
@@ -178,7 +185,17 @@ class InscriptionState extends State<Inscription> {
             ),
             onPressed: (){
               if (_formKey.currentState!.validate()) {
-                  setState(() => isLoading = true );
+                setState(() => isLoading = true );
+                UserRegister()
+                  .addUser(emailController.text, passwordController.text, pseudoController.text)
+                  .then((value) => {
+                    ElegantNotification.success(
+                      title:  Text("Inscription"),
+                      description:  Text("Validation de l'inscription."),
+                    ).show(context)
+                  })
+                  .catchError((err) => throw err)
+                  .whenComplete(() => setState(() => isLoading = false ));
               }
             }, 
             child: Text('Inscription', style: TextStyle(color: Colors.white))
@@ -189,6 +206,7 @@ class InscriptionState extends State<Inscription> {
               }, 
             child: Text("Se connecter", style: TextStyle(color: Colors.white),)
           ),
+          
         ]
       ),
     );
