@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import '../sessions/user_session.dart';
+import '../services/users/users_session.dart';
+import '../models/users.dart';
 import 'Connexion.dart';
 
 class MaListe extends StatelessWidget {
@@ -7,9 +10,13 @@ class MaListe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  String? user = UserSession.getUser();
-  if (user == null) {
+  String? userSession = UserSession.getUser();
+  
+  if (userSession == null) {
     return Connexion();
+  }else {
+    final userMap = jsonDecode(userSession) as Map<String, dynamic>;
+    final user = User.fromJson(userMap);
   }
     return Center(
       child: Text(
