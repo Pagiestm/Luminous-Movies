@@ -58,7 +58,6 @@ class UsersControllers{
 
             bcrypt.hash(password, 10, async function(err, hash) {
                 if (!err) {
-                    console.log(hash);
                     const response = await usersServices.addUser(pseudo, hash, email);
                     return res.status(200).send(response);
                 }else{
