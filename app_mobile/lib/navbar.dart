@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
+
 import 'pages/Accueil.dart';
-import 'pages/MaListe.dart';
 import 'pages/Decouvrir.dart';
-import 'pages/Rechercher.dart';
+import 'pages/MaListe.dart';
 import 'pages/Profil.dart';
+import 'pages/Rechercher.dart';
 
 class NavBar extends StatefulWidget {
   NavBar({super.key});
@@ -43,40 +43,42 @@ class _NavBarState extends State<NavBar> {
             left: 0,
             right: 0,
             child: ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: BottomNavigationBar(
-                  items: const <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
-                      label: 'Accueil',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.favorite_border),
-                      label: 'Ma liste',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.explore),
-                      label: 'Découvrir',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.search),
-                      label: 'Rechercher',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.person_outline),
-                      label: 'Profil',
-                    ),
-                  ],
-                  currentIndex: _selectedIndex,
-                  selectedItemColor: Colors.red.shade900,
-                  unselectedItemColor: Colors.white,
-                  backgroundColor: Colors.black.withOpacity(0.5),
-                  onTap: _onItemTapped,
-                  type: BottomNavigationBarType.fixed,
-                ),
+                child: Theme(
+              data: ThemeData(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
               ),
-            ),
+              child: BottomNavigationBar(
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Accueil',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.favorite_border),
+                    label: 'Ma liste',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.explore),
+                    label: 'Découvrir',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.search),
+                    label: 'Rechercher',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person_outline),
+                    label: 'Profil',
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                selectedItemColor: Colors.red.shade900,
+                unselectedItemColor: Colors.white,
+                backgroundColor: Colors.black.withOpacity(0.5),
+                onTap: _onItemTapped,
+                type: BottomNavigationBarType.fixed,
+              ),
+            )),
           ),
         ],
       ),
