@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 class Accueil extends StatelessWidget {
   const Accueil({super.key});
 
-  static const List<String> imageUrls = [
+  static const List<String> imageUrlsHero = [
+    'https://image.tmdb.org/t/p/w500/xD9mc8JCVXA8T8u4Od7qOUBuGH4.jpg',
+    'https://image.tmdb.org/t/p/w500/6KErczPBROQty7QoIsaa6wJYXZi.jpg',
+    'https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg',
+    'https://image.tmdb.org/t/p/w500/7D430eqZj8y3oVkLFfsWXGRcpEG.jpg',
+  ];
+
+  static const List<String> imageUrlsMyList = [
     'https://image.tmdb.org/t/p/w500/xD9mc8JCVXA8T8u4Od7qOUBuGH4.jpg',
     'https://image.tmdb.org/t/p/w500/6KErczPBROQty7QoIsaa6wJYXZi.jpg',
     'https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg',
@@ -13,50 +20,75 @@ class Accueil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 64, 0, 16),
-          child: Text(
-            'Les dernières sorties',
-            style: TextStyle(
-                fontFamily: 'Sora', fontSize: 24, color: Colors.white),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 64, 0, 16),
+            child: Text(
+              'Les dernières sorties',
+              style: TextStyle(
+                  fontFamily: 'Sora', fontSize: 24, color: Colors.white),
+            ),
           ),
-        ),
-        SizedBox(height: 10),
-        Container(
-          height: 400, // Définit la hauteur du slider d'images
-          child: PageView.builder(
-            controller: PageController(
-                viewportFraction:
-                    0.8), // Affiche une petite partie des images suivantes
-            itemCount: imageUrls.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                // Ajoute des marges à gauche et à droite de chaque image
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                      10), // Arrondit les bords de l'image
-                  child: CachedNetworkImage(
-                    imageUrl: imageUrls[index],
-                    fit: BoxFit.cover,
+          SizedBox(height: 10),
+          Container(
+            height: 400, // Définit la hauteur du slider d'images
+            child: PageView.builder(
+              controller: PageController(
+                  viewportFraction:
+                      0.8), // Affiche une petite partie des images suivantes
+              itemCount: imageUrlsHero.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  // Ajoute des marges à gauche et à droite de chaque image
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        10), // Arrondit les bords de l'image
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrlsHero[index],
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
-          child: Text(
-            'Votre liste',
-            style: TextStyle(
-                fontFamily: 'Sora', fontSize: 20, color: Colors.white),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
+            child: Text(
+              'Votre liste',
+              style: TextStyle(
+                  fontFamily: 'Sora', fontSize: 20, color: Colors.white),
+            ),
           ),
-        ),
-      ],
+          Container(
+            height: 175, // Définit la hauteur du slider d'images
+            child: PageView.builder(
+              controller: PageController(
+                  viewportFraction:
+                      0.8), // Affiche une petite partie des images suivantes
+              itemCount: imageUrlsHero.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  // Ajoute des marges à gauche et à droite de chaque image
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        10), // Arrondit les bords de l'image
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrlsHero[index],
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
