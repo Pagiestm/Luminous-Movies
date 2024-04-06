@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 
 class Accueil extends StatelessWidget {
   const Accueil({super.key});
@@ -17,7 +17,7 @@ class Accueil extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 32, 0, 16),
+          padding: const EdgeInsets.fromLTRB(16, 64, 0, 16),
           child: Text(
             'Les dernières sorties',
             style: TextStyle(
@@ -34,9 +34,8 @@ class Accueil extends StatelessWidget {
             itemCount: imageUrls.length,
             itemBuilder: (context, index) {
               return Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal:
-                        16.0), // Ajoute des marges à gauche et à droite de chaque image
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                // Ajoute des marges à gauche et à droite de chaque image
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(
                       10), // Arrondit les bords de l'image
