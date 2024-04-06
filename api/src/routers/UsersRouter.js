@@ -8,6 +8,9 @@ router.get("/", UsersController.getUsers());
 // L'app peut récupérer les informations d’un utilisateur spécifique
 router.get("/:id", UsersController.getUserById());
 
+// L'app peut récupérer les informations d’un utilisateur spécifique via son email et mdp
+router.get("/email/:email", UsersController.getUserByEmailAndPassword());
+
 // L'app peut ajouter un utilisateur
 router.post("", UsersController.addUser());
 

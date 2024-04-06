@@ -17,6 +17,31 @@ class UsersControllers{
         }
     }
 
+    getUserByEmailAndPassword(){
+        return async (req, res) => {
+            const email = req.params.email;
+            const password = req.body.password;
+
+            if (email == null || password == null) {
+                return res.send({error: "Données manquante"});
+            }
+
+            const user = await usersServices.getUserByEmail(email);
+
+            if (!user) {
+                return res.send({error: "L'email n'est pas reconnu"});
+            }
+
+            bcrypt.compare(password, user.password, function(err, result) {
+                if (result == false) {
+                    return res.send({error: "Erreur de mot de passe"});
+                }
+            });
+
+            return res.send(user);
+        }
+    }
+
     addUser(){
         return async (req, res) => {
             const pseudo = req.body.pseudo;
