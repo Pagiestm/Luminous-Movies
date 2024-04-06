@@ -13,6 +13,7 @@ class Connexion extends StatefulWidget {
 class ConnexionState extends State<Connexion> {
   final _formKey = GlobalKey<FormState>();
   bool passenable = true;
+  bool isLoading = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -99,18 +100,20 @@ class ConnexionState extends State<Connexion> {
             ),
           ),
           SizedBox(height: 20),
-          ElevatedButton(
+          isLoading ? Center(child:CircularProgressIndicator()) 
+          : ElevatedButton(
             onPressed: (){
               if (_formKey.currentState!.validate()) {
-                  UserAuth
+                  isLoading = true;
+                  UserAuth()
                     .fetchUser(emailController.text, passwordController.text)
-                    .then((value) => UserAuth.authenticateUser(value))
-                    .catchError((e) => throw e);
-                  setState(() {});
+                    .catchError((e) => throw e)
+                    .whenComplete(() => isLoading = false);
+                    setState(() {});
               }
             }, 
             child: Text('submit')
-          )
+          ),
         ]
       ),
     );

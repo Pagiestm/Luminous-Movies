@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import './users_session.dart';
-import '../../pages/Accueil.dart';
+import '../navigation.dart';
 
 class UserAuth {
+  Navigation navigation = Navigation.getInstance();
 
-  static Future fetchUser(String email, String password) async{
+  Future fetchUser(String email, String password) async{
       //https://luminous-movies.onrender.com/users
        var response = await http.post(Uri.parse('https://luminous-movies.onrender.com/users'), body: {
         'email': email,
@@ -13,16 +14,17 @@ class UserAuth {
        });
 
         if (response.statusCode == 200) {
-          return jsonDecode(response.body);
+          authenticateUser(response.body);
         } else {
           throw Exception('Échec de la récupération des données.');
         }
   }
 
-  static void authenticateUser(Object user) async{
+  void authenticateUser(Object user) async{
     await UserSession()
       .saveUser(user)
       .catchError((err) => throw err);
+    navigation.setIndex(0);
   }
 
 }

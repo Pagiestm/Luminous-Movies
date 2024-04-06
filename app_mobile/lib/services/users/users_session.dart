@@ -5,7 +5,6 @@ class UserSession {
 
   void setUser() async{
      user = await SessionManager().getString("user");
-     print("the user is $user");
   }
 
   static String? getUser() {

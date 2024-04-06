@@ -5,6 +5,7 @@ import 'pages/MaListe.dart';
 import 'pages/Decouvrir.dart';
 import 'pages/Rechercher.dart';
 import 'pages/Profil.dart';
+import './services/navigation.dart';
 
 class NavBar extends StatefulWidget {
   NavBar({super.key});
@@ -15,6 +16,7 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
+  Navigation navigation = Navigation.getInstance();
 
   static const List<Widget> _widgetOptions = <Widget>[
     Accueil(),
@@ -25,13 +27,16 @@ class _NavBarState extends State<NavBar> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    navigation.setIndex(index);
   }
 
   @override
   Widget build(BuildContext context) {
+    navigation.selectedIndex().listen((index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    });
     return Scaffold(
       body: Stack(
         children: [
