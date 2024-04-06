@@ -1,5 +1,5 @@
 const usersServices = require("../services/UsersServices");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 class UsersControllers{
     getUsers(){
@@ -31,14 +31,15 @@ class UsersControllers{
             if (!user) {
                 return res.send({error: "L'email n'est pas reconnu"});
             }
-
-            bcrypt.compare(password, user.password, function(err, result) {
+            
+            bcrypt.compare(password, user.password).then(function(result) {
+                console.log(password, user, result);
                 if (result == false) {
                     return res.send({error: "Erreur de mot de passe"});
+                }else {
+                    return res.send(user);
                 }
             });
-
-            return res.send(user);
         }
     }
 
@@ -46,7 +47,7 @@ class UsersControllers{
         return async (req, res) => {
             const pseudo = req.body.pseudo;
             const email = req.body.email;
-            const password = req.body.email;
+            const password = req.body.password;
             if (email == null || pseudo == null || password == null) {
                 return res.send({error: "Données manquante"});
             }
@@ -58,6 +59,7 @@ class UsersControllers{
 
             bcrypt.hash(password, 10, async function(err, hash) {
                 if (!err) {
+                    console.log(hash);
                     const response = await usersServices.addUser(pseudo, hash, email);
                     return res.send(response);
                 }else{
