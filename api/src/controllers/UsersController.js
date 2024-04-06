@@ -23,21 +23,20 @@ class UsersControllers{
             const password = req.body.password;
 
             if (email == null || password == null) {
-                return res.send({error: "Données manquante"});
+                return res.status(400).send({error: "Données manquante"});
             }
 
             const user = await usersServices.getUserByEmail(email);
 
             if (!user) {
-                return res.send({error: "L'email n'est pas reconnu"});
+                return res.status(400).send({error: "L'email n'est pas reconnu"});
             }
             
             bcrypt.compare(password, user.password).then(function(result) {
-                console.log(password, user, result);
                 if (result == false) {
-                    return res.send({error: "Erreur de mot de passe"});
+                    return res.status(400).send({error: "Erreur de mot de passe"});
                 }else {
-                    return res.send(user);
+                    return res.status(200).send(user);
                 }
             });
         }
@@ -49,19 +48,19 @@ class UsersControllers{
             const email = req.body.email;
             const password = req.body.password;
             if (email == null || pseudo == null || password == null) {
-                return res.send({error: "Données manquante"});
+                return res.status(400).send({error: "Données manquante"});
             }
 
             const occurence = await usersServices.getUserByEmail(email);
             if (occurence != null) {
-                return res.send({error: "Email déjà pris"});
+                return res.status(400).send({error: "Email déjà pris"});
             }
 
             bcrypt.hash(password, 10, async function(err, hash) {
                 if (!err) {
                     console.log(hash);
                     const response = await usersServices.addUser(pseudo, hash, email);
-                    return res.send(response);
+                    return res.status(200).send(response);
                 }else{
                     throw err;
                 }
