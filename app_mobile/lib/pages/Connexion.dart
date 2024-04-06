@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:passwordfield/passwordfield.dart';
+import '../services/users/users_auth.dart';
 
 class Connexion extends StatefulWidget {
   const Connexion({super.key});
@@ -13,11 +13,11 @@ class Connexion extends StatefulWidget {
 class ConnexionState extends State<Connexion> {
   final _formKey = GlobalKey<FormState>();
   bool passenable = true;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-  String? email;
-  String? password;
     return Form(
       key: _formKey,
       child: Column(
@@ -46,7 +46,7 @@ class ConnexionState extends State<Connexion> {
               borderRadius: BorderRadius.circular(20)
             ),
             child: TextFormField(
-              onSaved: (newValue) => newValue ??= email,
+              controller: emailController,
               cursorColor: Colors.white,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
@@ -71,7 +71,7 @@ class ConnexionState extends State<Connexion> {
               borderRadius: BorderRadius.circular(20)
             ),
             child: TextFormField(
-              onSaved: (newValue) => newValue ??= password,
+              controller: passwordController,
               obscureText: passenable,
               cursorColor: Colors.white,
               style: TextStyle(color: Colors.white),
@@ -102,8 +102,11 @@ class ConnexionState extends State<Connexion> {
           ElevatedButton(
             onPressed: (){
               if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                
+                  UserAuth
+                    .fetchUser(emailController.text, passwordController.text)
+                    .then((value) => UserAuth.authenticateUser(value))
+                    .catchError((e) => throw e);
+                  setState(() {});
               }
             }, 
             child: Text('submit')

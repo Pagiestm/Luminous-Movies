@@ -1,0 +1,24 @@
+import 'package:session_manager/session_manager.dart';
+
+class UserSession {
+  static String? user;
+
+  void setUser() async{
+     user = await SessionManager().getString("user");
+     print("the user is $user");
+  }
+
+  static String? getUser() {
+    return user;
+  }
+
+  Future saveUser(Object user) async{
+    try {
+      await SessionManager().setString("user",user.toString());
+      setUser();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+}
