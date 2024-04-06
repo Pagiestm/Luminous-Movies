@@ -1,7 +1,7 @@
 class Navigation {
   static Navigation? _instance;
 
-  Navigation._(); // Constructeur privé
+  Navigation._();
 
   static Navigation getInstance() {
     _instance ??= Navigation._();

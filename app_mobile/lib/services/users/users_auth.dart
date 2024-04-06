@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import './users_session.dart';
 import '../navigation.dart';
@@ -7,14 +8,14 @@ class UserAuth {
   Navigation navigation = Navigation.getInstance();
 
   Future fetchUser(String email, String password) async{
-      //https://luminous-movies.onrender.com/users
        var response = await http.post(Uri.parse('https://luminous-movies.onrender.com/users'), body: {
         'email': email,
         'password': password
        });
 
         if (response.statusCode == 200) {
-          authenticateUser(response.body);
+          var jsonBody = jsonDecode(response.body);
+          authenticateUser(jsonBody);
         } else {
           throw Exception('Échec de la récupération des données.');
         }

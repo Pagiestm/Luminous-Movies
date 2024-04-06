@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:session_manager/session_manager.dart';
 
 class UserSession {
@@ -13,7 +15,7 @@ class UserSession {
 
   Future saveUser(Object user) async{
     try {
-      await SessionManager().setString("user",user.toString());
+      await SessionManager().setString("user",jsonEncode(user));
       setUser();
     } catch (e) {
       rethrow;
