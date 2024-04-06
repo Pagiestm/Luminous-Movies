@@ -12,9 +12,12 @@ class Connexion extends StatefulWidget {
 
 class ConnexionState extends State<Connexion> {
   final _formKey = GlobalKey<FormState>();
+  bool passenable = true;
 
   @override
   Widget build(BuildContext context) {
+  String? email;
+  String? password;
     return Form(
       key: _formKey,
       child: Column(
@@ -43,6 +46,7 @@ class ConnexionState extends State<Connexion> {
               borderRadius: BorderRadius.circular(20)
             ),
             child: TextFormField(
+              onSaved: (newValue) => newValue ??= email,
               cursorColor: Colors.white,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
@@ -59,30 +63,51 @@ class ConnexionState extends State<Connexion> {
               },
             ),
           ),
+          SizedBox(height: 20),
           Container(
-            margin: EdgeInsets.only(top: 50),
             decoration: BoxDecoration(
               color: Colors.grey.shade700,
               border: Border.all(color: Colors.grey.shade400),
               borderRadius: BorderRadius.circular(20)
             ),
-            child: PasswordField(
-              color: Colors.blue,
-              passwordDecoration: PasswordDecoration(
+            child: TextFormField(
+              onSaved: (newValue) => newValue ??= password,
+              obscureText: passenable,
+              cursorColor: Colors.white,
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: "Mot de passe",
+                hintStyle: TextStyle(color: Colors.grey.shade400),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(left: 20),
+                suffix: IconButton(onPressed: (){
+                  setState(() {
+                      if(passenable){
+                        passenable = false;
+                      }else{
+                        passenable = true;
+                      }
+                  });
+                }, icon: Icon(passenable == true?Icons.visibility:Icons.visibility_off), color: Colors.grey.shade400)
               ),
-              
-              hintText: 'must have special characters',
-              border: PasswordBorder(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.blue.shade100,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                
-              ),
+              validator: (value){
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
             ),
           ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: (){
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
+                
+              }
+            }, 
+            child: Text('submit')
+          )
         ]
       ),
     );
