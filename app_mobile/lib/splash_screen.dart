@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'navbar.dart'; 
+import 'navbar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -29,20 +30,26 @@ class _SplashScreenState extends State<SplashScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
-                  Icons.movie,
-                  color: Colors.red.shade800,
-                  size: 30,
-                ),
+                Material(
+                    color: Colors.transparent,
+                    child: SvgPicture.asset(
+                      "assets/icons/movie-fill-red.svg",
+                      width: 32,
+                      height: 32,
+                    )),
                 SizedBox(width: 10),
                 Text(
                   'Luminous Movies',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ],
             ),
             SizedBox(height: 30),
-            CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+            CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
           ],
         ),
       ),
