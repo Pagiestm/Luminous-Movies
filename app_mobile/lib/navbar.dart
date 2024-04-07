@@ -6,6 +6,7 @@ import 'pages/Decouvrir.dart';
 import 'pages/MaListe.dart';
 import 'pages/Profil.dart';
 import 'pages/Rechercher.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class NavBar extends StatefulWidget {
   NavBar({super.key});
@@ -56,25 +57,91 @@ class _NavBarState extends State<NavBar> {
                   highlightColor: Colors.transparent,
                 ),
                 child: BottomNavigationBar(
-                  items: const <BottomNavigationBarItem>[
+                  items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
+                      icon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/home-outline-white.svg",
+                            width: 24,
+                            height: 24,
+                          )),
+                      activeIcon: Material(
+                        color: Colors.transparent,
+                        child: SvgPicture.asset(
+                          "assets/icons/home-fill-red.svg",
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
                       label: 'Accueil',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.favorite_border),
+                      icon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/heart-outline-white.svg",
+                            width: 24,
+                            height: 24,
+                          )),
+                      activeIcon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/heart-fill-red.svg",
+                            width: 24,
+                            height: 24,
+                          )),
                       label: 'Ma liste',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.explore),
+                      icon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/compass-outline-white.svg",
+                            width: 24,
+                            height: 24,
+                          )),
+                      activeIcon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/compass-fill-red.svg",
+                            width: 24,
+                            height: 24,
+                          )),
                       label: 'Découvrir',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.search),
+                      icon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/magnifying-glass-outline-white.svg",
+                            width: 24,
+                            height: 24,
+                          )),
+                      activeIcon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/magnifying-glass-fill-red.svg",
+                            width: 24,
+                            height: 24,
+                          )),
                       label: 'Rechercher',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.person_outline),
+                      icon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/user-outline-white.svg",
+                            width: 24,
+                            height: 24,
+                          )),
+                      activeIcon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/user-fill-red.svg",
+                            width: 24,
+                            height: 24,
+                          )),
                       label: 'Profil',
                     ),
                   ],
