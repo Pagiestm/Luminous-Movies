@@ -21,10 +21,7 @@ class ConnexionState extends State<Connexion> {
 
   @override
   Widget build(BuildContext context) {
-    if(toRegister){
-      return Inscription();
-    }
-    return Form(
+    return toRegister ? Inscription() : Form(
       key: _formKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

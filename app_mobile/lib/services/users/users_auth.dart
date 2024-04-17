@@ -6,6 +6,7 @@ import '../navigation.dart';
 
 class UserAuth {
   Navigation navigation = Navigation.getInstance();
+  static String role = "";
 
   Future fetchUser(String email, String password) async{
        var response = await http.post(Uri.parse('https://luminous-movies.onrender.com/users'), body: {
@@ -21,11 +22,18 @@ class UserAuth {
         }
   }
 
-  void authenticateUser(Object user) async{
+  void authenticateUser(user) async{
     await UserSession()
       .saveUser(user)
       .catchError((err) => throw err);
+
+      role = user["role"];
+      userRole();
     navigation.setIndex(0);
+  }
+
+  static Stream<String> userRole() async* {
+    yield role;
   }
 
 }

@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import './services/navigation.dart';
-import 'pages/Accueil.dart';
-import 'pages/Decouvrir.dart';
-import 'pages/MaListe.dart';
-import 'pages/Profil.dart';
-import 'pages/Rechercher.dart';
-import './services/users/users_auth.dart';
-import './navbar_admin.dart';
+import 'pages/admin/Categories.dart';
+import 'pages/admin/Films.dart';
+import 'pages/admin/Deconnexion.dart';
 
-class NavBar extends StatefulWidget {
-  NavBar({super.key});
+class NavBarAdmin extends StatefulWidget {
+  NavBarAdmin({super.key});
 
   @override
-  _NavBarState createState() => _NavBarState();
+  _NavBarAdminState createState() => _NavBarAdminState();
 }
 
-class _NavBarState extends State<NavBar> {
+class _NavBarAdminState extends State<NavBarAdmin> {
   int _selectedIndex = 0;
-  bool toAdmin = false;
   Navigation navigation = Navigation.getInstance();
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Accueil(),
-    MaListe(),
-    Decouvrir(),
-    Rechercher(),
-    Profil(),
+    Categories(),
+    Films(),
+    Deconnexion(),
   ];
 
   void _onItemTapped(int index) {
@@ -40,15 +33,7 @@ class _NavBarState extends State<NavBar> {
         _selectedIndex = index;
       });
     });
-    UserAuth.userRole().listen((role) {
-      if (role == "admin") {
-        setState(() {
-          toAdmin = true;
-        });
-      }
-    });
-
-    return toAdmin ? NavBarAdmin() : Scaffold(
+    return Scaffold(
       body: Stack(
         children: [
           Center(
@@ -69,25 +54,17 @@ class _NavBarState extends State<NavBar> {
                 child: BottomNavigationBar(
                   items: const <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
-                      label: 'Accueil',
+                      icon: Icon(Icons.category_outlined),
+                      label: 'Catégories',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.favorite_border),
-                      label: 'Ma liste',
+                      icon: Icon(Icons.movie_creation_outlined),
+                      label: 'Films',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.explore),
-                      label: 'Découvrir',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.search),
-                      label: 'Rechercher',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.person_outline),
-                      label: 'Profil',
-                    ),
+                      icon: Icon(Icons.logout_outlined),
+                      label: 'Déconnexion',
+                    )
                   ],
                   currentIndex: _selectedIndex,
                   selectedItemColor: Colors.red.shade900,

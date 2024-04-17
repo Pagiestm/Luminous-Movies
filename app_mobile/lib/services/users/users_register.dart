@@ -8,7 +8,7 @@ class UserRegister {
     var response = await http.post(Uri.parse('https://luminous-movies.onrender.com/users/add'), body: {
     'email': email,
     'password': password,
-    'pseudo': pseudo
+    'pseudo': pseudo,
     });
 
     if (response.statusCode == 200) {
