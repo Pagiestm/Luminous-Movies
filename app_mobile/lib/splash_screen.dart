@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
               children: <Widget>[
                 Icon(
                   Icons.movie,
-                  color: Colors.white,
+                  color: Colors.red.shade800,
                   size: 30,
                 ),
                 SizedBox(width: 10),

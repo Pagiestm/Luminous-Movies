@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import './services/navigation.dart';
 import 'pages/Accueil.dart';
-import 'pages/page2.dart';
-import 'pages/page3.dart';
-import 'pages/page4.dart';
-import 'pages/page5.dart';
+import 'pages/Decouvrir.dart';
+import 'pages/MaListe.dart';
+import 'pages/Profil.dart';
+import 'pages/Rechercher.dart';
 
 class NavBar extends StatefulWidget {
-  NavBar({Key? key}) : super(key: key);
+  NavBar({super.key});
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -15,23 +16,27 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
+  Navigation navigation = Navigation.getInstance();
 
   static const List<Widget> _widgetOptions = <Widget>[
     Accueil(),
-    Page2(),
-    Page3(),
-    SearchBarApp(),
-    Page5(),
+    MaListe(),
+    Decouvrir(),
+    Rechercher(),
+    Profil(),
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    navigation.setIndex(index);
   }
 
   @override
   Widget build(BuildContext context) {
+    navigation.selectedIndex().listen((index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    });
     return Scaffold(
       body: Stack(
         children: [
@@ -43,40 +48,45 @@ class _NavBarState extends State<NavBar> {
             left: 0,
             right: 0,
             child: ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Theme(
+                data: ThemeData(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                ),
                 child: BottomNavigationBar(
                   items: const <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home, color: Colors.white),
+                      icon: Icon(Icons.home),
                       label: 'Accueil',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.home, color: Colors.white),
+                      icon: Icon(Icons.favorite_border),
                       label: 'Ma liste',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.business, color: Colors.white),
+                      icon: Icon(Icons.explore),
                       label: 'Découvrir',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.school, color: Colors.white),
+                      icon: Icon(Icons.search),
                       label: 'Rechercher',
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.school, color: Colors.white),
+                      icon: Icon(Icons.person_outline),
                       label: 'Profil',
                     ),
                   ],
                   currentIndex: _selectedIndex,
-                  selectedItemColor: Colors.white,
+                  selectedItemColor: Colors.red.shade900,
                   unselectedItemColor: Colors.white,
                   backgroundColor: Colors.black.withOpacity(0.5),
                   onTap: _onItemTapped,
                   type: BottomNavigationBarType.fixed,
                 ),
               ),
-            ),
+            )),
           ),
         ],
       ),

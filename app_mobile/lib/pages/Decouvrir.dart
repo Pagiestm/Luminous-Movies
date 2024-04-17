@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Page5 extends StatelessWidget {
-  const Page5({Key? key}) : super(key: key);
+class Decouvrir extends StatelessWidget {
+  const Decouvrir({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'Test page 5',
+        'Test page 3',
         style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
       ),
     );
