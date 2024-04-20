@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/movies.dart';
+import '../services/movies/movies.dart';
 
 class MovieDetailsPage extends StatelessWidget {
   final Movie movie;
@@ -114,7 +115,7 @@ class MovieDetailsPage extends StatelessWidget {
             ),
             SizedBox(height: 4),
             Text(
-              movie.categorie,
+              movie.categorieId,
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.white,
@@ -137,6 +138,43 @@ class MovieDetailsPage extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
+            SizedBox(height: 16),
+            Text(
+              "D'autres films du même genre...",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 4),
+            FutureBuilder<List<Movie>>(
+              future: MovieService().fetchMoviesByCategorie(movie.categorieId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return Container(
+                    height: 200,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.network(snapshot.data![index].image),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+              },
+            )
           ],
         ),
       ),

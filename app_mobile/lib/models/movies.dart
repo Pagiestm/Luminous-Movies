@@ -6,7 +6,7 @@ class Movie {
   final List<String> staring;
   final String releaseDate;
   final String length;
-  final String categorie;
+  final String categorieId;
 
   Movie({
     required this.id,
@@ -16,7 +16,7 @@ class Movie {
     required this.staring,
     required this.releaseDate,
     required this.length,
-    required this.categorie,
+    required this.categorieId,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
@@ -28,7 +28,7 @@ class Movie {
       staring: List<String>.from(json['staring']),
       releaseDate: json['release_date'],
       length: json['length'],
-      categorie: json['categorie'],
+      categorieId: json['categorie'],
     );
   }
 }

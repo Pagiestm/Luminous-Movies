@@ -14,4 +14,15 @@ class MovieService {
       throw Exception('Failed to fetch movie data.');
     }
   }
+
+  Future<List<Movie>> fetchMoviesByCategorie(String categorieId) async {
+    var response = await http.get(Uri.parse('http://localhost:3000/movies?categorie=$categorieId'));
+
+    if (response.statusCode == 200) {
+      var jsonBody = jsonDecode(response.body);
+      return jsonBody.map<Movie>((item) => Movie.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to fetch movies data.');
+    }
+  }
 }
