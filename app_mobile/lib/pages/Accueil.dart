@@ -93,15 +93,26 @@ class _AccueilState extends State<Accueil> {
                       0.8), // Affiche une petite partie des images suivantes
               itemCount: movies.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  // Ajoute des marges à gauche et à droite de chaque image
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                        10), // Arrondit les bords de l'image
-                    child: CachedNetworkImage(
-                      imageUrl: movies[index].image,
-                      fit: BoxFit.cover,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            MovieDetailsPage(movie: movies[index]),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    // Ajoute des marges à gauche et à droite de chaque image
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          10), // Arrondit les bords de l'image
+                      child: CachedNetworkImage(
+                        imageUrl: movies[index].image,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 );
