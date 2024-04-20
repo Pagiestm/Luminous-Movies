@@ -28,7 +28,7 @@ class MovieDetailsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: 400,
+              height: 500,
               width: double.infinity,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
