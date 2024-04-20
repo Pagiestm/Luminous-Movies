@@ -1,22 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../services/movies/movies.dart';
+import '../../models/movies.dart';
 
-class Accueil extends StatelessWidget {
+class Accueil extends StatefulWidget {
   const Accueil({super.key});
 
-  static const List<String> imageUrlsHero = [
-    'https://image.tmdb.org/t/p/w500/xD9mc8JCVXA8T8u4Od7qOUBuGH4.jpg',
-    'https://image.tmdb.org/t/p/w500/6KErczPBROQty7QoIsaa6wJYXZi.jpg',
-    'https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg',
-    'https://image.tmdb.org/t/p/w500/7D430eqZj8y3oVkLFfsWXGRcpEG.jpg',
-  ];
+  @override
+  _AccueilState createState() => _AccueilState();
+}
 
-  static const List<String> imageUrlsMyList = [
-    'https://image.tmdb.org/t/p/w500/xD9mc8JCVXA8T8u4Od7qOUBuGH4.jpg',
-    'https://image.tmdb.org/t/p/w500/6KErczPBROQty7QoIsaa6wJYXZi.jpg',
-    'https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg',
-    'https://image.tmdb.org/t/p/w500/7D430eqZj8y3oVkLFfsWXGRcpEG.jpg',
-  ];
+class _AccueilState extends State<Accueil> {
+  List<Movie> movies = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMovies();
+  }
+
+  void fetchMovies() async {
+    MovieService movieService = MovieService();
+    var fetchedMovies = await movieService.fetchMovies();
+    setState(() {
+      movies = fetchedMovies;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +48,7 @@ class Accueil extends StatelessWidget {
               controller: PageController(
                   viewportFraction:
                       0.8), // Affiche une petite partie des images suivantes
-              itemCount: imageUrlsHero.length,
+              itemCount: movies.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -48,7 +57,7 @@ class Accueil extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                         10), // Arrondit les bords de l'image
                     child: CachedNetworkImage(
-                      imageUrl: imageUrlsHero[index],
+                      imageUrl: movies[index].image,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -70,7 +79,7 @@ class Accueil extends StatelessWidget {
               controller: PageController(
                   viewportFraction:
                       0.8), // Affiche une petite partie des images suivantes
-              itemCount: imageUrlsHero.length,
+              itemCount: movies.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -79,7 +88,7 @@ class Accueil extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                         10), // Arrondit les bords de l'image
                     child: CachedNetworkImage(
-                      imageUrl: imageUrlsHero[index],
+                      imageUrl: movies[index].image,
                       fit: BoxFit.cover,
                     ),
                   ),
