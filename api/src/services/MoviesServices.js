@@ -30,8 +30,8 @@ class MoviesServices extends Services {
         try {
             const favorites = await FavoritesServices.getFavoritesByUser(userId);
             let movies = [];
-            for (const favorite in favorites) {
-                movies.push(await Movies.findById(favorite._id));
+            for (const index in favorites) {
+                movies.push(await Movies.findById(favorites[index].movies));
             }
             return movies;
         } catch (error) {
