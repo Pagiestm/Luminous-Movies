@@ -172,7 +172,7 @@ class MovieDetailsPage extends StatelessWidget {
               ),
               SizedBox(height: 4),
               FutureBuilder<List<Movie>>(
-                future: MovieService().fetchMoviesByCategorie(movie.categorieId),
+                future: fetchMoviesForCategories(movie.categories),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator();
@@ -203,5 +203,14 @@ class MovieDetailsPage extends StatelessWidget {
         )
       ),
     );
+  }
+
+  Future<List<Movie>> fetchMoviesForCategories(List<String> categories) async {
+    List<Movie> movies = [];
+    for (String category in categories) {
+      List<Movie> categoryMovies = await MovieService().fetchMoviesByCategorie(category);
+      movies.addAll(categoryMovies);
+    }
+    return movies;
   }
 }

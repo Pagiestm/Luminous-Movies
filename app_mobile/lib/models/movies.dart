@@ -28,7 +28,7 @@ class Movie {
       staring: List<String>.from(json['staring']),
       releaseDate: json['release_date'],
       length: json['length'],
-      categories: json['categories'],
+      categories: List<String>.from(json['categories']),
     );
   }
 }
