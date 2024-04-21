@@ -34,7 +34,8 @@ class UsersServices extends Services {
             const user = new Users({
                 pseudo: pseudo,
                 password: password,
-                email: email
+                email: email,
+                role: "user"
             });
             await user.save();
             return user;
