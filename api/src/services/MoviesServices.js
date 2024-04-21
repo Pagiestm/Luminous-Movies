@@ -1,5 +1,7 @@
+const Favorites = require('../models/Favorites');
 const Movies = require('../models/Movies');
 const Categories = require('../services/CategoriesServices');
+const FavoritesServices = require('./FavoritesServices');
 const Services = require('./Services');
 
 class MoviesServices extends Services {
@@ -24,10 +26,22 @@ class MoviesServices extends Services {
         }
     }
 
+    async getMoviesByUserFavorites(userId){
+        try {
+            const favorites = await FavoritesServices.getFavoritesByUser(userId);
+            let movies = [];
+            for (const index in favorites) {
+                movies.push(await Movies.findById(favorites[index].movies));
+            }
+            return movies;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async getMoviesByCategorie(categorieName){
         try {
             const categorie = await Categories.getCategorieByName(categorieName);
-            console.log(categorie)
             const movies = await Movies.find({categories: categorie._id}); 
             return movies;
         } catch (error) {

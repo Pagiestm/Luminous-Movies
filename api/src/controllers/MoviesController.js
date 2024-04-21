@@ -15,6 +15,14 @@ class MoviesControllers{
             res.send(response);
         }
     }
+
+    getMoviesByUserFavorites(){
+        return async (req, res) => {
+            const id = req.params.id;
+            const response = await MoviesServices.getMoviesByUserFavorites(id);
+            res.send(response);
+        }
+    }
     
     getMoviesByTitle(){
         return async (req, res) => {

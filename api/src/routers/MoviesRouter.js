@@ -8,6 +8,9 @@ router.get("/", MoviesController.getMovies());
 // L'app peut récupérer les informations des films via son titre
 router.get("/title/:title", MoviesController.getMoviesByTitle());
 
+// L'app peut récupérer les informations des films via les favoris d'un utilisateur
+router.get("/favorites/:id", MoviesController.getMoviesByUserFavorites());
+
 // L'app peut récupérer les informations des films via la catégorie
 router.get("/categorie/:categorie", MoviesController.getMoviesByCategorie());
 
