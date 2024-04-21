@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../../models/users.dart';
 
 import 'package:session_manager/session_manager.dart';
 
@@ -9,8 +10,13 @@ class UserSession {
      user = await SessionManager().getString("user");
   }
 
-  static String? getUser() {
-    return user;
+  static User? getUser() {
+    var fetchUser = user ?? "";
+    if (fetchUser != "") {
+      final userMap = jsonDecode(fetchUser) as Map<String, dynamic>;
+      return User.fromJson(userMap);
+    }
+    return null;
   }
 
   Future saveUser(Object user) async{

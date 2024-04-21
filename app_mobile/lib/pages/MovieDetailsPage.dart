@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:luminous_movies/models/users.dart';
 import '../models/movies.dart';
 import '../services/movies/movies.dart';
+import '../services/favorites/favorites.dart';
+import '../services/users/users_session.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   final Movie movie;
@@ -14,6 +17,7 @@ class MovieDetailsPage extends StatefulWidget {
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
   bool isFavorite = false;
   List<String> sameCategoryMovies = [];
+  User? user = UserSession.getUser();
 
   Future<List<Movie>> fetchMoviesForCategories(List<String> categories) async {
     List<Movie> movies = [];
@@ -39,17 +43,19 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           style: TextStyle(color: Colors.white),
         ),
         actions: <Widget>[
-          IconButton(
+          user != null ? IconButton(
             icon: Icon(
               isFavorite ? Icons.favorite : Icons.favorite_border,
               color: isFavorite ? Colors.red.shade900 : Colors.white,
             ),
             onPressed: () {
-              setState(() {
-                isFavorite = !isFavorite;
+              FavoritesService().add(user!.id, widget.movie.id).then((value) => {
+                setState(() {
+                  isFavorite = !isFavorite;
+                })
               });
             },
-          ),
+          ) : SizedBox(height: 0),
         ],
       ),
       body: Padding(
