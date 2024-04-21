@@ -7,7 +7,7 @@ const Movies = mongoose.model('Movies', {
     staring: {type: [String], required: true},
     release_date: {type: String, required: true},
     length: {type: String, required: true},
-    categorie: {type: mongoose.ObjectId, ref: 'Categories', required: true}
+    categories: {type: [mongoose.ObjectId], ref: 'Categories', required: true}
 });
 
 module.exports = Movies;

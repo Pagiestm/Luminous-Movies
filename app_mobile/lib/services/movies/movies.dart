@@ -5,7 +5,7 @@ import '../../models/movies.dart';
 
 class MovieService {
   Future<List<Movie>> fetchMovies() async {
-    var response = await http.get(Uri.parse('http://localhost:3000/movies'));
+    var response = await http.get(Uri.parse('https://luminous-movies.onrender.com/movies'));
 
     if (response.statusCode == 200) {
       var jsonBody = jsonDecode(response.body);
@@ -16,7 +16,7 @@ class MovieService {
   }
 
   Future<List<Movie>> fetchMoviesByCategorie(String categorieId) async {
-    var response = await http.get(Uri.parse('http://localhost:3000/movies?categorie=$categorieId'));
+    var response = await http.get(Uri.parse('https://luminous-movies.onrender.com/movies?categorie=$categorieId'));
 
     if (response.statusCode == 200) {
       var jsonBody = jsonDecode(response.body);

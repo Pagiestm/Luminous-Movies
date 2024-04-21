@@ -5,8 +5,20 @@ const Services = require('./Services');
 class MoviesServices extends Services {
     async getMovies(){
         try {
-            const movies = await Movies.find(); 
-            return movies;
+            const movies = await Movies
+            .find()
+            .populate('categories');
+
+            const moviesWithCategories = movies.map(movie => {
+                const categoryNames = movie.categories.map(category => category.name);
+                
+                return {
+                    ...movie.toObject(),
+                    categories: categoryNames
+                };
+            });
+
+            return moviesWithCategories;
         } catch (error) {
             throw error;
         }
@@ -40,7 +52,7 @@ class MoviesServices extends Services {
         }
     }
     
-    async addMovie(title, synopsis, image, staring, release_date, length, categorie){
+    async addMovie(title, synopsis, image, staring, release_date, length, categories){
         try {
             const movie = new Movies({
                 title: title,
@@ -49,7 +61,7 @@ class MoviesServices extends Services {
                 staring: staring,
                 release_date: release_date,
                 length: length,
-                categorie: categorie
+                categories: categories
             });
             await movie.save();
             return movie;
