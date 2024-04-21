@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import '../models/movies.dart';
 import '../services/movies/movies.dart';
 
-class MovieDetailsPage extends StatelessWidget {
+class MovieDetailsPage extends StatefulWidget {
   final Movie movie;
 
   MovieDetailsPage({required this.movie});
+
+  @override
+  _MovieDetailsPageState createState() => _MovieDetailsPageState();
+}
+
+class _MovieDetailsPageState extends State<MovieDetailsPage> {
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +28,19 @@ class MovieDetailsPage extends StatelessWidget {
           "Retour",
           style: TextStyle(color: Colors.white),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red.shade900 : Colors.white,
+            ),
+            onPressed: () {
+              setState(() {
+                isFavorite = !isFavorite;
+              });
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,14 +54,14 @@ class MovieDetailsPage extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    movie.image,
+                    widget.movie.image,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
               SizedBox(height: 16),
               Text(
-                movie.title,
+                widget.movie.title,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -50,7 +70,7 @@ class MovieDetailsPage extends StatelessWidget {
               ),
               SizedBox(height: 16),
               Text(
-                movie.synopsis,
+                widget.movie.synopsis,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.white,
@@ -69,7 +89,7 @@ class MovieDetailsPage extends StatelessWidget {
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: movie.staring.length,
+                itemCount: widget.movie.staring.length,
                 itemBuilder: (context, index) {
                   return Row(
                     children: <Widget>[
@@ -77,7 +97,7 @@ class MovieDetailsPage extends StatelessWidget {
                       SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          movie.staring[index],
+                          widget.movie.staring[index],
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white,
@@ -99,7 +119,7 @@ class MovieDetailsPage extends StatelessWidget {
               ),
               SizedBox(height: 4),
               Text(
-                movie.length,
+                widget.movie.length,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.white,
@@ -118,7 +138,7 @@ class MovieDetailsPage extends StatelessWidget {
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: movie.categories.length,
+                itemCount: widget.movie.categories.length,
                 itemBuilder: (context, index) {
                   return Row(
                     children: <Widget>[
@@ -126,7 +146,7 @@ class MovieDetailsPage extends StatelessWidget {
                       SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          movie.categories[index],
+                          widget.movie.categories[index],
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white,
@@ -155,7 +175,7 @@ class MovieDetailsPage extends StatelessWidget {
               ),
               SizedBox(height: 4),
               Text(
-                movie.releaseDate,
+                widget.movie.releaseDate,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.white,
@@ -172,7 +192,7 @@ class MovieDetailsPage extends StatelessWidget {
               ),
               SizedBox(height: 4),
               FutureBuilder<List<Movie>>(
-                future: MovieService().fetchMoviesByCategorie(movie.categorieId),
+                future: MovieService().fetchMoviesByCategorie(widget.movie.categorieId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator();
