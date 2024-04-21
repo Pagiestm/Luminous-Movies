@@ -15,8 +15,8 @@ class MovieService {
     }
   }
 
-  Future<List<Movie>> fetchMoviesByCategorie(String categorieId) async {
-    var response = await http.get(Uri.parse('https://luminous-movies.onrender.com/movies?categorie=$categorieId'));
+  Future<List<Movie>> fetchMoviesByCategorie(String categorie) async {
+    var response = await http.get(Uri.parse('https://luminous-movies.onrender.com/movies/categorie/$categorie'));
 
     if (response.statusCode == 200) {
       var jsonBody = jsonDecode(response.body);

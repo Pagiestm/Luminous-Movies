@@ -24,7 +24,7 @@ class _AccueilState extends State<Accueil> {
     MovieService movieService = MovieService();
     var fetchedMovies = await movieService.fetchMovies();
     setState(() {
-      movies = fetchedMovies;
+      movies = fetchedMovies.reversed.toList();
     });
   }
 
@@ -49,7 +49,7 @@ class _AccueilState extends State<Accueil> {
               controller: PageController(
                   viewportFraction:
                       0.8), // Affiche une petite partie des images suivantes
-              itemCount: movies.length,
+              itemCount: movies.length > 5 ? 5 : movies.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {

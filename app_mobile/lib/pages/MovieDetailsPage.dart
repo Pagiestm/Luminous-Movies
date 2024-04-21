@@ -13,6 +13,16 @@ class MovieDetailsPage extends StatefulWidget {
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
   bool isFavorite = false;
+  List<String> sameCategoryMovies = [];
+
+  Future<List<Movie>> fetchMoviesForCategories(List<String> categories) async {
+    List<Movie> movies = [];
+    for (String category in categories) {
+      List<Movie> categoryMovies = await MovieService().fetchMoviesByCategorie(category);
+      movies.addAll(categoryMovies);
+    }
+    return movies;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,13 +167,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   );
                 },
               ),
-              // Text(
-              //   movie.categories,
-              //   style: TextStyle(
-              //     fontSize: 12,
-              //     color: Colors.white,
-              //   ),
-              // ),
               SizedBox(height: 16),
               Text(
                 "Date de sortie",
@@ -199,19 +202,24 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
+                    List<Movie> movies = snapshot.data as List<Movie>;
+                    List<Movie> filteredMovies = movies.where((movie) => movie.title != widget.movie.title).toList();
                     return Container(
                       height: 200,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data!.length,
+                        itemCount: filteredMovies.length,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Image.network(snapshot.data![index].image),
-                            ),
-                          );
+                          if (!sameCategoryMovies.contains(filteredMovies[index].image)) {
+                            sameCategoryMovies.add(filteredMovies[index].image);
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.network(filteredMovies[index].image),
+                              ),
+                            );
+                          }
                         },
                       ),
                     );
@@ -223,14 +231,5 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         )
       ),
     );
-  }
-
-  Future<List<Movie>> fetchMoviesForCategories(List<String> categories) async {
-    List<Movie> movies = [];
-    for (String category in categories) {
-      List<Movie> categoryMovies = await MovieService().fetchMoviesByCategorie(category);
-      movies.addAll(categoryMovies);
-    }
-    return movies;
   }
 }
