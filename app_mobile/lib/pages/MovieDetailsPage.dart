@@ -115,13 +115,35 @@ class MovieDetailsPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 4),
-              Text(
-                movie.categorieId,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: movie.categories.length,
+                itemBuilder: (context, index) {
+                  return Row(
+                    children: <Widget>[
+                      Icon(Icons.circle, size: 6, color: Colors.white),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          movie.categories[index],
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
+              // Text(
+              //   movie.categories,
+              //   style: TextStyle(
+              //     fontSize: 12,
+              //     color: Colors.white,
+              //   ),
+              // ),
               SizedBox(height: 16),
               Text(
                 "Date de sortie",

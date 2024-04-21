@@ -27,7 +27,8 @@ class MoviesServices extends Services {
     async getMoviesByCategorie(categorieName){
         try {
             const categorie = await Categories.getCategorieByName(categorieName);
-            const movies = await Movies.find({categorie: categorie._id}); 
+            console.log(categorie)
+            const movies = await Movies.find({categories: categorie._id}); 
             return movies;
         } catch (error) {
             throw error;
