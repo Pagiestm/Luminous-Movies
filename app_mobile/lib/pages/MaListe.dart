@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:luminous_movies/models/movies.dart';
 import 'package:luminous_movies/models/users.dart';
+import 'package:luminous_movies/services/movies/movies.dart';
 import '../services/users/users_session.dart';
 import 'Connexion.dart';
 
@@ -14,26 +15,33 @@ class MaListe extends StatefulWidget {
 }
 
 class _MaListe extends State<MaListe> {
+  List<Movie> movies = [];
+  User? user = UserSession.getUser();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFavoritesMovies();
+  }
+
+  void fetchFavoritesMovies () async {
+    if (user != null) {
+      var fetchedMovies = await MovieService().fetchMoviesByFavorites(user!.id);
+      setState(() {
+        movies = fetchedMovies.toList();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-  User? user = UserSession.getUser();
-  List<Movie> movies = [];
-
-  void fetchFavoritesMovies () async {
-    
-  }
-  
   if (user == null) {
     return Connexion();
-  } else {
-    fetchFavoritesMovies();
   }
 
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.zero,
-        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -48,18 +56,20 @@ class _MaListe extends State<MaListe> {
               SizedBox(height: 10),
               GridView.count(
                 shrinkWrap: true,
+                childAspectRatio: 0.7,
                 crossAxisCount: 3,
-                children: List.generate(50, (index) {
-                  return Center(
-                    child: Text(
-                      'Item $index',
+                children: List.generate(movies.length, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Image.network(
+                      movies[index].image,
+                      fit: BoxFit.cover
                     ),
                   );
                 }),
               )
             ]
           ),
-        ),
       ),
     );
   }

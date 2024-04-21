@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 
 class FavoritesService {
   Future add(String user, String movie) async{
+    print(user);
+    print(movie);
     var response = await http.post(Uri.parse('https://luminous-movies.onrender.com/favorites'), body: {
     'movies': movie,
     'users': user,
