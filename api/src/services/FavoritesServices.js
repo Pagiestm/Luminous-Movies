@@ -34,14 +34,10 @@ class FavoritesServices extends Services {
     }
 
     async getFavoriteByUserAndMovie(userId, movieId){
-        try {
-            const user = await Users.getUserById(userId);
-            const movie = await Movies.getMovieById(movieId);
-            const favorite = await Favorites.findOne({users: user._id, movies: movie._id});
-            return favorite;
-        } catch (error) {
-            throw error;
-        }
+        const user = await Users.getUserById(userId);
+        const movie = await Movies.getMovieById(movieId);
+        const favorite = await Favorites.findOne({users: user._id, movies: movie._id});
+        return favorite;
     }
 
     async getFavoriteById(id){

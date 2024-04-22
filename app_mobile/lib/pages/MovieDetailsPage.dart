@@ -15,9 +15,15 @@ class MovieDetailsPage extends StatefulWidget {
 }
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
-  bool isFavorite = false;
   List<String> sameCategoryMovies = [];
   User? user = UserSession.getUser();
+  bool isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isAlreadyFavorite();
+  }
 
   Future<List<Movie>> fetchMoviesForCategories(List<String> categories) async {
     List<Movie> movies = [];
@@ -26,6 +32,16 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       movies.addAll(categoryMovies);
     }
     return movies;
+  }
+
+  void isAlreadyFavorite () async {
+    if (user != null) {
+      if (await FavoritesService().fetchFavoriteByMovieAndUser(widget.movie.id, user!.id)) {
+        setState(() {
+          isFavorite = true;
+        });
+      }
+    }
   }
 
   @override
