@@ -35,6 +35,18 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     return movies;
   }
 
+  void addToFavorite(){
+    FavoritesService().add(user!.id, widget.movie.id).then((value) => {
+      setState(() {
+        widget.isFavorite = !widget.isFavorite;
+      })
+    });
+  }
+
+  void removeFromFavorite(){
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,11 +68,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               color: widget.isFavorite ? Colors.red.shade900 : Colors.white,
             ),
             onPressed: () {
-              FavoritesService().add(user!.id, widget.movie.id).then((value) => {
-                setState(() {
-                  widget.isFavorite = !widget.isFavorite;
-                })
-              });
+              if (!widget.isFavorite) {
+                addToFavorite();
+              } else {
+
+              }
             },
           ) : SizedBox(height: 0),
         ],

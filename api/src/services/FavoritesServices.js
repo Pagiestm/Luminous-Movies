@@ -62,9 +62,9 @@ class FavoritesServices extends Services {
         }
     }
 
-    async deleteFavorite(id){
+    async deleteFavorite(movies, users){
         try {
-            const favorite = await Favorites.findByIdAndDelete({_id: id});
+            const favorite = await Favorites.findOneAndDelete({movies: movies, users: users});
             return favorite;
         } catch (error) {
             throw error;
