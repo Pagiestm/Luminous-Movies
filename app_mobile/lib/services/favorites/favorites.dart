@@ -16,11 +16,12 @@ class FavoritesService {
 
     Future<bool> fetchFavoriteByMovieAndUser(String idMovie, String idUser) async {
     var response = await http.get(Uri.parse('https://luminous-movies.onrender.com/favorites/$idUser/$idMovie'));
-      var t = response.body;
-      print("test: $t");
 
     if (response.statusCode == 200) {
-      return true;
+      if (response.body.isNotEmpty) {
+        return true;
+      }
+      return false;
     } else {
       throw Exception('Failed to fetch favorite.');
     }

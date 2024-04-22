@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:luminous_movies/models/users.dart';
+import 'package:luminous_movies/services/users/users_session.dart';
 import '../services/movies/movies.dart';
 import '../../models/movies.dart';
 import 'MovieDetailsPage.dart';
@@ -13,6 +15,7 @@ class Accueil extends StatefulWidget {
 
 class _AccueilState extends State<Accueil> {
   List<Movie> movies = [];
+  User? user = UserSession.getUser();
 
   @override
   void initState() {
