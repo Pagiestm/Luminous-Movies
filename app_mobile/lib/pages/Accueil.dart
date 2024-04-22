@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:luminous_movies/models/users.dart';
+import 'package:luminous_movies/services/favorites/favorites.dart';
 import 'package:luminous_movies/services/users/users_session.dart';
 import '../services/movies/movies.dart';
 import '../../models/movies.dart';
@@ -31,6 +32,10 @@ class _AccueilState extends State<Accueil> {
     });
   }
 
+  Future<Widget> toMovieDetailsPage(int index) async {
+   return user != null ? MovieDetailsPage(movie: movies[index], isFavorite: await FavoritesService().fetchFavoriteByMovieAndUser(movies[index].id, user!.id)) : MovieDetailsPage(movie: movies[index], isFavorite: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -59,8 +64,18 @@ class _AccueilState extends State<Accueil> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            MovieDetailsPage(movie: movies[index]),
+                        builder: (context) => FutureBuilder(
+                          future: toMovieDetailsPage(index), 
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Erreur: ${snapshot.error}');
+                            } else {
+                              return snapshot.data!;
+                            }
+                          }
+                        )
                       ),
                     );
                   },
@@ -101,8 +116,18 @@ class _AccueilState extends State<Accueil> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            MovieDetailsPage(movie: movies[index]),
+                        builder: (context) => FutureBuilder(
+                          future: toMovieDetailsPage(index), 
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Erreur: ${snapshot.error}');
+                            } else {
+                              return snapshot.data!;
+                            }
+                          }
+                        )
                       ),
                     );
                   },

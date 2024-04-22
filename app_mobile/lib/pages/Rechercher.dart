@@ -92,7 +92,7 @@ class _SearchBarAppState extends State<Rechercher> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => MovieDetailsPage(
-                                            movie: _movies[index]),
+                                            movie: _movies[index], isFavorite: false,),
                                       ),
                                     );
                                   },

@@ -9,8 +9,9 @@ import '../services/users/users_session.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   final Movie movie;
+  bool isFavorite;
 
-  MovieDetailsPage({required this.movie});
+  MovieDetailsPage({required this.movie, required this.isFavorite});
 
   @override
   _MovieDetailsPageState createState() => _MovieDetailsPageState();
@@ -19,12 +20,10 @@ class MovieDetailsPage extends StatefulWidget {
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
   List<String> sameCategoryMovies = [];
   User? user = UserSession.getUser();
-  bool isFavorite = false;
 
   @override
   void initState() {
     super.initState();
-    isAlreadyFavorite();
   }
 
   Future<List<Movie>> fetchMoviesForCategories(List<String> categories) async {
@@ -34,16 +33,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       movies.addAll(categoryMovies);
     }
     return movies;
-  }
-
-  void isAlreadyFavorite () async {
-    if (user != null) {
-      if (await FavoritesService().fetchFavoriteByMovieAndUser(widget.movie.id, user!.id)) {
-        setState(() {
-          isFavorite = true;
-        });
-      }
-    }
   }
 
   @override
@@ -63,13 +52,13 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         actions: <Widget>[
           user != null ? IconButton(
             icon: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite ? Colors.red.shade900 : Colors.white,
+              widget.isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: widget.isFavorite ? Colors.red.shade900 : Colors.white,
             ),
             onPressed: () {
               FavoritesService().add(user!.id, widget.movie.id).then((value) => {
                 setState(() {
-                  isFavorite = !isFavorite;
+                  widget.isFavorite = !widget.isFavorite;
                 })
               });
             },
