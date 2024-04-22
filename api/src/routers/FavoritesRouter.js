@@ -18,9 +18,9 @@ router.get("/user/:id", FavoritesController.getFavoritesByUser());
 router.get("/:id", FavoritesController.getFavoriteById());
 
 // L'app peut ajouter un favoris
-router.post("", FavoritesController.addFavorite());
+router.post("/", FavoritesController.addFavorite());
 
 // L'app peut supprimer un favoris
-router.delete("/:iduser/:idmovie", FavoritesController.deleteFavorite());
+router.delete("/", FavoritesController.deleteFavorite());
 
 module.exports = router

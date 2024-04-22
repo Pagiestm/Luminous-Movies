@@ -44,7 +44,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   }
 
   void removeFromFavorite(){
-    
+    FavoritesService().remove(user!.id, widget.movie.id).then((value) => {
+      setState(() {
+        widget.isFavorite = !widget.isFavorite;
+      })
+    });
   }
 
   @override
@@ -71,7 +75,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               if (!widget.isFavorite) {
                 addToFavorite();
               } else {
-
+                removeFromFavorite();
               }
             },
           ) : SizedBox(height: 0),

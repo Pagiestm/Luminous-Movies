@@ -64,8 +64,8 @@ class FavoritesControllers{
 
     deleteFavorite(){
         return async(req, res) => {
-            const movies = req.params.movies;
-            const users = req.params.users;
+            const movies = req.body.movies;
+            const users = req.body.users;
             const response = await FavoritesServices.deleteFavorite(movies, users);
             res.send(response);
         }
