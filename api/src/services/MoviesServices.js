@@ -40,7 +40,7 @@ class MoviesServices extends Services {
 
     async getMoviesByTitle(title){
         try {
-            const movies = await Movies.find({title: {$regex: title, $options: 'i'}});
+            const movies = await Movies.find({title: {$regex: title, $options: 'i'}}).populate('categories');
             return this.getMoviesWithCategoriesName(movies);
         } catch (error) {
             throw error;

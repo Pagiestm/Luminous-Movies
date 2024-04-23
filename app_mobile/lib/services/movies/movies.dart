@@ -39,7 +39,8 @@ class MovieService {
   }
 
   Future<List<Movie>> fetchMoviesByTitle(String title) async {
-    final response =
+
+    var response =
         await http.get(Uri.parse('https://luminous-movies.onrender.com/movies/title/$title'));
 
     if (response.statusCode == 200) {
