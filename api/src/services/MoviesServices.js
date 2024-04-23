@@ -6,20 +6,9 @@ const Services = require('./Services');
 class MoviesServices extends Services {
     async getMovies(){
         try {
-            const movies = await Movies
-            .find()
-            .populate('categories');
+            const movies = await Movies.find().populate('categories');
 
-            const moviesWithCategories = movies.map(movie => {
-                const categoryNames = movie.categories.map(category => category.name);
-                
-                return {
-                    ...movie.toObject(),
-                    categories: categoryNames
-                };
-            });
-
-            return moviesWithCategories;
+            return getMoviesWithCategories(movies);
         } catch (error) {
             throw error;
         }
@@ -30,9 +19,10 @@ class MoviesServices extends Services {
             const favorites = await Favorites.find({users: userId});
             let movies = [];
             for (const index in favorites) {
-                movies.push(await Movies.findById(favorites[index].movies));
+                movies.push(await Movies.findById(favorites[index].movies).populate('categories'));
             }
-            return movies;
+
+            return getMoviesWithCategories(movies);
         } catch (error) {
             throw error;
         }
@@ -42,7 +32,7 @@ class MoviesServices extends Services {
         try {
             const categorie = await Categories.getCategorieByName(categorieName);
             const movies = await Movies.find({categories: categorie._id}); 
-            return movies;
+            return getMoviesWithCategories(movies);
         } catch (error) {
             throw error;
         }
@@ -51,7 +41,7 @@ class MoviesServices extends Services {
     async getMoviesByTitle(title){
         try {
             const movies = await Movies.find({title: {$regex: title, $options: 'i'}});
-            return movies;
+            return getMoviesWithCategories(movies);
         } catch (error) {
             throw error;
         }
@@ -108,6 +98,19 @@ class MoviesServices extends Services {
         } catch (error) {
             throw error;
         }
+    }
+
+    getMoviesWithCategories(movies){
+        const moviesWithCategories = movies.map(movie => {
+            const categoryNames = movie.categories.map(category => category.name);
+            
+            return {
+                ...movie.toObject(),
+                categories: categoryNames
+            };
+        });
+
+        return moviesWithCategories
     }
 }
 

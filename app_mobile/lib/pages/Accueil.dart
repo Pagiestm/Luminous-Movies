@@ -16,12 +16,16 @@ class Accueil extends StatefulWidget {
 
 class _AccueilState extends State<Accueil> {
   List<Movie> movies = [];
+  List<Movie> favoriteMovies = [];
   User? user = UserSession.getUser();
 
   @override
   void initState() {
     super.initState();
     fetchMovies();
+    if (user != null) {
+      fetchFavoritesMovies();
+    }
   }
 
   void fetchMovies() async {
@@ -32,8 +36,21 @@ class _AccueilState extends State<Accueil> {
     });
   }
 
-  Future<Widget> toMovieDetailsPage(int index) async {
-   return user != null ? MovieDetailsPage(movie: movies[index], isFavorite: await FavoritesService().fetchFavoriteByMovieAndUser(movies[index].id, user!.id)) : MovieDetailsPage(movie: movies[index], isFavorite: false);
+    void fetchFavoritesMovies() async {
+      MovieService movieService = MovieService();
+      var fetchedMovies = await movieService.fetchMoviesByFavorites(user!.id);
+      setState(() {
+        favoriteMovies = fetchedMovies.toList();
+      });
+  }
+
+  Future<Widget> toMovieDetailsPage(int index, {String? typeOfMovie}) async {
+    switch (typeOfMovie) {
+      case "favorite":
+        return user != null ? MovieDetailsPage(movie: favoriteMovies[index], isFavorite: await FavoritesService().fetchFavoriteByMovieAndUser(movies[index].id, user!.id)) : MovieDetailsPage(movie: favoriteMovies[index], isFavorite: false);
+      default:
+        return user != null ? MovieDetailsPage(movie: movies[index], isFavorite: await FavoritesService().fetchFavoriteByMovieAndUser(movies[index].id, user!.id)) : MovieDetailsPage(movie: movies[index], isFavorite: false);
+    }
   }
 
   @override
@@ -95,21 +112,21 @@ class _AccueilState extends State<Accueil> {
               },
             ),
           ),
-          Padding(
+          user != null ? Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
             child: Text(
               'Votre liste',
               style: TextStyle(
                   fontFamily: 'Sora', fontSize: 20, color: Colors.white),
             ),
-          ),
-          Container(
+          ) : SizedBox(height: 0),
+          user != null ? Container(
             height: 175, // Définit la hauteur du slider d'images
             child: PageView.builder(
               controller: PageController(
                   viewportFraction:
                       0.8), // Affiche une petite partie des images suivantes
-              itemCount: movies.length,
+              itemCount: favoriteMovies.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
@@ -117,7 +134,7 @@ class _AccueilState extends State<Accueil> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => FutureBuilder(
-                          future: toMovieDetailsPage(index), 
+                          future: toMovieDetailsPage(index, typeOfMovie: "favorite"), 
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
                               return CircularProgressIndicator();
@@ -138,7 +155,7 @@ class _AccueilState extends State<Accueil> {
                       borderRadius: BorderRadius.circular(
                           10), // Arrondit les bords de l'image
                       child: CachedNetworkImage(
-                        imageUrl: movies[index].image,
+                        imageUrl: favoriteMovies[index].image,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -146,7 +163,7 @@ class _AccueilState extends State<Accueil> {
                 );
               },
             ),
-          ),
+          ) : SizedBox(height: 0),
         ],
       ),
     );
