@@ -8,7 +8,7 @@ class MoviesServices extends Services {
         try {
             const movies = await Movies.find().populate('categories');
 
-            return getMoviesWithCategories(movies);
+            return getMoviesWithCategoriesName(movies);
         } catch (error) {
             throw error;
         }
@@ -22,7 +22,7 @@ class MoviesServices extends Services {
                 movies.push(await Movies.findById(favorites[index].movies).populate('categories'));
             }
 
-            return getMoviesWithCategories(movies);
+            return getMoviesWithCategoriesName(movies);
         } catch (error) {
             throw error;
         }
@@ -31,8 +31,8 @@ class MoviesServices extends Services {
     async getMoviesByCategorie(categorieName){
         try {
             const categorie = await Categories.getCategorieByName(categorieName);
-            const movies = await Movies.find({categories: categorie._id}); 
-            return getMoviesWithCategories(movies);
+            const movies = await Movies.find({categories: categorie._id}).populate('categories'); 
+            return getMoviesWithCategoriesName(movies);
         } catch (error) {
             throw error;
         }
@@ -41,7 +41,7 @@ class MoviesServices extends Services {
     async getMoviesByTitle(title){
         try {
             const movies = await Movies.find({title: {$regex: title, $options: 'i'}});
-            return getMoviesWithCategories(movies);
+            return getMoviesWithCategoriesName(movies);
         } catch (error) {
             throw error;
         }
@@ -100,7 +100,7 @@ class MoviesServices extends Services {
         }
     }
 
-    getMoviesWithCategories(movies){
+    getMoviesWithCategoriesName(movies){
         const moviesWithCategories = movies.map(movie => {
             const categoryNames = movie.categories.map(category => category.name);
             
