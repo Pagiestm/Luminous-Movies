@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:luminous_movies/models/users.dart';
+import 'package:session_manager/session_manager.dart';
 
 import '../services/users/users_session.dart';
 import 'Connexion.dart';
@@ -14,10 +15,11 @@ class Profil extends StatefulWidget {
 
 class MyProfil extends State<Profil> {
   User? user = UserSession.getUser();
+  bool toLogin = false;
 
   @override
   Widget build(BuildContext context) {
-    if (user == null) {
+    if (user == null || toLogin) {
       return Connexion();
     }
 
@@ -166,14 +168,23 @@ class MyProfil extends State<Profil> {
               child: SizedBox(
                 height: 35,
                 child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.red.shade900)),
-                    onPressed: () {
-                      print("Déconnexion");
-                    },
-                    child: Text('Déconnexion',
-                        style: TextStyle(color: Colors.white, fontSize: 14))),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.red.shade900)),
+                  onPressed: () async {
+                    try {
+                      await SessionManager().setString("user", "");
+                      UserSession.user = null;
+                      print("Déconnexion réussie");
+                      setState(() => toLogin =
+                          true); 
+                    } catch (e) {
+                      print("Erreur lors de la déconnexion : $e");
+                    }
+                  },
+                  child: Text('Déconnexion',
+                      style: TextStyle(color: Colors.white, fontSize: 14)),
+                ),
               ),
             ),
           ]),
