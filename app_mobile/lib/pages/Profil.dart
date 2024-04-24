@@ -47,7 +47,7 @@ class MyProfil extends State<Profil> {
             ),
             Center(
                 child: Text(
-              'Votre username',
+              user!.pseudo,
               style: TextStyle(
                   fontFamily: 'Sora', fontSize: 32, color: Colors.white),
             )),
@@ -64,7 +64,7 @@ class MyProfil extends State<Profil> {
             TextField(
               cursorColor: Colors.white,
               decoration: InputDecoration(
-                hintText: 'votre.email@gmail.com',
+                hintText: user!.email,
                 suffixIcon: Material(
                   color: Colors.transparent,
                   child: SvgPicture.asset(
@@ -83,19 +83,98 @@ class MyProfil extends State<Profil> {
                 fillColor: Colors.grey.shade700,
               ),
               style: TextStyle(color: Colors.white),
+              enabled: false,
             ),
             Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
-            SizedBox(
-              height: 35,
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.red.shade900)),
-                  onPressed: () {
-                    print("Hello");
-                  },
-                  child:
-                      Text('Connexion', style: TextStyle(color: Colors.white))),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                height: 35,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.red.shade900)),
+                    onPressed: () {
+                      print("Email");
+                    },
+                    child: Text('Modifier votre email',
+                        style: TextStyle(color: Colors.white, fontSize: 14))),
+              ),
+            ),
+            Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 16)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Mot de passe',
+                style: TextStyle(
+                    fontFamily: 'Sora', fontSize: 24, color: Colors.white),
+              ),
+            ),
+            Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
+            TextField(
+              cursorColor: Colors.white,
+              decoration: InputDecoration(
+                hintText: '**********',
+                suffixIcon: Material(
+                  color: Colors.transparent,
+                  child: SvgPicture.asset(
+                    "assets/icons/lock-on.svg",
+                    width: 24,
+                    height: 24,
+                    color: Color.fromARGB(255, 203, 202, 202),
+                  ),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                ),
+                filled: true,
+                fillColor: Colors.grey.shade700,
+              ),
+              style: TextStyle(color: Colors.white),
+              enabled: false,
+            ),
+            Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                height: 35,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.red.shade900)),
+                    onPressed: () {
+                      print("Mot de passe");
+                    },
+                    child: Text('Modifier votre mot de passe',
+                        style: TextStyle(color: Colors.white, fontSize: 14))),
+              ),
+            ),
+            Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 16)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Se déconnecter',
+                style: TextStyle(
+                    fontFamily: 'Sora', fontSize: 24, color: Colors.white),
+              ),
+            ),
+            Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                height: 35,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.red.shade900)),
+                    onPressed: () {
+                      print("Déconnexion");
+                    },
+                    child: Text('Déconnexion',
+                        style: TextStyle(color: Colors.white, fontSize: 14))),
+              ),
             ),
           ]),
         ));
