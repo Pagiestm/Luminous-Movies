@@ -1,3 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:luminous_movies/models/users.dart';
+import 'package:luminous_movies/pages/MovieDetailsPage.dart';
+import 'package:luminous_movies/services/favorites/favorites.dart';
+
 class Navigation {
   static Navigation? _instance;
 
@@ -17,5 +22,13 @@ class Navigation {
 
   Stream<int> selectedIndex() async* {
       yield index;
+  }
+
+    Future<Widget> toMovieDetailsPage(User? user, movie) async {
+      if (user != null) {
+        return MovieDetailsPage(movie: movie, isFavorite: await FavoritesService().fetchFavoriteByMovieAndUser(movie.id, user.id));
+      }
+      
+      return MovieDetailsPage(movie: movie, isFavorite: false);
   }
 }
