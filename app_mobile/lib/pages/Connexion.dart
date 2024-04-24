@@ -47,7 +47,7 @@ class ConnexionState extends State<Connexion> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Container(
                       margin: EdgeInsets.only(top: 50),
                       decoration: BoxDecoration(
@@ -74,7 +74,7 @@ class ConnexionState extends State<Connexion> {
                   ),
                   SizedBox(height: 20),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.grey.shade700,
