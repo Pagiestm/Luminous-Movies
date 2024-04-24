@@ -61,7 +61,7 @@ class _AccueilState extends State<Accueil> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 64, 0, 16),
+            padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
             child: Text(
               'Les dernières sorties',
               style: TextStyle(

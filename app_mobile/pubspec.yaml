@@ -40,6 +40,7 @@ dependencies:
   passwordfield: ^0.2.0
   elegant_notification: ^2.1.0
   carousel_slider: ^4.2.1
+  flutter_svg: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -65,7 +66,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/home-icon.png
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
