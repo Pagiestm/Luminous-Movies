@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:luminous_movies/models/users.dart';
 import '../models/movies.dart';
@@ -7,17 +9,22 @@ import '../services/users/users_session.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   final Movie movie;
+  bool isFavorite;
 
-  MovieDetailsPage({required this.movie});
+  MovieDetailsPage({required this.movie, required this.isFavorite});
 
   @override
   _MovieDetailsPageState createState() => _MovieDetailsPageState();
 }
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
-  bool isFavorite = false;
   List<String> sameCategoryMovies = [];
   User? user = UserSession.getUser();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   Future<List<Movie>> fetchMoviesForCategories(List<String> categories) async {
     List<Movie> movies = [];
@@ -26,6 +33,22 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       movies.addAll(categoryMovies);
     }
     return movies;
+  }
+
+  void addToFavorite(){
+    FavoritesService().add(user!.id, widget.movie.id).then((value) => {
+      setState(() {
+        widget.isFavorite = !widget.isFavorite;
+      })
+    });
+  }
+
+  void removeFromFavorite(){
+    FavoritesService().remove(user!.id, widget.movie.id).then((value) => {
+      setState(() {
+        widget.isFavorite = !widget.isFavorite;
+      })
+    });
   }
 
   @override
@@ -45,15 +68,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         actions: <Widget>[
           user != null ? IconButton(
             icon: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite ? Colors.red.shade900 : Colors.white,
+              widget.isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: widget.isFavorite ? Colors.red.shade900 : Colors.white,
             ),
             onPressed: () {
-              FavoritesService().add(user!.id, widget.movie.id).then((value) => {
-                setState(() {
-                  isFavorite = !isFavorite;
-                })
-              });
+              if (!widget.isFavorite) {
+                addToFavorite();
+              } else {
+                removeFromFavorite();
+              }
             },
           ) : SizedBox(height: 0),
         ],

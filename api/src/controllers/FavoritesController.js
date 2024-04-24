@@ -24,6 +24,15 @@ class FavoritesControllers{
         }
     }
 
+    getFavoritesByUserAndMovie(){
+        return async (req, res) => {
+            const idUser = req.params.iduser;
+            const idMovie = req.params.idmovie;
+            const response = await FavoritesServices.getFavoriteByUserAndMovie(idUser, idMovie);
+            res.send(response);
+        }
+    }
+
     getFavoriteById(){
         return async (req, res) => {
             const id = req.params.id;
@@ -55,8 +64,9 @@ class FavoritesControllers{
 
     deleteFavorite(){
         return async(req, res) => {
-            const id = req.params.id;
-            const response = await FavoritesServices.deleteFavorite(id);
+            const movies = req.body.movies;
+            const users = req.body.users;
+            const response = await FavoritesServices.deleteFavorite(movies, users);
             res.send(response);
         }
     }
