@@ -54,7 +54,7 @@ class InscriptionState extends State<Inscription> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
                 margin: EdgeInsets.only(top: 50),
                 decoration: BoxDecoration(
@@ -81,7 +81,7 @@ class InscriptionState extends State<Inscription> {
             ),
             SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
                 margin: EdgeInsets.only(top: 0),
                 decoration: BoxDecoration(
@@ -112,7 +112,7 @@ class InscriptionState extends State<Inscription> {
             ),
             SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.grey.shade700,
@@ -153,7 +153,7 @@ class InscriptionState extends State<Inscription> {
             ),
             SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.grey.shade700,
