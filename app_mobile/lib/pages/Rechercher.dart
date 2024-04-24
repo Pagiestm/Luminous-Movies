@@ -36,15 +36,10 @@ class _SearchBarAppState extends State<Rechercher> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.black,
-      ),
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          title:
-              const Text('Recherche', style: TextStyle(color: Colors.white)),
+          title: const Text('Recherche', style: TextStyle(color: Colors.white)),
           backgroundColor: Colors.black,
         ),
         body: Padding(
@@ -55,14 +50,20 @@ class _SearchBarAppState extends State<Rechercher> {
                 controller: _controller,
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
-                  hintText: 'Rechercher un film ou une catégorie',
+                  hintText: 'Rechercher un film',
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
                     onPressed: _search,
                   ),
-                  border: InputBorder.none,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey.shade700,
                 ),
-                style: TextStyle(color: Color(0xFFAAAAAA)),
+                style: TextStyle(color: Colors.white),
+              
               ),
               Expanded(
                 child: AnimatedSwitcher(
@@ -92,7 +93,9 @@ class _SearchBarAppState extends State<Rechercher> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => MovieDetailsPage(
-                                            movie: _movies[index], isFavorite: false,),
+                                          movie: _movies[index],
+                                          isFavorite: false,
+                                        ),
                                       ),
                                     );
                                   },
@@ -114,7 +117,7 @@ class _SearchBarAppState extends State<Rechercher> {
             ],
           ),
         ),
-      ),
+      
     );
   }
 }

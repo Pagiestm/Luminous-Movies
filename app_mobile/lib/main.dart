@@ -7,6 +7,7 @@ void main() {
     home: SplashScreen(),
     theme: ThemeData(
       scaffoldBackgroundColor: Colors.black,
+      colorScheme: ColorScheme.dark(secondary: Colors.black, primary: Colors.red.shade900)
     ),
   ));
 }
