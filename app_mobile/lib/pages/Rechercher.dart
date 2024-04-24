@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/movies/movies.dart';
 import '../models/movies.dart';
 import 'MovieDetailsPage.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() => runApp(const Rechercher());
 
@@ -37,87 +38,94 @@ class _SearchBarAppState extends State<Rechercher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: const Text('Recherche', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.black,
-        appBar: AppBar(
-          title: const Text('Recherche', style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.black,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              TextField(
-                controller: _controller,
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                  hintText: 'Rechercher un film',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: _search,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _controller,
+              cursorColor: Colors.white,
+              decoration: InputDecoration(
+                hintText: 'Rechercher un film',
+                suffixIcon: IconButton(
+                  icon: Material(
+                    color: Colors.transparent,
+                    child: SvgPicture.asset(
+                      "assets/icons/magnifying-glass.svg",
+                      width: 24,
+                      height: 24,
+                      color: Colors.white,
+                    ),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey.shade700,
+                  onPressed: _search,
                 ),
-                style: TextStyle(color: Colors.white),
-              
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                ),
+                filled: true,
+                fillColor: Colors.grey.shade700,
               ),
-              Expanded(
-                child: AnimatedSwitcher(
-                  duration: Duration(milliseconds: 500),
-                  child: !_searched
-                      ? Container(key: ValueKey(0))
-                      : _movies.isEmpty
-                          ? Center(
-                              key: ValueKey(1),
-                              child: Text(
-                                'Aucun résultat',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            )
-                          : GridView.builder(
-                              key: ValueKey(2),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                childAspectRatio: 0.7,
-                              ),
-                              itemCount: _movies.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MovieDetailsPage(
-                                          movie: _movies[index],
-                                          isFavorite: false,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Image.network(
-                                        _movies[index].image,
-                                        fit: BoxFit.cover,
+              style: TextStyle(color: Colors.white),
+            ),
+            Expanded(
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 500),
+                child: !_searched
+                    ? Container(key: ValueKey(0))
+                    : _movies.isEmpty
+                        ? Center(
+                            key: ValueKey(1),
+                            child: Text(
+                              'Aucun résultat',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )
+                        : GridView.builder(
+                            key: ValueKey(2),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              childAspectRatio: 0.7,
+                            ),
+                            itemCount: _movies.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MovieDetailsPage(
+                                        movie: _movies[index],
+                                        isFavorite: false,
                                       ),
                                     ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.network(
+                                      _movies[index].image,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                );
-                              },
-                            ),
-                ),
+                                ),
+                              );
+                            },
+                          ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      
+      ),
     );
   }
 }
