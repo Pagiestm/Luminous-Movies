@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:luminous_movies/models/users.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:luminous_movies/services/favorites/favorites.dart';
 import 'package:luminous_movies/services/users/users_session.dart';
 import '../services/movies/movies.dart';
@@ -47,7 +48,7 @@ class _AccueilState extends State<Accueil> {
   Future<Widget> toMovieDetailsPage(int index, {String? typeOfMovie}) async {
     switch (typeOfMovie) {
       case "favorite":
-        return user != null ? MovieDetailsPage(movie: favoriteMovies[index], isFavorite: await FavoritesService().fetchFavoriteByMovieAndUser(movies[index].id, user!.id)) : MovieDetailsPage(movie: favoriteMovies[index], isFavorite: false);
+        return user != null ? MovieDetailsPage(movie: favoriteMovies[index], isFavorite: await FavoritesService().fetchFavoriteByMovieAndUser(favoriteMovies[index].id, user!.id)) : MovieDetailsPage(movie: favoriteMovies[index], isFavorite: false);
       default:
         return user != null ? MovieDetailsPage(movie: movies[index], isFavorite: await FavoritesService().fetchFavoriteByMovieAndUser(movies[index].id, user!.id)) : MovieDetailsPage(movie: movies[index], isFavorite: false);
     }
@@ -77,15 +78,21 @@ class _AccueilState extends State<Accueil> {
               itemCount: movies.length > 5 ? 5 : movies.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    final bool? shouldRefresh = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => FutureBuilder(
                           future: toMovieDetailsPage(index), 
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return Center(
+                                child: SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
                             } else if (snapshot.hasError) {
                               return Text('Erreur: ${snapshot.error}');
                             } else {
@@ -95,6 +102,11 @@ class _AccueilState extends State<Accueil> {
                         )
                       ),
                     );
+                    if (shouldRefresh == true && user != null) {
+                      setState(() {
+                        fetchFavoritesMovies();
+                      });
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -112,7 +124,7 @@ class _AccueilState extends State<Accueil> {
               },
             ),
           ),
-          user != null ? Padding(
+          favoriteMovies.isNotEmpty ? Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
             child: Text(
               'Votre liste',
@@ -120,24 +132,80 @@ class _AccueilState extends State<Accueil> {
                   fontFamily: 'Sora', fontSize: 20, color: Colors.white),
             ),
           ) : SizedBox(height: 0),
-          user != null ? Container(
-            height: 175, // Définit la hauteur du slider d'images
-            child: PageView.builder(
-              controller: PageController(
-                  viewportFraction:
-                      0.8), // Affiche une petite partie des images suivantes
-              itemCount: favoriteMovies.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
+          favoriteMovies.isNotEmpty ? Container(
+            child: favoriteMovies.length > 2 ? CarouselSlider.builder(
+            itemCount: favoriteMovies.length,
+            options: CarouselOptions(
+              height: 175.0, 
+              viewportFraction: 0.4,
+              enableInfiniteScroll: true
+            ),
+            itemBuilder: (BuildContext context, int index, int pageViewIndex) => 
+            GestureDetector(
+              onTap: () async {
+                final bool? shouldRefresh = await Navigator.push<bool>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FutureBuilder(
+                      future: toMovieDetailsPage(index, typeOfMovie: "favorite"), 
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(
+                            child: SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Erreur: ${snapshot.error}');
+                        } else {
+                          return snapshot.data!;
+                        }
+                      }
+                    )
+                  ),
+                );
+                if (shouldRefresh == true && user != null) {
+                  setState(() {
+                    fetchFavoritesMovies();
+                  });
+                }
+              },
+                child: Container(
+                  width: 125,
+                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        10), // Arrondit les bords de l'image
+                    child: CachedNetworkImage(
+                      imageUrl: favoriteMovies[index].image,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              )
+            ) : Container(
+              height: 175,
+              child: Row(
+                children: [
+                for (var i = 0; i < favoriteMovies.length; i++)
+                GestureDetector(
+                  onTap: () async {
+                    final bool? shouldRefresh = await Navigator.push<bool>(
                       context,
                       MaterialPageRoute(
                         builder: (context) => FutureBuilder(
-                          future: toMovieDetailsPage(index, typeOfMovie: "favorite"), 
+                          future: toMovieDetailsPage(i, typeOfMovie: "favorite"), 
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return Center(
+                                child: SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
                             } else if (snapshot.hasError) {
                               return Text('Erreur: ${snapshot.error}');
                             } else {
@@ -147,21 +215,27 @@ class _AccueilState extends State<Accueil> {
                         )
                       ),
                     );
+                    if (shouldRefresh == true && user != null) {
+                      setState(() {
+                        fetchFavoritesMovies();
+                      });
+                    }
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    // Ajoute des marges à gauche et à droite de chaque image
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                          10), // Arrondit les bords de l'image
-                      child: CachedNetworkImage(
-                        imageUrl: favoriteMovies[index].image,
-                        fit: BoxFit.cover,
+                    child: Container(
+                      width: 125,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            10), // Arrondit les bords de l'image
+                        child: CachedNetworkImage(
+                          imageUrl: favoriteMovies[i].image,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  )
+                ],
+              )
             ),
           ) : SizedBox(height: 0),
         ],

@@ -59,7 +59,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context).pop(true),
         ),
         title: Text(
           "Retour",

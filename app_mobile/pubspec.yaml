@@ -39,6 +39,7 @@ dependencies:
   session_manager: ^0.0.4
   passwordfield: ^0.2.0
   elegant_notification: ^2.1.0
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
