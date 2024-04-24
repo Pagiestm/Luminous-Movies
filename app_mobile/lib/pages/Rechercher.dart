@@ -59,7 +59,7 @@ class _SearchBarAppState extends State<Rechercher> {
                       "assets/icons/magnifying-glass.svg",
                       width: 24,
                       height: 24,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 203, 202, 202),
                     ),
                   ),
                   onPressed: _search,
