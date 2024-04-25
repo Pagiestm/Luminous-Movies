@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../services/users/users_auth.dart';
 import 'Inscription.dart';
 
@@ -37,13 +39,10 @@ class ConnexionState extends State<Connexion> {
                         size: 30,
                       ),
                       SizedBox(width: 10),
-                      Text(
-                        'Luminous Movies',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
+                      Text('Luminous Movies',
+                          style: GoogleFonts.sora(
+                            fontSize: 32,
+                          )),
                     ],
                   ),
                   Padding(
@@ -89,8 +88,7 @@ class ConnexionState extends State<Connexion> {
                             hintText: "Mot de passe",
                             hintStyle: TextStyle(color: Colors.grey.shade400),
                             border: InputBorder.none,
-                            contentPadding:
-                                EdgeInsets.only(left: 20),
+                            contentPadding: EdgeInsets.only(left: 20),
                             suffix: IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -132,16 +130,20 @@ class ConnexionState extends State<Connexion> {
                                       () => setState(() => isLoading = false));
                             }
                           },
-                          child: Text('Connexion',
-                              style: TextStyle(color: Colors.white))),
+                          child: Text("Connexion",
+                              style: GoogleFonts.sora(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ))),
                   TextButton(
                       onPressed: () {
                         setState(() => toRegister = true);
                       },
-                      child: Text(
-                        "S'inscrire",
-                        style: TextStyle(color: Colors.white),
-                      )),
+                      child: Text("S'inscrire",
+                          style: GoogleFonts.sora(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ))),
                 ]),
           );
   }

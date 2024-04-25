@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:luminous_movies/components/favorites_movies.dart';
 import 'package:luminous_movies/models/users.dart';
 import 'package:luminous_movies/services/navigation.dart';
 import 'package:luminous_movies/services/users/users_session.dart';
-import '../services/movies/movies.dart';
+
 import '../../models/movies.dart';
+import '../services/movies/movies.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil({super.key});
@@ -44,11 +46,10 @@ class _AccueilState extends State<Accueil> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
-            child: Text(
-              'Les dernières sorties',
-              style: TextStyle(
-                  fontFamily: 'Sora', fontSize: 24, color: Colors.white),
-            ),
+            child: Text('Les dernières sorties',
+                style: GoogleFonts.sora(
+                  fontSize: 24,
+                )),
           ),
           SizedBox(height: 10),
           Container(
@@ -64,29 +65,31 @@ class _AccueilState extends State<Accueil> {
                     final bool? shouldRefresh = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FutureBuilder(
-                          future: Navigation.getInstance().toMovieDetailsPage(user, movies[index]), 
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(
-                                child: SizedBox(
-                                  height: 40,
-                                  width: 40,
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text('Erreur: ${snapshot.error}');
-                            } else {
-                              return snapshot.data!;
-                            }
-                          }
-                        )
-                      ),
+                          builder: (context) => FutureBuilder(
+                              future: Navigation.getInstance()
+                                  .toMovieDetailsPage(user, movies[index]),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: SizedBox(
+                                      height: 40,
+                                      width: 40,
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text('Erreur: ${snapshot.error}');
+                                } else {
+                                  return snapshot.data!;
+                                }
+                              })),
                     );
                     if (shouldRefresh == true && user != null) {
                       setState(() {
-                        widgetFavoritesMovies = FavoritesMovies(key: UniqueKey(),);
+                        widgetFavoritesMovies = FavoritesMovies(
+                          key: UniqueKey(),
+                        );
                       });
                     }
                   },
@@ -106,7 +109,9 @@ class _AccueilState extends State<Accueil> {
               },
             ),
           ),
-          widgetFavoritesMovies != null ? widgetFavoritesMovies! : SizedBox(height: 0),
+          widgetFavoritesMovies != null
+              ? widgetFavoritesMovies!
+              : SizedBox(height: 0),
         ],
       ),
     );
