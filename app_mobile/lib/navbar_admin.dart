@@ -16,7 +16,7 @@ class _NavBarAdminState extends State<NavBarAdmin> {
   Navigation navigation = Navigation.getInstance();
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Categories(),
+    CategoriesAdmin(),
     Films(),
   ];
 
