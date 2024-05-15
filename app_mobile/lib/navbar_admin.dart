@@ -22,22 +22,44 @@ class _NavBarAdminState extends State<NavBarAdmin> {
     Deconnexion(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    navigation.selectedIndex().listen((index) {
+      if (index >= 0 && index < _widgetOptions.length) {
+        setState(() {
+          _selectedIndex = index;
+        });
+      }
+    });
+  }
+
   void _onItemTapped(int index) {
-    navigation.setIndex(index);
+    if (index >= 0 && index < _widgetOptions.length) {
+      navigation.setIndex(index);
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     navigation.selectedIndex().listen((index) {
-      setState(() {
-        _selectedIndex = index;
-      });
+      if (index >= 0 && index < 3) {
+        setState(() {
+          _selectedIndex = index;
+        });
+      }
     });
+
     return Scaffold(
       body: Stack(
         children: [
           Center(
-            child: _widgetOptions.elementAt(_selectedIndex),
+            child: _selectedIndex >= 0 && _selectedIndex < _widgetOptions.length
+                ? _widgetOptions.elementAt(_selectedIndex)
+                : Container(),
           ),
           Positioned(
             bottom: 0,
@@ -66,7 +88,9 @@ class _NavBarAdminState extends State<NavBarAdmin> {
                       label: 'Déconnexion',
                     )
                   ],
-                  currentIndex: _selectedIndex,
+                  currentIndex: _selectedIndex >= 0 && _selectedIndex < 3
+                      ? _selectedIndex
+                      : 0,
                   selectedItemColor: Colors.red.shade900,
                   unselectedItemColor: Colors.white,
                   backgroundColor: Colors.black.withOpacity(0.5),
