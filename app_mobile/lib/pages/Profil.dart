@@ -115,15 +115,11 @@ class MyProfil extends State<Profil> {
                             ),
                           )
                           .closed
-                          .then((reason) {
-                        // Une fois que le SnackBar est fermé, mettez à jour le champ de texte avec le nouvel e-mail
-                        setState(() {
-                          user!.email = newEmail;
-                        });
-                      });
+                          .then((reason) {});
 
                       setState(() {
                         emailController.text = '';
+                        user!.email = newEmail;
                       });
                     },
                     child: Text('Modifier votre email',
