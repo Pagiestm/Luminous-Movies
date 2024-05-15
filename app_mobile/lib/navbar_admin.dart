@@ -3,7 +3,6 @@ import 'dart:ui';
 import './services/navigation.dart';
 import 'pages/admin/Categories.dart';
 import 'pages/admin/Films.dart';
-import 'pages/admin/Deconnexion.dart';
 
 class NavBarAdmin extends StatefulWidget {
   NavBarAdmin({super.key});
@@ -19,7 +18,6 @@ class _NavBarAdminState extends State<NavBarAdmin> {
   static const List<Widget> _widgetOptions = <Widget>[
     Categories(),
     Films(),
-    Deconnexion(),
   ];
 
   @override
@@ -83,10 +81,6 @@ class _NavBarAdminState extends State<NavBarAdmin> {
                       icon: Icon(Icons.movie_creation_outlined),
                       label: 'Films',
                     ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.logout_outlined),
-                      label: 'Déconnexion',
-                    )
                   ],
                   currentIndex: _selectedIndex >= 0 && _selectedIndex < 3
                       ? _selectedIndex
