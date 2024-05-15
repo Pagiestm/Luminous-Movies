@@ -6,7 +6,7 @@ import '../../models/movies.dart';
 class MovieService {
   Future<List<Movie>> fetchMovies() async {
     var response = await http.get(Uri.parse('https://luminous-movies.onrender.com/movies'));
-
+    
     if (response.statusCode == 200) {
       var jsonBody = jsonDecode(response.body);
       return jsonBody.map<Movie>((item) => Movie.fromJson(item)).toList();
