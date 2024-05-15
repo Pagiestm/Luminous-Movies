@@ -32,6 +32,22 @@ class CategoriesState extends State<CategoriesAdmin> {
     });
   }
 
+  Future<void> createCategory(String name) async {
+  try {
+    var newCategory = await CategoriesService().createCategory(name);
+    setState(() {
+      categories.add(newCategory);
+    });
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Une erreur est survenue lors de la création de la catégorie: $e'),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +78,45 @@ class CategoriesState extends State<CategoriesAdmin> {
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
                       return Card(
-                        child: ListTile(
-                          title: Text(categories[index].name),
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(categories[index].name),
+                            ),
+                            ButtonBar(
+                              alignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                TextButton(
+                                  child: const Text('Modifier'),
+                                  onPressed: () {
+                                    // TODO: Implement modification logic
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('Supprimer'),
+                                  onPressed: () {
+                                    CategoriesService()
+                                        .deleteCategory(categories[index].id)
+                                        .then((_) {
+                                      setState(() {
+                                        categories.removeWhere((element) =>
+                                            element.id == categories[index].id);
+                                      });
+                                    }).catchError((e) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'Une erreur est survenue lors de la suppression de la catégorie: $e'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       );
                     },
@@ -78,41 +131,57 @@ class CategoriesState extends State<CategoriesAdmin> {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(builder: (BuildContext context, setState) {
-          return Form(
-              key: _formKey,
-              child: AlertDialog(
-                title: const Text('Ajouter une catégorie'),
-                content: SizedBox(
-                  width: double.maxFinite,
-                  child: Column(children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade700,
-                          border: Border.all(color: Colors.grey.shade400),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: TextFormField(
-                        controller: nameController,
-                        cursorColor: Colors.white,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                            hintText: "Nom de la catégorie",
-                            hintStyle: TextStyle(color: Colors.grey.shade400),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.only(left: 20)),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ]),
+        return AlertDialog(
+          title: const Text('Ajouter une catégorie'),
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade700,
+                      border: Border.all(color: Colors.grey.shade400),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: TextFormField(
+                    controller: nameController,
+                    cursorColor: Colors.white,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                        hintText: "Nom de la catégorie",
+                        hintStyle: TextStyle(color: Colors.grey.shade400),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(left: 20)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-              ));
-        });
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Annuler'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Ajouter'),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  Navigator.of(context).pop();
+                  createCategory(nameController.text);
+                }
+              },
+            ),
+          ],
+        );
       },
     );
   }
