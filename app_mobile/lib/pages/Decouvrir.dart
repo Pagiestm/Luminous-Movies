@@ -62,84 +62,88 @@ class _DecouvrirState extends State<Decouvrir> {
         centerTitle: false,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            for (var category in categories)
-            Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "${category.name.substring(0,1).toUpperCase()}${category.name.substring(1).toLowerCase()}",
-                    style: GoogleFonts.sora(
-                      fontSize: 24,
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 400, // Définit la hauteur du slider d'images
-                  child: PageView.builder(
-                    controller: PageController(viewportFraction: 0.8),
-                    // Affiche une petite partie des images suivantes
-                    itemCount: movies.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () async {
-                          final bool? shouldRefresh = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FutureBuilder(
-                                    future: Navigation.getInstance()
-                                        .toMovieDetailsPage(
-                                            user, movies[index]),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                          child: SizedBox(
-                                            height: 40,
-                                            width: 40,
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                        );
-                                      } else if (snapshot.hasError) {
-                                        return Text(
-                                            'Erreur: ${snapshot.error}');
-                                      } else {
-                                        return snapshot.data!;
-                                      }
-                                    })),
-                          );
-                          if (shouldRefresh == true && user != null) {
-                            setState(() {
-                              widgetFavoritesMovies = FavoritesMovies(
-                                key: UniqueKey(),
-                              );
-                            });
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          // Ajoute des marges à gauche et à droite de chaque image
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                10), // Arrondit les bords de l'image
-                            child: CachedNetworkImage(
-                              imageUrl: movies[index].image,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 80.0),
+          child: Column(
+            children: [
+              for (var category in categories)
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "${category.name.substring(0, 1).toUpperCase()}${category.name.substring(1).toLowerCase()}",
+                        style: GoogleFonts.sora(
+                          fontSize: 24,
                         ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            )
-          ],
+                      ),
+                    ),
+                    Container(
+                      height: 400, // Définit la hauteur du slider d'images
+                      child: PageView.builder(
+                        controller: PageController(viewportFraction: 0.8),
+                        // Affiche une petite partie des images suivantes
+                        itemCount: movies.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () async {
+                              final bool? shouldRefresh = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FutureBuilder(
+                                        future: Navigation.getInstance()
+                                            .toMovieDetailsPage(
+                                                user, movies[index]),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                              child: SizedBox(
+                                                height: 40,
+                                                width: 40,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                                'Erreur: ${snapshot.error}');
+                                          } else {
+                                            return snapshot.data!;
+                                          }
+                                        })),
+                              );
+                              if (shouldRefresh == true && user != null) {
+                                setState(() {
+                                  widgetFavoritesMovies = FavoritesMovies(
+                                    key: UniqueKey(),
+                                  );
+                                });
+                              }
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              // Ajoute des marges à gauche et à droite de chaque image
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    10), // Arrondit les bords de l'image
+                                child: CachedNetworkImage(
+                                  imageUrl: movies[index].image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                )
+            ],
+          ),
         ),
-
       ),
     );
   }
