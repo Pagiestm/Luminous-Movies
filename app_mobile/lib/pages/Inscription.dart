@@ -207,18 +207,17 @@ class InscriptionState extends State<Inscription> {
                       if (_formKey.currentState!.validate()) {
                         setState(() => isLoading = true);
                         UserRegister()
-                            .addUser(emailController.text,
-                                passwordController.text, pseudoController.text)
-                            .then((value) => {
-                                  ElegantNotification.success(
-                                    title: Text("Inscription"),
-                                    description:
-                                        Text("Validation de l'inscription."),
-                                  ).show(context)
-                                })
-                            .catchError((err) => throw err)
-                            .whenComplete(
-                                () => setState(() => isLoading = false));
+                          .addUser(emailController.text,
+                              passwordController.text, pseudoController.text)
+                          .then((value) => {
+                                ElegantNotification.success(
+                                  title: Text("Inscription", style: TextStyle(color: Colors.black)),
+                                  description:
+                                      Text("Validation de l'inscription.", style: TextStyle(color: Colors.black)),
+                                ).show(context)
+                              })
+                          .catchError((err) => throw err)
+                          .whenComplete(() => setState(() => isLoading = false));
                       }
                     },
                     child: Text('Inscription',
