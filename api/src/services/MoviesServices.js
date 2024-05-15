@@ -101,8 +101,7 @@ class MoviesServices extends Services {
     }
 
     getMoviesWithCategoriesName(movies){
-        const moviesWithCategories = movies.map(movie => {
-            console.log(movie)
+        const moviesWithCategories = movies.map((movie, index) => {
             if (movie != null) {
                 const categoryNames = movie.categories.map(category => category.name);
                 
@@ -110,6 +109,8 @@ class MoviesServices extends Services {
                     ...movie.toObject(),
                     categories: categoryNames
                 };
+            } else {
+                delete movies[index];
             }
         });
 
