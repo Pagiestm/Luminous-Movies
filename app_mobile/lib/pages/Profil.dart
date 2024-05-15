@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:luminous_movies/models/users.dart';
 import 'package:session_manager/session_manager.dart';
+import '../services/users/users_auth.dart';
 
 import '../services/users/users_session.dart';
 import 'Connexion.dart';
@@ -16,6 +17,8 @@ class Profil extends StatefulWidget {
 class MyProfil extends State<Profil> {
   User? user = UserSession.getUser();
   bool toLogin = false;
+
+  final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +67,7 @@ class MyProfil extends State<Profil> {
             ),
             Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
             TextField(
+              controller: emailController,
               cursorColor: Colors.white,
               decoration: InputDecoration(
                 hintText: user!.email,
@@ -85,7 +89,7 @@ class MyProfil extends State<Profil> {
                 fillColor: Colors.grey.shade700,
               ),
               style: TextStyle(color: Colors.white),
-              enabled: false,
+              enabled: true,
             ),
             Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
             Align(
@@ -96,8 +100,12 @@ class MyProfil extends State<Profil> {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(Colors.red.shade900)),
-                    onPressed: () {
-                      print("Email");
+                    onPressed: () async {
+                      String newEmail = emailController.text;
+                      print("Nouvel email: $newEmail");
+
+                      // Mettez à jour l'e-mail de l'utilisateur dans la base de données
+                      await UserAuth().updateUserEmail(user!.id, newEmail);
                     },
                     child: Text('Modifier votre email',
                         style: TextStyle(color: Colors.white, fontSize: 14))),
@@ -176,8 +184,7 @@ class MyProfil extends State<Profil> {
                       await SessionManager().setString("user", "");
                       UserSession.user = null;
                       print("Déconnexion réussie");
-                      setState(() => toLogin =
-                          true); 
+                      setState(() => toLogin = true);
                     } catch (e) {
                       print("Erreur lors de la déconnexion : $e");
                     }

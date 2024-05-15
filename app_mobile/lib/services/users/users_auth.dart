@@ -36,4 +36,19 @@ class UserAuth {
     yield role;
   }
 
+  Future updateUserEmail(String id, String newEmail) async {
+    var response = await http.put(
+      Uri.parse('https://luminous-movies.onrender.com/users/$id'),
+      body: {
+        'email': newEmail,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var jsonBody = jsonDecode(response.body);
+      await UserSession().saveUser(jsonBody);
+    } else {
+      throw Exception('Échec de la mise à jour de l\'e-mail.');
+    }
+  }
 }
