@@ -71,7 +71,8 @@ class UsersControllers{
         return async (req, res) => {
             const id = req.params.id;
             const pseudo = req.body.pseudo;
-            const response = await usersServices.updateUser(id, pseudo);
+            const email = req.body.email;
+            const response = await usersServices.updateUser(id, pseudo, email);
             res.send(response);
         }
     }

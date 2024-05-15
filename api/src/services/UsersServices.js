@@ -44,9 +44,9 @@ class UsersServices extends Services {
         }
     }
 
-    async updateUser(id, pseudo){
+    async updateUser(id, pseudo, email){
         try {
-            const user = await Users.findOneAndUpdate({_id: id}, {pseudo: pseudo});
+            const user = await Users.findOneAndUpdate({_id: id}, {pseudo: pseudo, email: email});
             return user;
         } catch (error) {
             throw error;
