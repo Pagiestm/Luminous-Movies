@@ -76,6 +76,7 @@ class MovieService {
       }
     );
     if (response.statusCode == 200) {
+      print(response.body);
       return "Movie added";
     } else {
       throw Exception('Failed to fetch movies data.');
