@@ -46,7 +46,6 @@ class FilmsState extends State<Films> {
 
   void setSelectedValue(List<String> value) {
     setState(() => categories = value);
-    print(categories);
   }
 
   @override
@@ -77,7 +76,13 @@ class FilmsState extends State<Films> {
               future: MovieService().fetchMovies(), 
               builder: (context, snapshot){
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Center(
+                    child: SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
                 } else if (snapshot.hasError) {
                   return Text('Erreur: ${snapshot.error}');
                 } else {
@@ -154,6 +159,8 @@ class FilmsState extends State<Films> {
             return Form(
               key: _formKey,
               child: AlertDialog(
+                backgroundColor: Colors.grey[800],
+                surfaceTintColor: Colors.transparent,
                 title: const Text('Ajouter un film'),
                 content: SizedBox(
                   width: double.maxFinite,
@@ -217,6 +224,15 @@ class FilmsState extends State<Films> {
                                 border: Border.all(color: Colors.grey.shade400),
                                 borderRadius: BorderRadius.circular(20)),
                             child: TextFormField(
+                              onFieldSubmitted: (e) {
+                                if (actorController.text != "") {
+                                  setState(() {
+                                    staring.add(actorController.text);
+                                    actorController.text = "";
+                                    FocusManager.instance.primaryFocus?.unfocus();
+                                  });
+                                }
+                              },
                               controller: actorController,
                               cursorColor: Colors.white,
                               style: TextStyle(color: Colors.white),
@@ -228,6 +244,7 @@ class FilmsState extends State<Films> {
                                     if (actorController.text != "") {
                                       setState(() {
                                         staring.add(actorController.text);
+                                        actorController.text = "";
                                         FocusManager.instance.primaryFocus?.unfocus();
                                       });
                                     }
@@ -320,11 +337,17 @@ class FilmsState extends State<Films> {
                             itemCount: choices.length,
                             itemBuilder: (selection, i) {
                               return ChoiceChip(
-                                backgroundColor: Colors.grey[600],
-                                labelStyle: TextStyle(color: Colors.grey[400]),
+                                backgroundColor: Colors.grey[700],
+                                labelStyle: TextStyle(color: Colors.grey[300]),
+                                selectedColor: Colors.red.shade900,
+                                checkmarkColor: Colors.white,
+                                selectedShadowColor: Colors.red.shade900,
+                                shadowColor: Colors.red.shade900,
+                                disabledColor: Colors.red.shade900,
+                                surfaceTintColor: Colors.red.shade900,
                                 selected: selection.selected(choices[i].id),
                                 onSelected: selection.onSelected(choices[i].id),
-                                label: Text(choices[i].name),
+                                label: Text("${choices[i].name.substring(0,1).toUpperCase()}${choices[i].name.substring(1).toLowerCase()}"),
                               );
                             },
                             listBuilder: ChoiceList.createScrollable(
@@ -371,8 +394,15 @@ class FilmsState extends State<Films> {
                   TextButton(
                     style: TextButton.styleFrom(
                       textStyle: Theme.of(context).textTheme.labelLarge,
+                      backgroundColor: Colors.red.shade900,
                     ),
-                    child: const Text('Sauvegarder'),
+                    child: const Text(
+                      'Sauvegarder', 
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14
+                      ),
+                    ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         setState(() => isLoading = true);
