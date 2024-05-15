@@ -101,17 +101,13 @@ class MoviesServices extends Services {
     }
 
     getMoviesWithCategoriesName(movies){
-        const moviesWithCategories = movies.map((movie, index) => {
-            if (movie != null) {
-                const categoryNames = movie.categories.map(category => category.name);
-                
-                return {
-                    ...movie.toObject(),
-                    categories: categoryNames
-                };
-            } else {
-                delete movies[index];
-            }
+        const moviesWithCategories = movies.filter(movie => movie !== null).map(movie => {
+            const categoryNames = movie.categories.map(category => category.name);
+            
+            return {
+                ...movie.toObject(),
+                categories: categoryNames
+            };
         });
 
         return moviesWithCategories
