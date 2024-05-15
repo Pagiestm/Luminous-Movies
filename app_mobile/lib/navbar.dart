@@ -3,9 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import './navbar_admin.dart';
 import './services/navigation.dart';
-import './services/users/users_auth.dart';
 import 'pages/Accueil.dart';
 import 'pages/Decouvrir.dart';
 import 'pages/MaListe.dart';
@@ -21,7 +19,6 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
-  bool toAdmin = false;
   Navigation navigation = Navigation.getInstance();
 
   static const List<Widget> _widgetOptions = <Widget>[
@@ -43,17 +40,8 @@ class _NavBarState extends State<NavBar> {
         _selectedIndex = index;
       });
     });
-    UserAuth.userRole().listen((role) {
-      if (role == "admin") {
-        setState(() {
-          toAdmin = true;
-        });
-      }
-    });
 
-    return toAdmin
-        ? NavBarAdmin()
-        : Scaffold(
+    return Scaffold(
             body: Stack(
               children: [
                 Center(

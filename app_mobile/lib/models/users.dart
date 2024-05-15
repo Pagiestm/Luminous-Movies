@@ -1,7 +1,7 @@
 class User {
   final String id;
-  final String pseudo;
-  final String email;
+  String pseudo;
+  String email;
   final String role;
 
   User(this.id, this.pseudo, this.email, this.role);
