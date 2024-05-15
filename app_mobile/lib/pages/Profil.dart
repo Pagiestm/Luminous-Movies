@@ -17,8 +17,10 @@ class Profil extends StatefulWidget {
 class MyProfil extends State<Profil> {
   User? user = UserSession.getUser();
   bool toLogin = false;
+  bool isEditingPseudo = false;
 
   final emailController = TextEditingController();
+  final pseudoController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +52,59 @@ class MyProfil extends State<Profil> {
                     color: Colors.red.shade900,
                   )),
             ),
-            Center(
-                child: Text(
-              user!.pseudo,
-              style: TextStyle(
-                  fontFamily: 'Sora', fontSize: 32, color: Colors.white),
-            )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                isEditingPseudo
+                    ? Expanded(
+                        child: TextField(
+                          controller: pseudoController,
+                          style: TextStyle(
+                              fontFamily: 'Sora',
+                              fontSize: 32,
+                              color: Colors.white),
+                          onSubmitted: (newPseudo) {
+                            UserAuth()
+                                .updateUser(user!.id, user!.email, newPseudo);
+                            setState(() {
+                              user!.pseudo = newPseudo;
+                              isEditingPseudo = false;
+                            });
+                          },
+                        ),
+                      )
+                    : Text(
+                        user!.pseudo,
+                        style: TextStyle(
+                            fontFamily: 'Sora',
+                            fontSize: 32,
+                            color: Colors.white),
+                      ),
+                IconButton(
+                  icon: isEditingPseudo ? Icon(Icons.check) : Icon(Icons.edit),
+                  onPressed: () {
+                    if (isEditingPseudo) {
+                      UserAuth().updateUser(
+                          user!.id, user!.email, pseudoController.text);
+                      setState(() {
+                        user!.pseudo = pseudoController.text;
+                        isEditingPseudo = false;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Pseudo mis à jour avec succès !'),
+                        ),
+                      );
+                    } else {
+                      setState(() {
+                        isEditingPseudo = true;
+                        pseudoController.text = user!.pseudo;
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
             Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 48)),
             Align(
               alignment: Alignment.centerLeft,
@@ -103,11 +152,8 @@ class MyProfil extends State<Profil> {
                     onPressed: () async {
                       String newEmail = emailController.text;
                       print("Nouvel email: $newEmail");
-
-                      // Mettez à jour l'e-mail de l'utilisateur dans la base de données
-                      await UserAuth().updateUserEmail(user!.id, newEmail);
-
-                      // Affichez un message à l'utilisateur
+                      await UserAuth()
+                          .updateUser(user!.id, newEmail, user!.pseudo);
                       ScaffoldMessenger.of(context)
                           .showSnackBar(
                             SnackBar(

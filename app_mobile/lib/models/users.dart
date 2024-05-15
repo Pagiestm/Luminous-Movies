@@ -1,6 +1,6 @@
 class User {
   final String id;
-  final String pseudo;
+  String pseudo;
   String email;
   final String role;
 
