@@ -61,16 +61,17 @@ class _DecouvrirState extends State<Decouvrir> {
         backgroundColor: Colors.black,
         centerTitle: false,
       ),
-      body: Column(
-        children: [
-          for (var category in categories)
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            for (var category in categories)
             Column(
               children: [
                 Container(
                   padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    category.name,
+                    "${category.name.substring(0,1).toUpperCase()}${category.name.substring(1).toLowerCase()}",
                     style: GoogleFonts.sora(
                       fontSize: 24,
                     ),
@@ -136,7 +137,9 @@ class _DecouvrirState extends State<Decouvrir> {
                 ),
               ],
             )
-        ],
+          ],
+        ),
+
       ),
     );
   }
