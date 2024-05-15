@@ -33,20 +33,21 @@ class CategoriesState extends State<CategoriesAdmin> {
   }
 
   Future<void> createCategory(String name) async {
-  try {
-    var newCategory = await CategoriesService().createCategory(name);
-    setState(() {
-      categories.add(newCategory);
-    });
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Une erreur est survenue lors de la création de la catégorie: $e'),
-        backgroundColor: Colors.red,
-      ),
-    );
+    try {
+      var newCategory = await CategoriesService().createCategory(name);
+      setState(() {
+        categories.add(newCategory);
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Une erreur est survenue lors de la création de la catégorie: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -95,23 +96,52 @@ class CategoriesState extends State<CategoriesAdmin> {
                                 TextButton(
                                   child: const Text('Supprimer'),
                                   onPressed: () {
-                                    CategoriesService()
-                                        .deleteCategory(categories[index].id)
-                                        .then((_) {
-                                      setState(() {
-                                        categories.removeWhere((element) =>
-                                            element.id == categories[index].id);
-                                      });
-                                    }).catchError((e) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Confirmation'),
                                           content: Text(
-                                              'Une erreur est survenue lors de la suppression de la catégorie: $e'),
-                                          backgroundColor: Colors.red,
-                                        ),
-                                      );
-                                    });
+                                              'Êtes-vous sûr de vouloir supprimer ${categories[index].name} ?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              child: Text('Annuler'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text('Supprimer'),
+                                              onPressed: () {
+                                                CategoriesService()
+                                                    .deleteCategory(
+                                                        categories[index].id)
+                                                    .then((_) {
+                                                  setState(() {
+                                                    categories.removeWhere(
+                                                        (element) =>
+                                                            element.id ==
+                                                            categories[index]
+                                                                .id);
+                                                  });
+                                                  Navigator.of(context).pop();
+                                                }).catchError((e) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                          'Une erreur est survenue lors de la suppression de la catégorie: $e'),
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                    ),
+                                                  );
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
                                 ),
                               ],
