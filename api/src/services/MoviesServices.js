@@ -102,6 +102,7 @@ class MoviesServices extends Services {
 
     getMoviesWithCategoriesName(movies){
         const moviesWithCategories = movies.map(movie => {
+            console.log(movie)
             const categoryNames = movie.categories.map(category => category.name);
             
             return {
