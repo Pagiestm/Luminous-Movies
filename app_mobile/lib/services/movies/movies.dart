@@ -50,4 +50,16 @@ class MovieService {
       throw Exception('Failed to search movies');
     }
   }
+
+  Future<bool> deleteMovieById(String id) async {
+    var response = await http.delete(Uri.parse(
+      'https://luminous-movies.onrender.com/movies/$id'
+    ));
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to fetch movies data.');
+    }
+  }
 }
