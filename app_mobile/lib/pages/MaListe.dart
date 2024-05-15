@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:luminous_movies/models/movies.dart';
 import 'package:luminous_movies/models/users.dart';

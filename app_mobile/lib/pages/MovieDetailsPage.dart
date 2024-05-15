@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:luminous_movies/models/users.dart';
 import '../models/movies.dart';
@@ -239,8 +237,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         scrollDirection: Axis.horizontal,
                         itemCount: filteredMovies.length,
                         itemBuilder: (context, index) {
-                          if (!sameCategoryMovies.contains(filteredMovies[index].image)) {
-                            sameCategoryMovies.add(filteredMovies[index].image);
+                          if (!sameCategoryMovies.contains(filteredMovies[index].title)) {
+                            sameCategoryMovies.add(filteredMovies[index].title);
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(
