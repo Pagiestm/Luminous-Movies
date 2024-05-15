@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
-import 'Connexion.dart';
-import '../services/users/users_register.dart';
 import 'package:elegant_notification/elegant_notification.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../services/users/users_register.dart';
+import 'Connexion.dart';
 
 class Inscription extends StatefulWidget {
   const Inscription({super.key});
@@ -44,13 +46,10 @@ class InscriptionState extends State<Inscription> {
                   size: 30,
                 ),
                 SizedBox(width: 10),
-                Text(
-                  'Luminous Movies',
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
+                Text('Luminous Movies',
+                    style: GoogleFonts.sora(
+                      fontSize: 24,
+                    )),
               ],
             ),
             Padding(
@@ -67,7 +66,8 @@ class InscriptionState extends State<Inscription> {
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       hintText: "Pseudo",
-                      hintStyle: TextStyle(color: Colors.grey.shade400),
+                      hintStyle: TextStyle(
+                          color: Colors.grey.shade400, fontFamily: "Sora"),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.only(left: 20)),
                   validator: (value) {
@@ -125,7 +125,8 @@ class InscriptionState extends State<Inscription> {
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       hintText: "Mot de passe",
-                      hintStyle: TextStyle(color: Colors.grey.shade400),
+                      hintStyle: TextStyle(
+                          color: Colors.grey.shade400, fontFamily: "Sora"),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.only(left: 20),
                       suffix: IconButton(
@@ -166,7 +167,8 @@ class InscriptionState extends State<Inscription> {
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       hintText: "Confirmez le mot de passe",
-                      hintStyle: TextStyle(color: Colors.grey.shade400),
+                      hintStyle: TextStyle(
+                          color: Colors.grey.shade400, fontFamily: "Sora"),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.only(left: 20),
                       suffix: IconButton(
@@ -207,28 +209,36 @@ class InscriptionState extends State<Inscription> {
                       if (_formKey.currentState!.validate()) {
                         setState(() => isLoading = true);
                         UserRegister()
-                          .addUser(emailController.text,
-                              passwordController.text, pseudoController.text)
-                          .then((value) => {
-                                ElegantNotification.success(
-                                  title: Text("Inscription", style: TextStyle(color: Colors.black)),
-                                  description:
-                                      Text("Validation de l'inscription.", style: TextStyle(color: Colors.black)),
-                                ).show(context)
-                              })
-                          .catchError((err) => throw err)
-                          .whenComplete(() => setState(() => isLoading = false));
+                            .addUser(emailController.text,
+                                passwordController.text, pseudoController.text)
+                            .then((value) => {
+                                  ElegantNotification.success(
+                                    title: Text("Inscription",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: "Sora")),
+                                    description: Text(
+                                        "Validation de l'inscription.",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: "Sora")),
+                                  ).show(context)
+                                })
+                            .catchError((err) => throw err)
+                            .whenComplete(
+                                () => setState(() => isLoading = false));
                       }
                     },
                     child: Text('Inscription',
-                        style: TextStyle(color: Colors.white))),
+                        style: TextStyle(
+                            color: Colors.white, fontFamily: "Sora"))),
             TextButton(
                 onPressed: () {
                   setState(() => toLogin = true);
                 },
                 child: Text(
                   "Se connecter",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontFamily: "Sora"),
                 )),
           ]),
     );

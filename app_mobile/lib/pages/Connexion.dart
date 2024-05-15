@@ -59,7 +59,9 @@ class ConnexionState extends State<Connexion> {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                             hintText: "Email",
-                            hintStyle: TextStyle(color: Colors.grey.shade400),
+                            hintStyle: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontFamily: 'Sora'),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.only(left: 20)),
                         validator: (value) {
@@ -86,7 +88,9 @@ class ConnexionState extends State<Connexion> {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                             hintText: "Mot de passe",
-                            hintStyle: TextStyle(color: Colors.grey.shade400),
+                            hintStyle: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontFamily: "Sora"),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.only(left: 20),
                             suffix: IconButton(

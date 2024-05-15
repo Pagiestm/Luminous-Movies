@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '../services/movies/movies.dart';
-import '../models/movies.dart';
-import 'MovieDetailsPage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../models/movies.dart';
+import '../services/movies/movies.dart';
+import 'MovieDetailsPage.dart';
 
 void main() => runApp(const Rechercher());
 
@@ -40,7 +42,13 @@ class _SearchBarAppState extends State<Rechercher> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Recherche', style: TextStyle(color: Colors.white)),
+        title: Text(
+          'Recherche',
+          style: GoogleFonts.sora(
+            fontSize: 16,
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Colors.black,
       ),
       body: Padding(
@@ -72,7 +80,10 @@ class _SearchBarAppState extends State<Rechercher> {
                 filled: true,
                 fillColor: Colors.grey.shade700,
               ),
-              style: TextStyle(color: Colors.white),
+              style: GoogleFonts.sora(
+                fontSize: 16,
+                color: Colors.white,
+              ),
             ),
             Expanded(
               child: AnimatedSwitcher(
@@ -84,7 +95,10 @@ class _SearchBarAppState extends State<Rechercher> {
                             key: ValueKey(1),
                             child: Text(
                               'Aucun résultat',
-                              style: TextStyle(color: Colors.white),
+                              style: GoogleFonts.sora(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ),
                           )
                         : GridView.builder(

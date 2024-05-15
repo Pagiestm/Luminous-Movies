@@ -79,7 +79,10 @@ class _AccueilState extends State<Accueil> {
                                     ),
                                   );
                                 } else if (snapshot.hasError) {
-                                  return Text('Erreur: ${snapshot.error}');
+                                  return Text('Erreur: ${snapshot.error}',
+                                      style: GoogleFonts.sora(
+                                        fontSize: 24,
+                                      ));
                                 } else {
                                   return snapshot.data!;
                                 }

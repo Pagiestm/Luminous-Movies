@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:luminous_movies/models/users.dart';
 import 'package:session_manager/session_manager.dart';
-import '../services/users/users_auth.dart';
-import '../navbar_admin.dart';
 
+import '../navbar_admin.dart';
+import '../services/users/users_auth.dart';
 import '../services/users/users_session.dart';
 import 'Connexion.dart';
 
@@ -44,8 +45,10 @@ class MyProfil extends State<Profil> {
         appBar: AppBar(
           title: Text(
             'Mon profil',
-            style: TextStyle(
-                fontFamily: 'Sora', fontSize: 24, color: Colors.white),
+            style: GoogleFonts.sora(
+              fontSize: 24,
+              color: Colors.white,
+            ),
           ),
           backgroundColor: Colors.black,
           centerTitle: false,
@@ -74,10 +77,10 @@ class MyProfil extends State<Profil> {
                         ? Expanded(
                             child: TextField(
                               controller: pseudoController,
-                              style: TextStyle(
-                                  fontFamily: 'Sora',
-                                  fontSize: 32,
-                                  color: Colors.white),
+                              style: GoogleFonts.sora(
+                                fontSize: 32,
+                                color: Colors.white,
+                              ),
                               onSubmitted: (newPseudo) {
                                 UserAuth().updateUser(
                                     user!.id, user!.email, newPseudo);
@@ -90,10 +93,10 @@ class MyProfil extends State<Profil> {
                           )
                         : Text(
                             user!.pseudo,
-                            style: TextStyle(
-                                fontFamily: 'Sora',
-                                fontSize: 32,
-                                color: Colors.white),
+                            style: GoogleFonts.sora(
+                              fontSize: 32,
+                              color: Colors.white,
+                            ),
                           ),
                     IconButton(
                       icon: isEditingPseudo
@@ -127,8 +130,10 @@ class MyProfil extends State<Profil> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Email',
-                    style: TextStyle(
-                        fontFamily: 'Sora', fontSize: 24, color: Colors.white),
+                    style: GoogleFonts.sora(
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
@@ -137,12 +142,12 @@ class MyProfil extends State<Profil> {
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
                     hintText: user!.email,
-                    suffixIcon: Material(
+                    suffix: Material(
                       color: Colors.transparent,
                       child: SvgPicture.asset(
                         "assets/icons/email.svg",
-                        width: 24,
-                        height: 24,
+                        width: 32,
+                        height: 32,
                         color: Color.fromARGB(255, 203, 202, 202),
                       ),
                     ),
@@ -154,7 +159,10 @@ class MyProfil extends State<Profil> {
                     filled: true,
                     fillColor: Colors.grey.shade700,
                   ),
-                  style: TextStyle(color: Colors.white),
+                  style: GoogleFonts.sora(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
                   enabled: true,
                 ),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
@@ -175,7 +183,11 @@ class MyProfil extends State<Profil> {
                               .showSnackBar(
                                 SnackBar(
                                   content:
-                                      Text('Votre e-mail a été mis à jour !'),
+                                      Text('Votre e-mail a été mis à jour !',
+                                          style: GoogleFonts.sora(
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          )),
                                 ),
                               )
                               .closed
@@ -186,9 +198,13 @@ class MyProfil extends State<Profil> {
                             user!.email = newEmail;
                           });
                         },
-                        child: Text('Modifier votre email',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14))),
+                        child: Text(
+                          'Modifier votre email',
+                          style: GoogleFonts.sora(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        )),
                   ),
                 ),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 16)),
@@ -196,8 +212,10 @@ class MyProfil extends State<Profil> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Mot de passe',
-                    style: TextStyle(
-                        fontFamily: 'Sora', fontSize: 24, color: Colors.white),
+                    style: GoogleFonts.sora(
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
@@ -205,12 +223,12 @@ class MyProfil extends State<Profil> {
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
                     hintText: '**********',
-                    suffixIcon: Material(
+                    suffix: Material(
                       color: Colors.transparent,
                       child: SvgPicture.asset(
                         "assets/icons/lock-on.svg",
-                        width: 24,
-                        height: 24,
+                        width: 32,
+                        height: 32,
                         color: Color.fromARGB(255, 203, 202, 202),
                       ),
                     ),
@@ -222,7 +240,10 @@ class MyProfil extends State<Profil> {
                     filled: true,
                     fillColor: Colors.grey.shade700,
                   ),
-                  style: TextStyle(color: Colors.white),
+                  style: GoogleFonts.sora(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
                   enabled: false,
                 ),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
@@ -237,21 +258,27 @@ class MyProfil extends State<Profil> {
                         onPressed: () {
                           print("Mot de passe");
                         },
-                        child: Text('Modifier votre mot de passe',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14))),
+                        child: Text(
+                          'Modifier votre mot de passe',
+                          style: GoogleFonts.sora(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        )),
                   ),
                 ),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 16)),
                 if (isAdmin)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Administration',
-                    style: TextStyle(
-                        fontFamily: 'Sora', fontSize: 24, color: Colors.white),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Administration',
+                      style: GoogleFonts.sora(
+                        fontSize: 24,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                ),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
                 if (isAdmin)
                   Align(
@@ -269,9 +296,13 @@ class MyProfil extends State<Profil> {
                                 builder: (context) => NavBarAdmin()),
                           );
                         },
-                        child: Text('Panel Admin',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14)),
+                        child: Text(
+                          'Panel Admin',
+                          style: GoogleFonts.sora(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -280,8 +311,10 @@ class MyProfil extends State<Profil> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Se déconnecter',
-                    style: TextStyle(
-                        fontFamily: 'Sora', fontSize: 24, color: Colors.white),
+                    style: GoogleFonts.sora(
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
@@ -303,8 +336,13 @@ class MyProfil extends State<Profil> {
                           print("Erreur lors de la déconnexion : $e");
                         }
                       },
-                      child: Text('Déconnexion',
-                          style: TextStyle(color: Colors.white, fontSize: 14)),
+                      child: Text(
+                        'Déconnexion',
+                        style: GoogleFonts.sora(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
