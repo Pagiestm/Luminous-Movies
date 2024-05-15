@@ -22,11 +22,14 @@ class CategoriesState extends State<CategoriesAdmin> {
   @override
   void initState() {
     super.initState();
+    fetchCategories();
   }
 
   void fetchCategories() async {
-    categories = await CategoriesService().fetchCategories();
-    setState(() {});
+    var fetchCategories = await CategoriesService().fetchCategories();
+    setState(() {
+      categories = fetchCategories;
+    });
   }
 
   @override
@@ -55,6 +58,7 @@ class CategoriesState extends State<CategoriesAdmin> {
             child: categories.isEmpty
                 ? CircularProgressIndicator()
                 : ListView.builder(
+                    shrinkWrap: true,
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
                       return Card(
