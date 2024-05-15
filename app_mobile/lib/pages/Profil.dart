@@ -106,6 +106,25 @@ class MyProfil extends State<Profil> {
 
                       // Mettez à jour l'e-mail de l'utilisateur dans la base de données
                       await UserAuth().updateUserEmail(user!.id, newEmail);
+
+                      // Affichez un message à l'utilisateur
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(
+                            SnackBar(
+                              content: Text('Votre e-mail a été mis à jour !'),
+                            ),
+                          )
+                          .closed
+                          .then((reason) {
+                        // Une fois que le SnackBar est fermé, mettez à jour le champ de texte avec le nouvel e-mail
+                        setState(() {
+                          user!.email = newEmail;
+                        });
+                      });
+
+                      setState(() {
+                        emailController.text = '';
+                      });
                     },
                     child: Text('Modifier votre email',
                         style: TextStyle(color: Colors.white, fontSize: 14))),
