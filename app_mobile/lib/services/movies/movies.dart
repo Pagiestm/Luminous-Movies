@@ -39,7 +39,6 @@ class MovieService {
   }
 
   Future<List<Movie>> fetchMoviesByTitle(String title) async {
-
     var response =
         await http.get(Uri.parse('https://luminous-movies.onrender.com/movies/title/$title'));
 
@@ -58,6 +57,26 @@ class MovieService {
 
     if (response.statusCode == 200) {
       return true;
+    } else {
+      throw Exception('Failed to fetch movies data.');
+    }
+  }
+
+    Future addMovie(String title, String synopsis, String image, List<String> staring, String releaseDate, String length, List<String> categories) async {
+    var response = await http.post(
+      Uri.parse('https://luminous-movies.onrender.com/movies/'),
+      body: {
+        'title': title,
+        'synopsis': synopsis,
+        'image': image,
+        'staring': staring.join('|-|'),
+        'release_date': releaseDate,
+        'length': length,
+        'categories': categories.join('|-|')
+      }
+    );
+    if (response.statusCode == 200) {
+      return "Movie added";
     } else {
       throw Exception('Failed to fetch movies data.');
     }
