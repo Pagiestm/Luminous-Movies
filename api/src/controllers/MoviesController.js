@@ -55,7 +55,10 @@ class MoviesControllers{
             }
 
             try {
-                const response = await MoviesServices.addMovie(title, synopsis, image, staring, release_date, length, categories);
+                let staringSplit = staring.split("|-|");
+                let categoriesSplit = categories.split("|-|");
+                console.log(`staring: ${staringSplit}, categories: ${categoriesSplit}`);
+                const response = await MoviesServices.addMovie(title, synopsis, image, staringSplit, release_date, length, categoriesSplit);
                 return res.send(response);
             } catch (err) {
                 throw err;
