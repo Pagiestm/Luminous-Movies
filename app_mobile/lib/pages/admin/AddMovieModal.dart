@@ -28,6 +28,7 @@ class AddMovieModalState extends State<AddMovieModal> {
   List<Categories> choices = [];
   List<String> categories = [];
 
+  @override
   void initState() {
     super.initState();
     loadCategories();
@@ -289,6 +290,22 @@ class AddMovieModalState extends State<AddMovieModal> {
                   textStyle: Theme.of(context).textTheme.labelLarge,
                   backgroundColor: Colors.red.shade900,
                 ),
+                child: Text(
+                  'Annuler',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                  backgroundColor: Colors.red.shade900,
+                ),
                 child: const Text(
                   'Sauvegarder', 
                   style: TextStyle(
@@ -305,7 +322,7 @@ class AddMovieModalState extends State<AddMovieModal> {
                         title: Text("Ajout d'un film", style: TextStyle(color: Colors.black)),
                         description: Text("Validation de l'ajout du film", style: TextStyle(color: Colors.black)),
                       ).show(context),
-                      Navigator.of(context).pop()
+                      Navigator.of(context).pop(value)
                     })
                     .catchError((err) => throw err)
                     .whenComplete(() => setState(() => isLoading = false));

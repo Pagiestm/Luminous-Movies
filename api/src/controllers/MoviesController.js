@@ -57,7 +57,6 @@ class MoviesControllers{
             try {
                 let staringSplit = staring.split("|-|");
                 let categoriesSplit = categories.split("|-|");
-                console.log(`staring: ${staringSplit}, categories: ${categoriesSplit}`);
                 const response = await MoviesServices.addMovie(title, synopsis, image, staringSplit, release_date, length, categoriesSplit);
                 return res.send(response);
             } catch (err) {
@@ -76,8 +75,19 @@ class MoviesControllers{
             const release_date = req.body.release_date;
             const length = req.body.length;
             const categories = req.body.categories;
-            const response = await MoviesServices.updateMovie(id, title, synopsis, image, staring, release_date, length, categories);
-            res.send(response);
+
+            if (title == null || synopsis == null || image == null || staring == null ||  release_date == null || length == null || categories == null) {
+                return res.send({error: "Données manquante"});
+            }
+
+            try {
+                let staringSplit = staring.split("|-|");
+                let categoriesSplit = categories.split("|-|");
+                const response = await MoviesServices.updateMovie(id, title, synopsis, image, staring, release_date, length, categories);
+                return res.send(response);
+            } catch (err) {
+                throw err;
+            }
         }
     }
 
