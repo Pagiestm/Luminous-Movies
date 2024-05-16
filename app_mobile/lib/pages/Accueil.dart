@@ -8,6 +8,7 @@ import 'package:luminous_movies/services/categories/categories.dart';
 import 'package:luminous_movies/services/movies/movies.dart';
 import 'package:luminous_movies/services/navigation.dart';
 import 'package:luminous_movies/services/users/users_session.dart';
+import './Decouvrir.dart';
 
 import '../../models/movies.dart';
 
@@ -45,8 +46,11 @@ class _AccueilState extends State<Accueil> {
   void fetchCategories() async {
     CategoriesService categoriesService = CategoriesService();
     var fetchedCategories = await categoriesService.fetchCategories();
+    fetchedCategories.shuffle(); 
     setState(() {
-      categories = fetchedCategories.reversed.toList();
+      categories = fetchedCategories
+          .take(3)
+          .toList();
     });
   }
 
@@ -219,6 +223,37 @@ class _AccueilState extends State<Accueil> {
           widgetFavoritesMovies != null
               ? widgetFavoritesMovies!
               : SizedBox(height: 0),
+          Container(
+            padding: EdgeInsets.all(16),
+            child: Center(
+              // Ajoutez ce widget
+              child: Column(
+                children: [
+                  Text(
+                    'Vous arrivez à la fin du fil',
+                    style: GoogleFonts.sora(
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor:  Colors.red.shade900,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Decouvrir()),
+                      );
+                    },
+                    child: Text('Voir plus de film'),
+                  ),
+                ],
+              ),
+            ),
+          ),
           SizedBox(height: 80),
         ],
       ),
