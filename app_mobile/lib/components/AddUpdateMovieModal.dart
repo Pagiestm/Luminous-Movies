@@ -338,8 +338,8 @@ class AddMovieModalState extends State<AddUpdateMovieModal> {
                       MovieService().updateMovie(widget.updatingMovie!.id, titleController.text, synopsisController.text, imageController.text, staring, releaseDateController.text, movieLengthController.text, categories)
                       .then((value) => {
                         ElegantNotification.success(
-                          title: Text("Ajout d'un film", style: TextStyle(color: Colors.black)),
-                          description: Text("Validation de l'ajout du film", style: TextStyle(color: Colors.black)),
+                          title: Text("Modification d'un film", style: TextStyle(color: Colors.black)),
+                          description: Text("Validation de la modification du film", style: TextStyle(color: Colors.black)),
                         ).show(context),
                         Navigator.of(context).pop(value)
                       })

@@ -111,7 +111,7 @@ class FilmsState extends State<Films> {
                                 );
                                 if (movieUpdated != null) {
                                   setState(() {
-                                    movies[index] = movieUpdated;
+                                    movies[movies.indexWhere((element) => element.id == movieUpdated.id)] = movieUpdated;
                                   });
                                 }
                               },
