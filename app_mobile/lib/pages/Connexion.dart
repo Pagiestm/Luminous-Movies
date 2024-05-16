@@ -87,26 +87,30 @@ class ConnexionState extends State<Connexion> {
                         cursorColor: Colors.white,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                            hintText: "Mot de passe",
-                            hintStyle: TextStyle(
-                                color: Colors.grey.shade400,
-                                fontFamily: "Sora"),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.only(left: 20),
-                            suffix: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if (passenable) {
-                                      passenable = false;
-                                    } else {
-                                      passenable = true;
-                                    }
-                                  });
-                                },
-                                icon: Icon(passenable == true
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
-                                color: Colors.grey.shade400)),
+                          hintText: "Mot de passe",
+                          hintStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontFamily: "Sora",
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(
+                              left: 20,
+                              top: 15,
+                              bottom: 15),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                passenable = !passenable;
+                              });
+                            },
+                            icon: Icon(
+                              passenable
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter some text';
