@@ -58,12 +58,22 @@ class ConnexionState extends State<Connexion> {
                         cursorColor: Colors.white,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                            hintText: "Email",
-                            hintStyle: TextStyle(
-                                color: Colors.grey.shade400,
-                                fontFamily: 'Sora'),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.only(left: 20)),
+                          hintText: "Email",
+                          hintStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontFamily: 'Sora',
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(
+                              left: 20,
+                              top: 15,
+                              bottom:
+                                  15),
+                          suffixIcon: Icon(
+                            Icons.email,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter some text';
@@ -93,10 +103,8 @@ class ConnexionState extends State<Connexion> {
                             fontFamily: "Sora",
                           ),
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.only(
-                              left: 20,
-                              top: 15,
-                              bottom: 15),
+                          contentPadding:
+                              EdgeInsets.only(left: 20, top: 15, bottom: 15),
                           suffixIcon: IconButton(
                             onPressed: () {
                               setState(() {
