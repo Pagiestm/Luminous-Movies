@@ -84,7 +84,7 @@ class MoviesServices extends Services {
                 release_date: release_date,
                 length: length,
                 categorie: categorie
-            });
+            }, {new: true});
             return movie;
         } catch (error) {
             throw error;
