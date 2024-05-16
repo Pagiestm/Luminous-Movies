@@ -54,9 +54,11 @@ class AddMovieModalState extends State<AddUpdateMovieModal> {
       choices = fetchedCategories.toList();
     });
     if (widget.updatingMovie != null) {
+      List<String> categoriesSelected = [];
       for (var categorie in widget.updatingMovie!.categories) {
-        categories.add(choices.firstWhere((element) => element.name == categorie).id);
+        categoriesSelected.add(choices.firstWhere((element) => element.name == categorie).id);
       }
+      setSelectedValue(categoriesSelected);
     }
   }
 
