@@ -51,19 +51,20 @@ class _MaListe extends State<MaListe> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Recherche',
+          style: GoogleFonts.sora(
+            fontSize: 24,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.black,
+        centerTitle: false,
+      ),
       body: Padding(
         padding: EdgeInsets.zero,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(16, 64, 0, 16),
-            child: Text(
-              'Ma liste',
-              style: GoogleFonts.sora(
-                fontSize: 24,
-                color: Colors.white,
-              ),
-            ),
-          ),
           SizedBox(height: 10),
           GridView.count(
             shrinkWrap: true,

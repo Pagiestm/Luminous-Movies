@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +23,12 @@ class _SearchBarAppState extends State<Rechercher> {
   List<Movie> _movies = [];
   bool _searched = false;
 
+  void _timer(e) {
+    Timer(const Duration(seconds: 1), _search).isActive
+        ? Timer(const Duration(seconds: 1), _search).cancel()
+        : null;
+  }
+
   Future<void> _search() async {
     String title = _controller.text;
     if (title.isEmpty) {
@@ -40,22 +48,23 @@ class _SearchBarAppState extends State<Rechercher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
           'Recherche',
           style: GoogleFonts.sora(
-            fontSize: 16,
+            fontSize: 24,
             color: Colors.white,
           ),
         ),
         backgroundColor: Colors.black,
+        centerTitle: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             TextField(
+              onChanged: (e) => _timer(e),
               controller: _controller,
               cursorColor: Colors.white,
               decoration: InputDecoration(

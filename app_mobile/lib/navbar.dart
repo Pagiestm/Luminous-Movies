@@ -53,7 +53,7 @@ class _NavBarState extends State<NavBar> {
             right: 0,
             child: ClipRect(
                 child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              filter: ImageFilter.blur(sigmaX: 64, sigmaY: 64),
               child: Theme(
                 data: ThemeData(
                   splashColor: Colors.transparent,
