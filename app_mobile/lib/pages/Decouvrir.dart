@@ -22,12 +22,45 @@ class _DecouvrirState extends State<Decouvrir> {
   List<Categories> categories = [];
   User? user = UserSession.getUser();
   FavoritesMovies? widgetFavoritesMovies;
+  int displayedCategoriesCount = 5;
+
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     fetchMovies();
     fetchCategories();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _loadMoreCategories();
+    }
+  }
+
+  void _loadMoreCategories() {
+    setState(() {
+      int newCount = 0;
+      for (int i = displayedCategoriesCount;
+          i < categories.length && newCount < 2;
+          i++) {
+        var moviesByCategory = [];
+        for (var movie in movies) {
+          for (var cat in movie.categories) {
+            if (cat == categories[i].name) {
+              moviesByCategory.add(movie);
+            }
+          }
+        }
+        if (moviesByCategory.isNotEmpty) {
+          newCount++;
+        }
+      }
+      displayedCategoriesCount += newCount;
+    });
   }
 
   void fetchMovies() async {
@@ -60,6 +93,7 @@ class _DecouvrirState extends State<Decouvrir> {
         centerTitle: false,
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Padding(
           padding: const EdgeInsets.only(bottom: 80.0),
           child: Column(
@@ -67,10 +101,7 @@ class _DecouvrirState extends State<Decouvrir> {
               ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                // Let the ListView know how many items it needs to build.
-                itemCount: categories.length,
-                // Provide a builder function. This is where the magic happens.
-                // Convert each item into a widget based on the type of item it is.
+                itemCount: displayedCategoriesCount,
                 itemBuilder: (context, index) {
                   var moviesByCategory = [];
 
@@ -82,7 +113,6 @@ class _DecouvrirState extends State<Decouvrir> {
                     }
                   }
 
-                  // Si moviesByCategory est vide, retournez un widget vide
                   if (moviesByCategory.isEmpty) {
                     return SizedBox.shrink();
                   }
@@ -100,11 +130,10 @@ class _DecouvrirState extends State<Decouvrir> {
                         ),
                       ),
                       Container(
-                        height: 200, // Définit la hauteur du slider d'images
+                        height: 200,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           controller: PageController(viewportFraction: 0.4),
-                          // Affiche une petite partie des images suivantes
                           itemCount: moviesByCategory.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(
@@ -147,10 +176,8 @@ class _DecouvrirState extends State<Decouvrir> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 12.0),
-                                // Ajoute des marges à gauche et à droite de chaque image
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      10), // Arrondit les bords de l'image
+                                  borderRadius: BorderRadius.circular(10),
                                   child: CachedNetworkImage(
                                     imageUrl: moviesByCategory[index].image,
                                     fit: BoxFit.cover,
@@ -165,11 +192,17 @@ class _DecouvrirState extends State<Decouvrir> {
                     ],
                   );
                 },
-              )
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
