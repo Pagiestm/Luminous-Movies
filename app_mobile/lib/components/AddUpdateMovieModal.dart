@@ -1,12 +1,14 @@
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:luminous_movies/models/categories.dart';
+import 'package:luminous_movies/models/movies.dart';
 import 'package:luminous_movies/services/categories/categories.dart';
-import '../../services/movies/movies.dart';
+import '../services/movies/movies.dart';
 import 'package:choice/choice.dart';
 
-class AddMovieModal extends StatefulWidget {
-  const AddMovieModal({super.key});
+class AddUpdateMovieModal extends StatefulWidget {
+  final Movie? updatingMovie;
+  const AddUpdateMovieModal({super.key, this.updatingMovie});
 
   @override
   AddMovieModalState createState() {
@@ -14,7 +16,7 @@ class AddMovieModal extends StatefulWidget {
   }
 }
 
-class AddMovieModalState extends State<AddMovieModal> {
+class AddMovieModalState extends State<AddUpdateMovieModal> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   TextEditingController titleController = TextEditingController();
@@ -32,14 +34,30 @@ class AddMovieModalState extends State<AddMovieModal> {
   void initState() {
     super.initState();
     loadCategories();
+    if (widget.updatingMovie != null) {
+      titleController.text = widget.updatingMovie!.title;
+      synopsisController.text = widget.updatingMovie!.synopsis;
+      movieLengthController.text = widget.updatingMovie!.length;
+      releaseDateController.text = widget.updatingMovie!.releaseDate;
+      imageController.text = widget.updatingMovie!.image;
+
+      setState(() {
+        staring = widget.updatingMovie!.staring;
+      });
+    }
   }
 
   void loadCategories() async {
     CategoriesService categoriesService = CategoriesService();
-    var fetchedMovies = await categoriesService.fetchCategories();
+    var fetchedCategories = await categoriesService.fetchCategories();
     setState(() {
-      choices = fetchedMovies.toList();
+      choices = fetchedCategories.toList();
     });
+    if (widget.updatingMovie != null) {
+      for (var categorie in widget.updatingMovie!.categories) {
+        categories.add(choices.firstWhere((element) => element.name == categorie).id);
+      }
+    }
   }
 
   void setSelectedValue(List<String> value) {
@@ -55,7 +73,7 @@ class AddMovieModalState extends State<AddMovieModal> {
           child: AlertDialog(
             backgroundColor: Colors.grey[800],
             surfaceTintColor: Colors.transparent,
-            title: const Text('Ajouter un film'),
+            title: widget.updatingMovie != null ? Text('Modifier un film') : Text('Ajouter un film'),
             content: SizedBox(
               width: double.maxFinite,
               height: double.maxFinite,
@@ -316,16 +334,29 @@ class AddMovieModalState extends State<AddMovieModal> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     setState(() => isLoading = true);
-                    MovieService().addMovie(titleController.text, synopsisController.text, imageController.text, staring, releaseDateController.text, movieLengthController.text, categories)
-                    .then((value) => {
-                      ElegantNotification.success(
-                        title: Text("Ajout d'un film", style: TextStyle(color: Colors.black)),
-                        description: Text("Validation de l'ajout du film", style: TextStyle(color: Colors.black)),
-                      ).show(context),
-                      Navigator.of(context).pop(value)
-                    })
-                    .catchError((err) => throw err)
-                    .whenComplete(() => setState(() => isLoading = false));
+                    if (widget.updatingMovie != null) {
+                      MovieService().updateMovie(widget.updatingMovie!.id, titleController.text, synopsisController.text, imageController.text, staring, releaseDateController.text, movieLengthController.text, categories)
+                      .then((value) => {
+                        ElegantNotification.success(
+                          title: Text("Ajout d'un film", style: TextStyle(color: Colors.black)),
+                          description: Text("Validation de l'ajout du film", style: TextStyle(color: Colors.black)),
+                        ).show(context),
+                        Navigator.of(context).pop(value)
+                      })
+                      .catchError((err) => throw err)
+                      .whenComplete(() => setState(() => isLoading = false));
+                    } else {
+                      MovieService().addMovie(titleController.text, synopsisController.text, imageController.text, staring, releaseDateController.text, movieLengthController.text, categories)
+                      .then((value) => {
+                        ElegantNotification.success(
+                          title: Text("Ajout d'un film", style: TextStyle(color: Colors.black)),
+                          description: Text("Validation de l'ajout du film", style: TextStyle(color: Colors.black)),
+                        ).show(context),
+                        Navigator.of(context).pop(value)
+                      })
+                      .catchError((err) => throw err)
+                      .whenComplete(() => setState(() => isLoading = false));
+                    }
                   }
                 },
               ),

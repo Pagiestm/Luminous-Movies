@@ -82,4 +82,25 @@ class MovieService {
       throw Exception('Failed to fetch movies data.');
     }
   }
+  
+    Future<Movie> updateMovie(String id, String title, String synopsis, String image, List<String> staring, String releaseDate, String length, List<String> categories) async {
+    var response = await http.put(
+      Uri.parse('https://luminous-movies.onrender.com/movies/$id'),
+      body: {
+        'title': title,
+        'synopsis': synopsis,
+        'image': image,
+        'staring': staring.join('|-|'),
+        'release_date': releaseDate,
+        'length': length,
+        'categories': categories.join('|-|')
+      }
+    );
+    if (response.statusCode == 200) {
+      var jsonBody = jsonDecode(response.body);
+      return Movie.fromJson(jsonBody);
+    } else {
+      throw Exception('Failed to fetch movies data.');
+    }
+  }
 }

@@ -83,7 +83,7 @@ class MoviesControllers{
             try {
                 let staringSplit = staring.split("|-|");
                 let categoriesSplit = categories.split("|-|");
-                const response = await MoviesServices.updateMovie(id, title, synopsis, image, staring, release_date, length, categories);
+                const response = await MoviesServices.updateMovie(id, title, synopsis, image, staringSplit, release_date, length, categoriesSplit);
                 return res.send(response);
             } catch (err) {
                 throw err;

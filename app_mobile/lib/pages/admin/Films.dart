@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:luminous_movies/models/movies.dart';
 import '../../services/movies/movies.dart';
-import './AddMovieModal.dart';
+import '../../components/AddUpdateMovieModal.dart';
 
 class Films extends StatefulWidget {
   const Films({super.key});
@@ -45,10 +45,10 @@ class FilmsState extends State<Films> {
                   IconButton(
                     icon: const Icon(Icons.add_circle_outline_sharp),
                     onPressed: () async {
-                    Movie? movieAdded = await showDialog(
+                      Movie? movieAdded = await showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AddMovieModal();
+                          return AddUpdateMovieModal();
                         },
                       );
                       if (movieAdded != null) {
@@ -102,7 +102,19 @@ class FilmsState extends State<Films> {
                           children: <Widget>[
                             TextButton(
                               child: const Text('Modifier'),
-                              onPressed: () { /* ... */ },
+                              onPressed: () async {
+                                Movie? movieUpdated = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AddUpdateMovieModal(updatingMovie: moviesReversed[index],);
+                                  },
+                                );
+                                if (movieUpdated != null) {
+                                  setState(() {
+                                    movies[index] = movieUpdated;
+                                  });
+                                }
+                              },
                             ),
                             TextButton(
                               child: const Text('Supprimer'),
