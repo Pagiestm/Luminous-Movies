@@ -82,6 +82,11 @@ class _DecouvrirState extends State<Decouvrir> {
                     }
                   }
 
+                  // Si moviesByCategory est vide, retournez un widget vide
+                  if (moviesByCategory.isEmpty) {
+                    return SizedBox.shrink();
+                  }
+
                   return Column(
                     children: [
                       Container(
