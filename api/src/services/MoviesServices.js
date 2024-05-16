@@ -74,7 +74,7 @@ class MoviesServices extends Services {
         }
     }
 
-    async updateMovie(id, title, synopsis, image, staring, release_date, length, categorie){
+    async updateMovie(id, title, synopsis, image, staring, release_date, length, categories){
         try {
             const movie = await Movies.findOneAndUpdate({_id: id}, {
                 title: title, 
@@ -83,7 +83,7 @@ class MoviesServices extends Services {
                 staring: staring,
                 release_date: release_date,
                 length: length,
-                categorie: categorie
+                categories: categories
             }, {new: true});
             return movie;
         } catch (error) {
