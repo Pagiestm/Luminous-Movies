@@ -112,7 +112,13 @@ class MyProfil extends State<Profil> {
                           });
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Pseudo mis à jour avec succès !'),
+                              content: Text(
+                                'Pseudo mis à jour avec succès !',
+                                style: GoogleFonts.sora(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
                             ),
                           );
                         } else {
@@ -142,22 +148,25 @@ class MyProfil extends State<Profil> {
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
                     hintText: user!.email,
-                    suffix: Material(
-                      color: Colors.transparent,
-                      child: SvgPicture.asset(
-                        "assets/icons/email.svg",
-                        width: 32,
-                        height: 32,
-                        color: Color.fromARGB(255, 203, 202, 202),
+                    suffixIcon: Transform.scale(
+                      scale: 0.6, // Modifier l'échelle de l'icône
+                      child: Material(
+                        color: Colors.transparent,
+                        child: SvgPicture.asset(
+                          "assets/icons/user.svg",
+                          color: Color.fromARGB(255, 170, 170, 170),
+                          width: 32,
+                          height: 32,
+                        ),
                       ),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
                       borderSide:
-                          BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                          BorderSide(color: Color.fromARGB(255, 130, 130, 130)),
                     ),
                     filled: true,
-                    fillColor: Colors.grey.shade700,
+                    fillColor: Colors.grey.shade800,
                   ),
                   style: GoogleFonts.sora(
                     fontSize: 16,
@@ -186,7 +195,7 @@ class MyProfil extends State<Profil> {
                                       Text('Votre e-mail a été mis à jour !',
                                           style: GoogleFonts.sora(
                                             fontSize: 16,
-                                            color: Colors.white,
+                                            color: Colors.black,
                                           )),
                                 ),
                               )
@@ -223,22 +232,25 @@ class MyProfil extends State<Profil> {
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
                     hintText: '**********',
-                    suffix: Material(
-                      color: Colors.transparent,
-                      child: SvgPicture.asset(
-                        "assets/icons/lock-on.svg",
-                        width: 32,
-                        height: 32,
-                        color: Color.fromARGB(255, 203, 202, 202),
+                    suffixIcon: Transform.scale(
+                      scale: 0.7, // Modifier l'échelle de l'icône
+                      child: Material(
+                        color: Colors.transparent,
+                        child: SvgPicture.asset(
+                          "assets/icons/lock-on.svg",
+                          color: Color.fromARGB(255, 170, 170, 170),
+                          width: 32,
+                          height: 32,
+                        ),
                       ),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
                       borderSide:
-                          BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                          BorderSide(color: Color.fromARGB(255, 130, 130, 130)),
                     ),
                     filled: true,
-                    fillColor: Colors.grey.shade700,
+                    fillColor: Colors.grey.shade800,
                   ),
                   style: GoogleFonts.sora(
                     fontSize: 16,

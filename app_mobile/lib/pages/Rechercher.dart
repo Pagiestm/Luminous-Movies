@@ -76,18 +76,24 @@ class _SearchBarAppState extends State<Rechercher> {
                       "assets/icons/magnifying-glass.svg",
                       width: 24,
                       height: 24,
-                      color: Color.fromARGB(255, 203, 202, 202),
+                      color: Color.fromARGB(255, 170, 170, 170),
                     ),
                   ),
                   onPressed: _search,
                 ),
-                border: OutlineInputBorder(
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(
+                      color: Color.fromARGB(
+                          255, 130, 130, 130)), // Changez la couleur ici
+                ),
+                focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                   borderSide:
-                      BorderSide(color: Color.fromARGB(255, 85, 84, 84)),
+                      BorderSide(color: Colors.red), // Changez la couleur ici
                 ),
                 filled: true,
-                fillColor: Colors.grey.shade700,
+                fillColor: Colors.grey.shade800,
               ),
               style: GoogleFonts.sora(
                 fontSize: 16,

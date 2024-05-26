@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../services/users/users_auth.dart';
@@ -33,10 +34,14 @@ class ConnexionState extends State<Connexion> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Icon(
-                        Icons.movie,
-                        color: Colors.red.shade800,
-                        size: 30,
+                      Material(
+                        color: Colors.transparent,
+                        child: SvgPicture.asset(
+                          "assets/icons/movie.svg",
+                          width: 48,
+                          height: 48,
+                          color: Colors.red.shade900,
+                        ),
                       ),
                       SizedBox(width: 10),
                       Text('Luminous Movies',
@@ -56,22 +61,25 @@ class ConnexionState extends State<Connexion> {
                       child: TextFormField(
                         controller: emailController,
                         cursorColor: Colors.white,
-                        style: TextStyle(color: Colors.white),
+                        style: GoogleFonts.sora(
+                          fontSize: 16,
+                        ),
                         decoration: InputDecoration(
                           hintText: "Email",
-                          hintStyle: TextStyle(
-                            color: Colors.grey.shade400,
-                            fontFamily: 'Sora',
-                          ),
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.only(
-                              left: 20,
-                              top: 15,
-                              bottom:
-                                  15),
-                          suffixIcon: Icon(
-                            Icons.email,
-                            color: Colors.grey.shade400,
+                          contentPadding:
+                              EdgeInsets.only(left: 20, top: 15, bottom: 15),
+                          suffixIcon: Transform.scale(
+                            scale: 0.7, // Modifier l'échelle de l'icône
+                            child: Material(
+                              color: Colors.transparent,
+                              child: SvgPicture.asset(
+                                "assets/icons/email.svg",
+                                color: Colors.white54,
+                                width: 32,
+                                height: 32,
+                              ),
+                            ),
                           ),
                         ),
                         validator: (value) {
@@ -95,13 +103,11 @@ class ConnexionState extends State<Connexion> {
                         controller: passwordController,
                         obscureText: passenable,
                         cursorColor: Colors.white,
-                        style: TextStyle(color: Colors.white),
+                        style: GoogleFonts.sora(
+                          fontSize: 16,
+                        ),
                         decoration: InputDecoration(
                           hintText: "Mot de passe",
-                          hintStyle: TextStyle(
-                            color: Colors.grey.shade400,
-                            fontFamily: "Sora",
-                          ),
                           border: InputBorder.none,
                           contentPadding:
                               EdgeInsets.only(left: 20, top: 15, bottom: 15),
@@ -111,10 +117,16 @@ class ConnexionState extends State<Connexion> {
                                 passenable = !passenable;
                               });
                             },
-                            icon: Icon(
-                              passenable
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                            icon: Material(
+                              color: Colors.transparent,
+                              child: SvgPicture.asset(
+                                passenable
+                                    ? "assets/icons/lock-on.svg"
+                                    : "assets/icons/lock-off.svg",
+                                width: 32,
+                                height: 32,
+                                color: Colors.white54,
+                              ),
                             ),
                             color: Colors.grey.shade400,
                           ),
@@ -151,6 +163,13 @@ class ConnexionState extends State<Connexion> {
                                 fontSize: 16,
                                 color: Colors.white,
                               ))),
+                  Padding(padding: const EdgeInsets.symmetric(vertical: 18.0)),
+                  Text("Pas encore de compte ?",
+                      style: GoogleFonts.sora(
+                        fontSize: 24,
+                        color: Colors.white,
+                      )),
+                  Padding(padding: const EdgeInsets.symmetric(vertical: 18.0)),
                   TextButton(
                       onPressed: () {
                         setState(() => toRegister = true);
@@ -159,6 +178,7 @@ class ConnexionState extends State<Connexion> {
                           style: GoogleFonts.sora(
                             fontSize: 16,
                             color: Colors.white,
+                            decoration: TextDecoration.underline,
                           ))),
                 ]),
           );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:luminous_movies/models/movies.dart';
 import 'package:luminous_movies/models/users.dart';
+import 'package:luminous_movies/pages/Decouvrir.dart';
 import 'package:luminous_movies/pages/MovieDetailsPage.dart';
 import 'package:luminous_movies/services/favorites/favorites.dart';
 import 'package:luminous_movies/services/movies/movies.dart';
@@ -19,6 +20,7 @@ class MaListe extends StatefulWidget {
 class _MaListe extends State<MaListe> {
   List<Movie> movies = [];
   User? user = UserSession.getUser();
+  bool toDecouvrir = false;
 
   @override
   void initState() {
@@ -48,57 +50,96 @@ class _MaListe extends State<MaListe> {
   Widget build(BuildContext context) {
     if (user == null) {
       return Connexion();
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Recherche',
-          style: GoogleFonts.sora(
-            fontSize: 24,
-            color: Colors.white,
+    } else if (toDecouvrir) {
+      return Decouvrir();
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Recherche',
+            style: GoogleFonts.sora(
+              fontSize: 24,
+              color: Colors.white,
+            ),
           ),
+          backgroundColor: Colors.black,
+          centerTitle: false,
         ),
-        backgroundColor: Colors.black,
-        centerTitle: false,
-      ),
-      body: Padding(
-        padding: EdgeInsets.zero,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SizedBox(height: 10),
-          GridView.count(
-            shrinkWrap: true,
-            childAspectRatio: 0.7,
-            crossAxisCount: 3,
-            children: List.generate(movies.length, (index) {
-              return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FutureBuilder(
-                                  future: toMovieDetailsPage(index),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return CircularProgressIndicator();
-                                    } else if (snapshot.hasError) {
-                                      return Text('Erreur: ${snapshot.error}');
-                                    } else {
-                                      return snapshot.data!;
-                                    }
-                                  },
-                                )));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child:
-                        Image.network(movies[index].image, fit: BoxFit.cover),
-                  ));
-            }),
-          )
-        ]),
-      ),
-    );
+        body: Padding(
+          padding: EdgeInsets.zero,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SizedBox(height: 10),
+            GridView.count(
+              shrinkWrap: true,
+              childAspectRatio: 0.7,
+              crossAxisCount: 3,
+              children: List.generate(movies.length, (index) {
+                return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FutureBuilder(
+                                    future: toMovieDetailsPage(index),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      } else if (snapshot.hasError) {
+                                        return Text(
+                                            'Erreur: ${snapshot.error}');
+                                      } else {
+                                        return snapshot.data!;
+                                      }
+                                    },
+                                  )));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child:
+                          Image.network(movies[index].image, fit: BoxFit.cover),
+                    ));
+              }),
+            ),
+            Container(
+              padding: EdgeInsets.all(16),
+              child: Center(
+                // Ajoutez ce widget
+                child: Column(
+                  children: [
+                    Text(
+                      'Vous arrivez à la fin de votre liste',
+                      style: GoogleFonts.sora(
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red.shade900,
+                      ),
+                      onPressed: () {
+                        setState(() => toDecouvrir = true);
+                      },
+                      child: Text(
+                        'Voir plus de film',
+                        style: GoogleFonts.sora(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 80),
+            Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 48)),
+          ]),
+        ),
+      );
+    }
   }
 }

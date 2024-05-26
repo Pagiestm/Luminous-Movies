@@ -1,5 +1,6 @@
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../services/users/users_register.dart';
@@ -40,15 +41,19 @@ class InscriptionState extends State<Inscription> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
-                  Icons.movie,
-                  color: Colors.red.shade800,
-                  size: 30,
+                Material(
+                  color: Colors.transparent,
+                  child: SvgPicture.asset(
+                    "assets/icons/movie.svg",
+                    width: 48,
+                    height: 48,
+                    color: Colors.red.shade900,
+                  ),
                 ),
                 SizedBox(width: 10),
                 Text('Luminous Movies',
                     style: GoogleFonts.sora(
-                      fontSize: 24,
+                      fontSize: 32,
                     )),
               ],
             ),
@@ -63,19 +68,25 @@ class InscriptionState extends State<Inscription> {
                 child: TextFormField(
                   controller: pseudoController,
                   cursorColor: Colors.white,
-                  style: TextStyle(color: Colors.white),
+                  style: GoogleFonts.sora(
+                    fontSize: 16,
+                  ),
                   decoration: InputDecoration(
                     hintText: "Pseudo",
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontFamily: "Sora",
-                    ),
                     border: InputBorder.none,
                     contentPadding:
                         EdgeInsets.only(left: 20, top: 15, bottom: 15),
-                    suffixIcon: Icon(
-                      Icons.person,
-                      color: Colors.grey.shade400,
+                    suffixIcon: Transform.scale(
+                      scale: 0.6, // Modifier l'échelle de l'icône
+                      child: Material(
+                        color: Colors.transparent,
+                        child: SvgPicture.asset(
+                          "assets/icons/user.svg",
+                          color: Colors.white54,
+                          width: 32,
+                          height: 32,
+                        ),
+                      ),
                     ),
                   ),
                   validator: (value) {
@@ -99,21 +110,28 @@ class InscriptionState extends State<Inscription> {
                 child: TextFormField(
                   controller: emailController,
                   cursorColor: Colors.white,
-                  style: TextStyle(color: Colors.white),
+                  style: GoogleFonts.sora(
+                    fontSize: 16,
+                  ),
                   decoration: InputDecoration(
                     hintText: "Email",
                     hintStyle: TextStyle(
                       color: Colors.grey.shade400,
                     ),
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(
-                        left: 20,
-                        top: 15,
-                        bottom:
-                            15),
-                    suffixIcon: Icon(
-                      Icons.email,
-                      color: Colors.grey.shade400,
+                    contentPadding:
+                        EdgeInsets.only(left: 20, top: 15, bottom: 15),
+                    suffixIcon: Transform.scale(
+                      scale: 0.7, // Modifier l'échelle de l'icône
+                      child: Material(
+                        color: Colors.transparent,
+                        child: SvgPicture.asset(
+                          "assets/icons/email.svg",
+                          color: Colors.white54,
+                          width: 32,
+                          height: 32,
+                        ),
+                      ),
                     ),
                   ),
                   validator: (value) {
@@ -141,13 +159,11 @@ class InscriptionState extends State<Inscription> {
                   controller: passwordController,
                   obscureText: passenable,
                   cursorColor: Colors.white,
-                  style: TextStyle(color: Colors.white),
+                  style: GoogleFonts.sora(
+                    fontSize: 16,
+                  ),
                   decoration: InputDecoration(
                     hintText: "Mot de passe",
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontFamily: "Sora",
-                    ),
                     border: InputBorder.none,
                     contentPadding:
                         EdgeInsets.only(left: 20, top: 15, bottom: 15),
@@ -157,8 +173,16 @@ class InscriptionState extends State<Inscription> {
                           passenable = !passenable;
                         });
                       },
-                      icon: Icon(
-                        passenable ? Icons.visibility : Icons.visibility_off,
+                      icon: Material(
+                        color: Colors.transparent,
+                        child: SvgPicture.asset(
+                          passenable
+                              ? "assets/icons/lock-on.svg"
+                              : "assets/icons/lock-off.svg",
+                          width: 32,
+                          height: 32,
+                          color: Colors.white54,
+                        ),
                       ),
                       color: Colors.grey.shade400,
                     ),
@@ -184,13 +208,11 @@ class InscriptionState extends State<Inscription> {
                   controller: repeatedPasswordController,
                   obscureText: passenableRepeated,
                   cursorColor: Colors.white,
-                  style: TextStyle(color: Colors.white),
+                  style: GoogleFonts.sora(
+                    fontSize: 16,
+                  ),
                   decoration: InputDecoration(
                     hintText: "Confirmez le mot de passe",
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontFamily: "Sora",
-                    ),
                     border: InputBorder.none,
                     contentPadding:
                         EdgeInsets.only(left: 20, top: 15, bottom: 15),
@@ -200,10 +222,16 @@ class InscriptionState extends State<Inscription> {
                           passenableRepeated = !passenableRepeated;
                         });
                       },
-                      icon: Icon(
-                        passenableRepeated
-                            ? Icons.visibility
-                            : Icons.visibility_off,
+                      icon: Material(
+                        color: Colors.transparent,
+                        child: SvgPicture.asset(
+                          passenableRepeated
+                              ? "assets/icons/lock-on.svg"
+                              : "assets/icons/lock-off.svg",
+                          width: 32,
+                          height: 32,
+                          color: Colors.white54,
+                        ),
                       ),
                       color: Colors.grey.shade400,
                     ),
@@ -236,15 +264,19 @@ class InscriptionState extends State<Inscription> {
                                 passwordController.text, pseudoController.text)
                             .then((value) => {
                                   ElegantNotification.success(
-                                    title: Text("Inscription",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: "Sora")),
+                                    title: Text(
+                                      "Inscription",
+                                      style: GoogleFonts.sora(
+                                        fontSize: 24,
+                                      ),
+                                    ),
                                     description: Text(
-                                        "Validation de l'inscription.",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: "Sora")),
+                                      "Validation de l'inscription.",
+                                      style: GoogleFonts.sora(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ).show(context)
                                 })
                             .catchError((err) => throw err)
@@ -252,16 +284,31 @@ class InscriptionState extends State<Inscription> {
                                 () => setState(() => isLoading = false));
                       }
                     },
-                    child: Text('Inscription',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: "Sora"))),
+                    child: Text(
+                      'Inscription',
+                      style: GoogleFonts.sora(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    )),
+            Padding(padding: const EdgeInsets.symmetric(vertical: 18.0)),
+            Text("Déjà un compte ?",
+                style: GoogleFonts.sora(
+                  fontSize: 24,
+                  color: Colors.white,
+                )),
+            Padding(padding: const EdgeInsets.symmetric(vertical: 18.0)),
             TextButton(
                 onPressed: () {
                   setState(() => toLogin = true);
                 },
                 child: Text(
                   "Se connecter",
-                  style: TextStyle(color: Colors.white, fontFamily: "Sora"),
+                  style: GoogleFonts.sora(
+                    fontSize: 16,
+                    color: Colors.white,
+                    decoration: TextDecoration.underline,
+                  ),
                 )),
           ]),
     );

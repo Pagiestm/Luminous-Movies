@@ -125,7 +125,7 @@ class _DecouvrirState extends State<Decouvrir> {
                         child: Text(
                           "${categories[index].name.substring(0, 1).toUpperCase()}${categories[index].name.substring(1).toLowerCase()}",
                           style: GoogleFonts.sora(
-                            fontSize: 24,
+                            fontSize: 20,
                           ),
                         ),
                       ),
