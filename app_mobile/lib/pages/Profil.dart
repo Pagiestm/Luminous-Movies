@@ -160,10 +160,16 @@ class MyProfil extends State<Profil> {
                         ),
                       ),
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(18),
-                      borderSide:
-                          BorderSide(color: Color.fromARGB(255, 130, 130, 130)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(
+                              255, 130, 130, 130)), // Changez la couleur ici
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(
+                          color: Colors.red), // Changez la couleur ici
                     ),
                     filled: true,
                     fillColor: Colors.grey.shade800,

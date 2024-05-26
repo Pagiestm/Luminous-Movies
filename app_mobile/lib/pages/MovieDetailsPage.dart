@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:luminous_movies/models/ratings.dart';
 import 'package:luminous_movies/models/users.dart';
+import 'package:luminous_movies/services/ratings/ratings.dart';
 
 import '../models/movies.dart';
 import '../services/favorites/favorites.dart';
@@ -36,6 +39,14 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     return movies;
   }
 
+  Future<List<Rating>> fetchRatingByMovie() async {
+    List<Rating> ratings =
+        await RatingService().fetchRatingsByMovie(widget.movie.id);
+    print(ratings);
+
+    return ratings;
+  }
+
   void addToFavorite() {
     FavoritesService().add(user!.id, widget.movie.id).then((value) => {
           setState(() {
@@ -52,30 +63,42 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         });
   }
 
+  void addRating(rating) {
+    print(rating);
+  }
+
   @override
   Widget build(BuildContext context) {
+    int Rating;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        backgroundColor: Colors.black,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(true),
-        ),
-        title: Text(
-          "Retour",
-          style: GoogleFonts.sora(
-            fontSize: 16,
-            color: Colors.white,
+          icon: Material(
+            color: Colors.transparent,
+            child: SvgPicture.asset(
+              "assets/icons/arrow-left.svg",
+              width: 32,
+              height: 32,
+              color: Colors.grey.shade800,
+            ),
           ),
+          onPressed: () => Navigator.of(context).pop(true),
         ),
         actions: <Widget>[
           user != null
               ? IconButton(
-                  icon: Icon(
-                    widget.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color:
-                        widget.isFavorite ? Colors.red.shade900 : Colors.white,
+                  icon: Material(
+                    color: Colors.transparent,
+                    child: SvgPicture.asset(
+                      widget.isFavorite
+                          ? "assets/icons/heart-fill.svg"
+                          : "assets/icons/heart.svg",
+                      width: 24,
+                      height: 24,
+                      color: widget.isFavorite ? Colors.red : Colors.white,
+                    ),
                   ),
                   onPressed: () {
                     if (!widget.isFavorite) {
@@ -109,8 +132,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 Text(
                   widget.movie.title,
                   style: GoogleFonts.sora(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
                     color: Colors.white,
                   ),
                 ),
@@ -118,7 +140,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 Text(
                   widget.movie.synopsis,
                   style: GoogleFonts.sora(
-                    fontSize: 12,
+                    fontSize: 14,
                     color: Colors.white,
                   ),
                 ),
@@ -126,8 +148,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 Text(
                   "Acteurs",
                   style: GoogleFonts.sora(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                     color: Colors.white,
                   ),
                 ),
@@ -145,7 +166,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                           child: Text(
                             widget.movie.staring[index],
                             style: GoogleFonts.sora(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: Colors.white,
                             ),
                           ),
@@ -154,12 +175,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     );
                   },
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 12),
                 Text(
                   "Durée",
                   style: GoogleFonts.sora(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                     color: Colors.white,
                   ),
                 ),
@@ -167,16 +187,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 Text(
                   widget.movie.length,
                   style: GoogleFonts.sora(
-                    fontSize: 12,
+                    fontSize: 14,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 12),
                 Text(
                   "Catégorie",
                   style: GoogleFonts.sora(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                     color: Colors.white,
                   ),
                 ),
@@ -194,7 +213,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                           child: Text(
                             widget.movie.categories[index],
                             style: GoogleFonts.sora(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: Colors.white,
                             ),
                           ),
@@ -207,8 +226,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 Text(
                   "Date de sortie",
                   style: GoogleFonts.sora(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                     color: Colors.white,
                   ),
                 ),
@@ -216,16 +234,117 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 Text(
                   widget.movie.releaseDate,
                   style: GoogleFonts.sora(
-                    fontSize: 12,
+                    fontSize: 14,
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 16),
                 Text(
+                  "Note global",
+                  style: GoogleFonts.sora(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 4),
+                FutureBuilder(
+                    future: fetchRatingByMovie(),
+                    builder: (context, snapshot) {
+                      return Text(
+                        "4,7/5",
+                        style: GoogleFonts.sora(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                      );
+                    }),
+                SizedBox(height: 16),
+                Text(
+                  "Qu'avez-vous pensez de ce film ?",
+                  style: GoogleFonts.sora(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // Centrer les éléments horizontalement
+                    children: [
+                      IconButton(
+                        onPressed: () => addRating(1),
+                        icon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/rating-1.svg",
+                            color: Color.fromARGB(255, 255, 10, 10),
+                            width: 48,
+                            height: 48,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => addRating(2),
+                        icon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/rating-2.svg",
+                            color: Color.fromARGB(255, 242, 146, 2),
+                            width: 48,
+                            height: 48,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => addRating(3),
+                        icon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/rating-3.svg",
+                            color: Color.fromARGB(255, 235, 255, 10),
+                            width: 48,
+                            height: 48,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => addRating(4),
+                        icon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/rating-4.svg",
+                            color: Color.fromARGB(255, 92, 230, 44),
+                            width: 48,
+                            height: 48,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => addRating(5),
+                        icon: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/rating-5.svg",
+                            color: Color.fromARGB(255, 32, 156, 5),
+                            width: 48,
+                            height: 48,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                ),
+                SizedBox(height: 16),
+                Text(
                   "D'autres films du même genre...",
                   style: GoogleFonts.sora(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                     color: Colors.white,
                   ),
                 ),
@@ -266,7 +385,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       );
                     }
                   },
-                )
+                ),
               ],
             ),
           )),
