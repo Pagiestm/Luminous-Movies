@@ -59,8 +59,8 @@ class _FavoritesMovies extends State<FavoritesMovies> {
               ? CarouselSlider.builder(
                   itemCount: movies.length,
                   options: CarouselOptions(
-                      height: 175.0,
-                      viewportFraction: 0.4,
+                      height: 175,
+                      viewportFraction: 0.35,
                       enableInfiniteScroll: true),
                   itemBuilder: (BuildContext context, int index,
                           int pageViewIndex) =>
