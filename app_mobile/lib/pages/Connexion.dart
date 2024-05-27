@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 
 import '../services/users/users_auth.dart';
 import 'Inscription.dart';
@@ -153,6 +154,20 @@ class ConnexionState extends State<Connexion> {
                               UserAuth()
                                   .fetchUser(emailController.text,
                                       passwordController.text)
+                                  .then((user) {
+                                    if (user == null) {
+                                      // Si l'utilisateur est null, cela signifie que les informations de connexion ne sont pas valides
+                                      ElegantNotification.error(
+                                        title: Text("Erreur de connexion",
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                        description: Text(
+                                            "Email ou mot de passe invalide",
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                      ).show(context);
+                                    }
+                                  })
                                   .catchError((e) => throw e)
                                   .whenComplete(
                                       () => setState(() => isLoading = false));

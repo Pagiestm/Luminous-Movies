@@ -16,8 +16,9 @@ class UserAuth {
     if (response.statusCode == 200) {
       var jsonBody = jsonDecode(response.body);
       authenticateUser(jsonBody);
+      return jsonBody;
     } else {
-      throw Exception('Échec de la récupération des données.');
+      return null;
     }
   }
 
