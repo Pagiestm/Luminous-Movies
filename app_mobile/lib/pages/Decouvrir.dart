@@ -103,6 +103,9 @@ class _DecouvrirState extends State<Decouvrir> {
                 shrinkWrap: true,
                 itemCount: displayedCategoriesCount,
                 itemBuilder: (context, index) {
+                  if (index >= categories.length) {
+                    return SizedBox.shrink();
+                  }
                   var moviesByCategory = [];
 
                   for (var movie in movies) {
