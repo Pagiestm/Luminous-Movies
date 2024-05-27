@@ -25,6 +25,7 @@ class _AccueilState extends State<Accueil> {
   User? user = UserSession.getUser();
   FavoritesMovies? widgetFavoritesMovies;
   bool toDecouvrir = false;
+  Navigation navigation = Navigation.getInstance();
 
   @override
   void initState() {
@@ -266,6 +267,7 @@ class _AccueilState extends State<Accueil> {
                           ),
                           onPressed: () {
                             setState(() => toDecouvrir = true);
+                            navigation.setIndex(2);
                           },
                           child: Text(
                             'Voir plus de film',

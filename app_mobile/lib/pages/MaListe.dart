@@ -5,6 +5,7 @@ import 'package:luminous_movies/models/users.dart';
 import 'package:luminous_movies/pages/Decouvrir.dart';
 import 'package:luminous_movies/pages/MovieDetailsPage.dart';
 import 'package:luminous_movies/services/favorites/favorites.dart';
+import 'package:luminous_movies/services/navigation.dart';
 import 'package:luminous_movies/services/movies/movies.dart';
 
 import '../services/users/users_session.dart';
@@ -21,6 +22,7 @@ class _MaListe extends State<MaListe> {
   List<Movie> movies = [];
   User? user = UserSession.getUser();
   bool toDecouvrir = false;
+  Navigation navigation = Navigation.getInstance();
 
   @override
   void initState() {
@@ -123,6 +125,7 @@ class _MaListe extends State<MaListe> {
                       ),
                       onPressed: () {
                         setState(() => toDecouvrir = true);
+                        navigation.setIndex(2);
                       },
                       child: Text(
                         'Voir plus de film',
