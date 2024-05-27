@@ -148,28 +148,40 @@ class MyProfil extends State<Profil> {
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
                     hintText: user!.email,
-                    suffixIcon: Transform.scale(
-                      scale: 0.6, // Modifier l'échelle de l'icône
-                      child: Material(
-                        color: Colors.transparent,
-                        child: SvgPicture.asset(
-                          "assets/icons/user.svg",
-                          color: Color.fromARGB(255, 170, 170, 170),
-                          width: 32,
-                          height: 32,
+                    hintStyle: TextStyle(
+                      color: Colors.grey.shade400,
+                      fontFamily: 'Sora',
+                    ),
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.only(
+                          right: 16.0), // Ajoutez un padding pour l'icône
+                      child: Transform.scale(
+                        scale: 0.8, // Modifier l'échelle de l'icône
+                        child: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/email.svg",
+                            color: Color.fromARGB(255, 170, 170, 170),
+                            width: 32,
+                            height: 32,
+                          ),
                         ),
                       ),
                     ),
+                    suffixIconConstraints: BoxConstraints(
+                      minHeight: 40,
+                      minWidth: 40,
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(
-                              255, 130, 130, 130)), // Changez la couleur ici
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(255, 130, 130, 130)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                          color: Colors.red), // Changez la couleur ici
+                      borderSide: BorderSide(color: Colors.red),
                     ),
                     filled: true,
                     fillColor: Colors.grey.shade800,
@@ -238,22 +250,40 @@ class MyProfil extends State<Profil> {
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
                     hintText: '**********',
-                    suffixIcon: Transform.scale(
-                      scale: 0.7, // Modifier l'échelle de l'icône
-                      child: Material(
-                        color: Colors.transparent,
-                        child: SvgPicture.asset(
-                          "assets/icons/lock-on.svg",
-                          color: Color.fromARGB(255, 170, 170, 170),
-                          width: 32,
-                          height: 32,
+                    hintStyle: TextStyle(
+                      color: Colors.grey.shade400,
+                      fontFamily: 'Sora',
+                    ),
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.only(
+                          right: 16.0), // Ajoutez un padding pour l'icône
+                      child: Transform.scale(
+                        scale: 0.8, // Modifier l'échelle de l'icône
+                        child: Material(
+                          color: Colors.transparent,
+                          child: SvgPicture.asset(
+                            "assets/icons/lock-on.svg",
+                            color: Color.fromARGB(255, 170, 170, 170),
+                            width: 32,
+                            height: 32,
+                          ),
                         ),
                       ),
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(18),
+                    suffixIconConstraints: BoxConstraints(
+                      minHeight: 40,
+                      minWidth: 40,
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
                       borderSide:
                           BorderSide(color: Color.fromARGB(255, 130, 130, 130)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: Colors.red),
                     ),
                     filled: true,
                     fillColor: Colors.grey.shade800,
@@ -262,7 +292,7 @@ class MyProfil extends State<Profil> {
                     fontSize: 16,
                     color: Colors.white,
                   ),
-                  enabled: false,
+                  enabled: true,
                 ),
                 Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 12)),
                 Align(
