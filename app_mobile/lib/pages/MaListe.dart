@@ -56,7 +56,7 @@ class _MaListe extends State<MaListe> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Recherche',
+            'Ma liste',
             style: GoogleFonts.sora(
               fontSize: 24,
               color: Colors.white,

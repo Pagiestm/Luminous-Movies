@@ -73,6 +73,18 @@ class _AccueilState extends State<Accueil> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Les dernières sorties",
+                      style: GoogleFonts.sora(
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(height: 10),
                 Container(
                   height: 400,
@@ -161,7 +173,7 @@ class _AccueilState extends State<Accueil> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              categories[index].name,
+                              "${categories[index].name.substring(0, 1).toUpperCase()}${categories[index].name.substring(1).toLowerCase()}",
                               style: GoogleFonts.sora(
                                 fontSize: 20,
                               ),

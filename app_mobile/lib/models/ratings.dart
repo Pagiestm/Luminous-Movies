@@ -1,21 +1,21 @@
 class Rating {
   final String id;
-  final String movie;
-  final String user;
+  final String movies;
+  final String users;
   final int rating;
 
   Rating({
     required this.id,
-    required this.movie,
-    required this.user,
+    required this.movies,
+    required this.users,
     required this.rating,
   });
 
   factory Rating.fromJson(Map<String, dynamic> json) {
     return Rating(
       id: json['_id'],
-      movie: json['movie'],
-      user: json['user'],
+      movies: json['movies'],
+      users: json['users'],
       rating: json['rating'],
     );
   }

@@ -27,6 +27,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
+    fetchRatingByMovie(widget.movie.id);
   }
 
   Future<List<Movie>> fetchMoviesForCategories(List<String> categories) async {
@@ -39,11 +40,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     return movies;
   }
 
-  Future<List<Rating>> fetchRatingByMovie() async {
-    List<Rating> ratings =
-        await RatingService().fetchRatingsByMovie(widget.movie.id);
-    print(ratings);
-
+  Future<List<Rating>> fetchRatingByMovie(String idMovie) async {
+    List<Rating> ratings = await RatingService().fetchRatingsByMovie(idMovie);
     return ratings;
   }
 
@@ -175,7 +173,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     );
                   },
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: 6),
                 Text(
                   "Durée",
                   style: GoogleFonts.sora(
@@ -248,95 +246,123 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 ),
                 SizedBox(height: 4),
                 FutureBuilder(
-                    future: fetchRatingByMovie(),
+                    future: fetchRatingByMovie(widget.movie.id),
                     builder: (context, snapshot) {
-                      return Text(
-                        "4,7/5",
-                        style: GoogleFonts.sora(
-                          fontSize: 14,
-                          color: Colors.white,
-                        ),
-                      );
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        if (snapshot.data!.isEmpty) {
+                          return Text(
+                            "Pas encore noté",
+                            style: GoogleFonts.sora(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          );
+                        } else {
+                          double totalRating = 0;
+                          snapshot.data?.forEach((element) {
+                            totalRating += element.rating;
+                          });
+                          totalRating = totalRating / snapshot.data!.length;
+
+                          return Text(
+                            "${totalRating}/5",
+                            style: GoogleFonts.sora(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          );
+                        }
+                      }
                     }),
                 SizedBox(height: 16),
-                Text(
-                  "Qu'avez-vous pensez de ce film ?",
-                  style: GoogleFonts.sora(
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                ),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    // Centrer les éléments horizontalement
-                    children: [
-                      IconButton(
-                        onPressed: () => addRating(1),
-                        icon: Material(
-                          color: Colors.transparent,
-                          child: SvgPicture.asset(
-                            "assets/icons/rating-1.svg",
-                            color: Color.fromARGB(255, 255, 10, 10),
-                            width: 48,
-                            height: 48,
+                user != null
+                    ? Column(
+                        children: [
+                          Text(
+                            "Qu'avez-vous pensez de ce film ?",
+                            style: GoogleFonts.sora(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => addRating(2),
-                        icon: Material(
-                          color: Colors.transparent,
-                          child: SvgPicture.asset(
-                            "assets/icons/rating-2.svg",
-                            color: Color.fromARGB(255, 242, 146, 2),
-                            width: 48,
-                            height: 48,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                           ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => addRating(3),
-                        icon: Material(
-                          color: Colors.transparent,
-                          child: SvgPicture.asset(
-                            "assets/icons/rating-3.svg",
-                            color: Color.fromARGB(255, 235, 255, 10),
-                            width: 48,
-                            height: 48,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => addRating(4),
-                        icon: Material(
-                          color: Colors.transparent,
-                          child: SvgPicture.asset(
-                            "assets/icons/rating-4.svg",
-                            color: Color.fromARGB(255, 92, 230, 44),
-                            width: 48,
-                            height: 48,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => addRating(5),
-                        icon: Material(
-                          color: Colors.transparent,
-                          child: SvgPicture.asset(
-                            "assets/icons/rating-5.svg",
-                            color: Color.fromARGB(255, 32, 156, 5),
-                            width: 48,
-                            height: 48,
-                          ),
-                        ),
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              // Centrer les éléments horizontalement
+                              children: [
+                                IconButton(
+                                  onPressed: () => addRating(1),
+                                  icon: Material(
+                                    color: Colors.transparent,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/rating-1.svg",
+                                      color: Color.fromARGB(255, 255, 10, 10),
+                                      width: 48,
+                                      height: 48,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => addRating(2),
+                                  icon: Material(
+                                    color: Colors.transparent,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/rating-2.svg",
+                                      color: Color.fromARGB(255, 242, 146, 2),
+                                      width: 48,
+                                      height: 48,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => addRating(3),
+                                  icon: Material(
+                                    color: Colors.transparent,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/rating-3.svg",
+                                      color: Color.fromARGB(255, 235, 255, 10),
+                                      width: 48,
+                                      height: 48,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => addRating(4),
+                                  icon: Material(
+                                    color: Colors.transparent,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/rating-4.svg",
+                                      color: Color.fromARGB(255, 92, 230, 44),
+                                      width: 48,
+                                      height: 48,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => addRating(5),
+                                  icon: Material(
+                                    color: Colors.transparent,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/rating-5.svg",
+                                      color: Color.fromARGB(255, 32, 156, 5),
+                                      width: 48,
+                                      height: 48,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       )
-                    ],
-                  ),
-                ),
+                    : SizedBox(height: 0),
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                 ),
