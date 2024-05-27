@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:luminous_movies/models/users.dart';
 import 'package:session_manager/session_manager.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 
 import '../navbar_admin.dart';
 import '../services/users/users_auth.dart';
@@ -110,17 +111,12 @@ class MyProfil extends State<Profil> {
                             user!.pseudo = pseudoController.text;
                             isEditingPseudo = false;
                           });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Pseudo mis à jour avec succès !',
-                                style: GoogleFonts.sora(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          );
+                          ElegantNotification.success(
+                            title: Text("Mise à jour du pseudo",
+                                style: TextStyle(color: Colors.black)),
+                            description: Text("Pseudo mis à jour avec succès !",
+                                style: TextStyle(color: Colors.black)),
+                          ).show(context);
                         } else {
                           setState(() {
                             isEditingPseudo = true;
@@ -206,20 +202,12 @@ class MyProfil extends State<Profil> {
                           print("Nouvel email: $newEmail");
                           await UserAuth()
                               .updateUser(user!.id, newEmail, user!.pseudo);
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(
-                                SnackBar(
-                                  content:
-                                      Text('Votre e-mail a été mis à jour !',
-                                          style: GoogleFonts.sora(
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                          )),
-                                ),
-                              )
-                              .closed
-                              .then((reason) {});
-
+                          ElegantNotification.success(
+                            title: Text("Mise à jour de l'e-mail",
+                                style: TextStyle(color: Colors.black)),
+                            description: Text("Votre e-mail a été mis à jour !",
+                                style: TextStyle(color: Colors.black)),
+                          ).show(context);
                           setState(() {
                             emailController.text = '';
                             user!.email = newEmail;
