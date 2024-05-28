@@ -87,7 +87,13 @@ class _MaListe extends State<MaListe> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.red.shade900),
+                                          ),
+                                        );
                                       } else if (snapshot.hasError) {
                                         return Text(
                                             'Erreur: ${snapshot.error}');
