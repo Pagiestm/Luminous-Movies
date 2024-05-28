@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:luminous_movies/models/ratings.dart';
 import 'package:luminous_movies/models/users.dart';
 import 'package:luminous_movies/services/ratings/ratings.dart';
+import 'package:luminous_movies/services/navigation.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:luminous_movies/components/favorites_movies.dart';
 
 import '../models/movies.dart';
 import '../services/favorites/favorites.dart';
@@ -13,6 +16,7 @@ import '../services/users/users_session.dart';
 class MovieDetailsPage extends StatefulWidget {
   final Movie movie;
   bool isFavorite;
+  FavoritesMovies widgetFavoritesMovies = FavoritesMovies(key: UniqueKey());
 
   MovieDetailsPage({required this.movie, required this.isFavorite});
 
@@ -23,10 +27,12 @@ class MovieDetailsPage extends StatefulWidget {
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
   List<String> sameCategoryMovies = [];
   User? user = UserSession.getUser();
+  late FavoritesMovies widgetFavoritesMovies;
 
   @override
   void initState() {
     super.initState();
+    widgetFavoritesMovies = FavoritesMovies(key: UniqueKey());
     fetchRatingByMovie(widget.movie.id);
   }
 
@@ -393,19 +399,60 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                           scrollDirection: Axis.horizontal,
                           itemCount: filteredMovies.length,
                           itemBuilder: (context, index) {
-                            if (!sameCategoryMovies
-                                .contains(filteredMovies[index].title)) {
-                              sameCategoryMovies
-                                  .add(filteredMovies[index].title);
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
+                            return GestureDetector(
+                              onTap: () async {
+                                final bool? shouldRefresh =
+                                    await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FutureBuilder(
+                                        future: Navigation.getInstance()
+                                            .toMovieDetailsPage(
+                                                user, filteredMovies[index]),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                              child: SizedBox(
+                                                height: 40,
+                                                width: 40,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                              'Erreur: ${snapshot.error}',
+                                              style: GoogleFonts.sora(
+                                                fontSize: 24,
+                                              ),
+                                            );
+                                          } else {
+                                            return snapshot.data!;
+                                          }
+                                        }),
+                                  ),
+                                );
+                                if (shouldRefresh == true && user != null) {
+                                  setState(() {
+                                    widgetFavoritesMovies = FavoritesMovies(
+                                      key: UniqueKey(),
+                                    );
+                                  });
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(
-                                      filteredMovies[index].image),
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    imageUrl: filteredMovies[index].image,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              );
-                            }
+                              ),
+                            );
                           },
                         ),
                       );
