@@ -539,69 +539,79 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       List<Movie> filteredMovies = movies
                           .where((movie) => movie.title != widget.movie.title)
                           .toList();
-                      return Container(
-                        height: 200,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: filteredMovies.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () async {
-                                final bool? shouldRefresh =
-                                    await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FutureBuilder(
-                                        future: Navigation.getInstance()
-                                            .toMovieDetailsPage(
-                                                user, filteredMovies[index]),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return Center(
-                                              child: SizedBox(
-                                                height: 40,
-                                                width: 40,
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
-                                            );
-                                          } else if (snapshot.hasError) {
-                                            return Text(
-                                              'Erreur: ${snapshot.error}',
-                                              style: GoogleFonts.sora(
-                                                fontSize: 24,
-                                              ),
-                                            );
-                                          } else {
-                                            return snapshot.data!;
-                                          }
-                                        }),
-                                  ),
-                                );
-                                if (shouldRefresh == true && user != null) {
-                                  setState(() {
-                                    widgetFavoritesMovies = FavoritesMovies(
-                                      key: UniqueKey(),
-                                    );
-                                  });
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: filteredMovies[index].image,
-                                    fit: BoxFit.cover,
+                      if (filteredMovies.isEmpty) {
+                        return Text(
+                          "Il n'y a pas d'autres films du même genre...",
+                          style: GoogleFonts.sora(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: filteredMovies.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () async {
+                                  final bool? shouldRefresh =
+                                      await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FutureBuilder(
+                                          future: Navigation.getInstance()
+                                              .toMovieDetailsPage(
+                                                  user, filteredMovies[index]),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                child: SizedBox(
+                                                  height: 40,
+                                                  width: 40,
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              );
+                                            } else if (snapshot.hasError) {
+                                              return Text(
+                                                'Erreur: ${snapshot.error}',
+                                                style: GoogleFonts.sora(
+                                                  fontSize: 24,
+                                                ),
+                                              );
+                                            } else {
+                                              return snapshot.data!;
+                                            }
+                                          }),
+                                    ),
+                                  );
+                                  if (shouldRefresh == true && user != null) {
+                                    setState(() {
+                                      widgetFavoritesMovies = FavoritesMovies(
+                                        key: UniqueKey(),
+                                      );
+                                    });
+                                  }
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: filteredMovies[index].image,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
+                              );
+                            },
+                          ),
+                        );
+                      }
                     }
                   },
                 ),
