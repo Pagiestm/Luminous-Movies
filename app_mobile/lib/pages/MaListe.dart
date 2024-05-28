@@ -99,15 +99,17 @@ class _MaListe extends State<MaListe> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child:
-                          Image.network(movies[index].image, fit: BoxFit.cover),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(movies[index].image,
+                            fit: BoxFit.cover),
+                      ),
                     ));
               }),
             ),
             Container(
               padding: EdgeInsets.all(16),
               child: Center(
-                // Ajoutez ce widget
                 child: Column(
                   children: [
                     Text(
