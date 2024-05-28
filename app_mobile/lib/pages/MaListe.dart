@@ -87,7 +87,13 @@ class _MaListe extends State<MaListe> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.red.shade900),
+                                          ),
+                                        );
                                       } else if (snapshot.hasError) {
                                         return Text(
                                             'Erreur: ${snapshot.error}');
@@ -99,15 +105,17 @@ class _MaListe extends State<MaListe> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child:
-                          Image.network(movies[index].image, fit: BoxFit.cover),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(movies[index].image,
+                            fit: BoxFit.cover),
+                      ),
                     ));
               }),
             ),
             Container(
               padding: EdgeInsets.all(16),
               child: Center(
-                // Ajoutez ce widget
                 child: Column(
                   children: [
                     Text(

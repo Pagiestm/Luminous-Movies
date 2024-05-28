@@ -23,16 +23,11 @@ class MovieDetailsPage extends StatefulWidget {
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
   List<String> sameCategoryMovies = [];
   User? user = UserSession.getUser();
-  List<Rating> listRatings = [];
 
   @override
   void initState() {
     super.initState();
-    fetchRatingByMovie(widget.movie.id).then((ratings) {
-      setState(() {
-        listRatings = ratings;
-      });
-    });
+    fetchRatingByMovie(widget.movie.id);
   }
 
   Future<List<Movie>> fetchMoviesForCategories(List<String> categories) async {
@@ -72,15 +67,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool matchUserFound = false;
-    int OPACITY_RATING = 100;
+    int Rating;
 
-    for (var value in listRatings) {
-      if (value.users == user!.id) {
-        matchUserFound = true;
-        break;
-      }
-    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -91,7 +79,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               "assets/icons/arrow-left.svg",
               width: 32,
               height: 32,
-              color: Colors.grey.shade700,
+              color: Colors.grey.shade800,
             ),
           ),
           onPressed: () => Navigator.of(context).pop(true),
@@ -300,209 +288,78 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                               fontSize: 20,
                               color: Colors.white,
                             ),
-                            textAlign: TextAlign.left,
                           ),
-                          for (var value in listRatings)
-                            if (value.users == user!.id) ...[
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                  ),
-                                  Text(
-                                    "Vous avez déjà mis un avis pour ce film. Vous pouvez le modifier à tout moment.",
-                                    style: GoogleFonts.sora(
-                                      fontSize: 12,
-                                      color: Colors.white,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                          ),
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              // Centrer les éléments horizontalement
+                              children: [
+                                IconButton(
+                                  onPressed: () => addRating(1),
+                                  icon: Material(
+                                    color: Colors.transparent,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/rating-1.svg",
+                                      color: Color.fromARGB(255, 255, 10, 10),
+                                      width: 48,
+                                      height: 48,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                  ),
-                                  Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      // Centrer les éléments horizontalement
-                                      children: [
-                                        IconButton(
-                                          onPressed: () => addRating(1),
-                                          icon: Material(
-                                            color: Colors.transparent,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/rating-1.svg",
-                                              color: value.rating == 1
-                                                  ? Color.fromARGB(
-                                                      255, 255, 10, 10)
-                                                  : Color.fromARGB(
-                                                      OPACITY_RATING,
-                                                      255,
-                                                      10,
-                                                      10),
-                                              width: 48,
-                                              height: 48,
-                                            ),
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () => addRating(2),
-                                          icon: Material(
-                                            color: Colors.transparent,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/rating-2.svg",
-                                              color: value.rating == 2
-                                                  ? Color.fromARGB(
-                                                      255, 242, 146, 2)
-                                                  : Color.fromARGB(
-                                                      OPACITY_RATING,
-                                                      242,
-                                                      146,
-                                                      2),
-                                              width: 48,
-                                              height: 48,
-                                            ),
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () => addRating(3),
-                                          icon: Material(
-                                            color: Colors.transparent,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/rating-3.svg",
-                                              color: value.rating == 3
-                                                  ? Color.fromARGB(
-                                                      255, 235, 255, 10)
-                                                  : Color.fromARGB(
-                                                      OPACITY_RATING,
-                                                      235,
-                                                      255,
-                                                      10),
-                                              width: 48,
-                                              height: 48,
-                                            ),
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () => addRating(4),
-                                          icon: Material(
-                                            color: Colors.transparent,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/rating-4.svg",
-                                              color: value.rating == 4
-                                                  ? Color.fromARGB(
-                                                      255, 92, 230, 44)
-                                                  : Color.fromARGB(
-                                                      OPACITY_RATING,
-                                                      92,
-                                                      230,
-                                                      44),
-                                              width: 48,
-                                              height: 48,
-                                            ),
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () => addRating(5),
-                                          icon: Material(
-                                            color: Colors.transparent,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/rating-5.svg",
-                                              color: value.rating == 5
-                                                  ? Color.fromARGB(
-                                                      255, 32, 156, 5)
-                                                  : Color.fromARGB(
-                                                      OPACITY_RATING,
-                                                      32,
-                                                      156,
-                                                      5),
-                                              width: 48,
-                                              height: 48,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ] else if (!matchUserFound) ...[
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                              ),
-                              Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  // Centrer les éléments horizontalement
-                                  children: [
-                                    IconButton(
-                                      onPressed: () => addRating(1),
-                                      icon: Material(
-                                        color: Colors.transparent,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/rating-1.svg",
-                                          color:
-                                              Color.fromARGB(255, 255, 10, 10),
-                                          width: 48,
-                                          height: 48,
-                                        ),
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () => addRating(2),
-                                      icon: Material(
-                                        color: Colors.transparent,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/rating-2.svg",
-                                          color:
-                                              Color.fromARGB(255, 242, 146, 2),
-                                          width: 48,
-                                          height: 48,
-                                        ),
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () => addRating(3),
-                                      icon: Material(
-                                        color: Colors.transparent,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/rating-3.svg",
-                                          color:
-                                              Color.fromARGB(255, 235, 255, 10),
-                                          width: 48,
-                                          height: 48,
-                                        ),
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () => addRating(4),
-                                      icon: Material(
-                                        color: Colors.transparent,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/rating-4.svg",
-                                          color:
-                                              Color.fromARGB(255, 92, 230, 44),
-                                          width: 48,
-                                          height: 48,
-                                        ),
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () => addRating(5),
-                                      icon: Material(
-                                        color: Colors.transparent,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/rating-5.svg",
-                                          color:
-                                              Color.fromARGB(255, 32, 156, 5),
-                                          width: 48,
-                                          height: 48,
-                                        ),
-                                      ),
-                                    )
-                                  ],
                                 ),
-                              )
-                            ],
+                                IconButton(
+                                  onPressed: () => addRating(2),
+                                  icon: Material(
+                                    color: Colors.transparent,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/rating-2.svg",
+                                      color: Color.fromARGB(255, 242, 146, 2),
+                                      width: 48,
+                                      height: 48,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => addRating(3),
+                                  icon: Material(
+                                    color: Colors.transparent,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/rating-3.svg",
+                                      color: Color.fromARGB(255, 235, 255, 10),
+                                      width: 48,
+                                      height: 48,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => addRating(4),
+                                  icon: Material(
+                                    color: Colors.transparent,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/rating-4.svg",
+                                      color: Color.fromARGB(255, 92, 230, 44),
+                                      width: 48,
+                                      height: 48,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => addRating(5),
+                                  icon: Material(
+                                    color: Colors.transparent,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/rating-5.svg",
+                                      color: Color.fromARGB(255, 32, 156, 5),
+                                      width: 48,
+                                      height: 48,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
                         ],
                       )
                     : SizedBox(height: 0),

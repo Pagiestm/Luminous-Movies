@@ -70,88 +70,91 @@ class CategoriesState extends State<CategoriesAdmin> {
                   ]),
             ],
           ),
-          Padding(
+          Expanded(
+            child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
             child: categories.isEmpty
-                ? CircularProgressIndicator()
-                : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: Column(
+              ? CircularProgressIndicator()
+              : ListView.builder(
+                padding: EdgeInsets.only(bottom: 100),
+                shrinkWrap: true,
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          title: Text(categories[index].name),
+                        ),
+                        ButtonBar(
+                          alignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            ListTile(
-                              title: Text(categories[index].name),
+                            TextButton(
+                              child: const Text('Modifier'),
+                              onPressed: () {
+                                // TODO: Implement modification logic
+                              },
                             ),
-                            ButtonBar(
-                              alignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                TextButton(
-                                  child: const Text('Modifier'),
-                                  onPressed: () {
-                                    // TODO: Implement modification logic
-                                  },
-                                ),
-                                TextButton(
-                                  child: const Text('Supprimer'),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Confirmation'),
-                                          content: Text(
-                                              'Êtes-vous sûr de vouloir supprimer ${categories[index].name} ?'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: Text('Annuler'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: Text('Supprimer'),
-                                              onPressed: () {
-                                                CategoriesService()
-                                                    .deleteCategory(
-                                                        categories[index].id)
-                                                    .then((_) {
-                                                  setState(() {
-                                                    categories.removeWhere(
-                                                        (element) =>
-                                                            element.id ==
-                                                            categories[index]
-                                                                .id);
-                                                  });
-                                                  Navigator.of(context).pop();
-                                                }).catchError((e) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                          'Une erreur est survenue lors de la suppression de la catégorie: $e'),
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                    ),
-                                                  );
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
+                            TextButton(
+                              child: const Text('Supprimer'),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Confirmation'),
+                                      content: Text(
+                                          'Êtes-vous sûr de vouloir supprimer ${categories[index].name} ?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text('Annuler'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text('Supprimer'),
+                                          onPressed: () {
+                                            CategoriesService()
+                                                .deleteCategory(
+                                                    categories[index].id)
+                                                .then((_) {
+                                              setState(() {
+                                                categories.removeWhere(
+                                                    (element) =>
+                                                        element.id ==
+                                                        categories[index]
+                                                            .id);
+                                              });
+                                              Navigator.of(context).pop();
+                                            }).catchError((e) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                      'Une erreur est survenue lors de la suppression de la catégorie: $e'),
+                                                  backgroundColor:
+                                                      Colors.red,
+                                                ),
+                                              );
+                                            });
+                                          },
+                                        ),
+                                      ],
                                     );
                                   },
-                                ),
-                              ],
+                                );
+                              },
                             ),
                           ],
                         ),
-                      );
-                    },
-                  ),
-          )
+                      ],
+                    ),
+                  );
+                },
+              ),
+            )
+          ),
         ],
       ),
     );

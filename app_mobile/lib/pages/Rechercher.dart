@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:luminous_movies/services/favorites/favorites.dart';
+import '../services/users/users_session.dart';
+import 'package:luminous_movies/models/users.dart';
 
 import '../models/movies.dart';
 import '../services/movies/movies.dart';
@@ -22,6 +25,13 @@ class _SearchBarAppState extends State<Rechercher> {
   final MovieService _movieService = MovieService();
   List<Movie> _movies = [];
   bool _searched = false;
+  User? user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = UserSession.getUser();
+  }
 
   void _timer(e) {
     Timer(const Duration(seconds: 1), _search).isActive
@@ -47,6 +57,7 @@ class _SearchBarAppState extends State<Rechercher> {
 
   @override
   Widget build(BuildContext context) {
+    User? user = UserSession.getUser();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -126,13 +137,19 @@ class _SearchBarAppState extends State<Rechercher> {
                             itemCount: _movies.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  bool isFavorite = false;
+                                  if (user != null) {
+                                    isFavorite = await FavoritesService()
+                                        .fetchFavoriteByMovieAndUser(
+                                            _movies[index].id, user.id);
+                                  }
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => MovieDetailsPage(
                                         movie: _movies[index],
-                                        isFavorite: false,
+                                        isFavorite: isFavorite,
                                       ),
                                     ),
                                   );
