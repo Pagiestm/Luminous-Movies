@@ -36,6 +36,36 @@ class CategoriesService {
     }
   }
 
+  Future<Categories> addCategory(String name) async {
+    var response = await http.post(
+      Uri.parse('https://luminous-movies.onrender.com/categories/'),
+      body: {
+        'name': name,
+      }
+    );
+    if (response.statusCode == 200) {
+      var jsonBody = jsonDecode(response.body);
+      return Categories.fromJson(jsonBody);
+    } else {
+      throw Exception('Failed to add category.');
+    }
+  }
+
+  Future<Categories> updateCategory(String id, String name) async {
+    var response = await http.put(
+      Uri.parse('https://luminous-movies.onrender.com/categories/$id'),
+      body: {
+        'name': name,
+      }
+    );
+    if (response.statusCode == 200) {
+      var jsonBody = jsonDecode(response.body);
+      return Categories.fromJson(jsonBody);
+    } else {
+      throw Exception('Failed to update category.');
+    }
+  }
+
   Future<bool> deleteCategory(String id) async {
     var response = await http
         .delete(Uri.parse('https://luminous-movies.onrender.com/categories/$id'));

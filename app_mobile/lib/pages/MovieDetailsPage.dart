@@ -517,7 +517,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         return Text(
                           "Il n'y a pas d'autres films du même genre...",
                           style: GoogleFonts.sora(
-                            fontSize: 18,
+                            fontSize: 14,
                             color: Colors.white,
                           ),
                         );
