@@ -25,6 +25,8 @@ class _AccueilState extends State<Accueil> {
   User? user = UserSession.getUser();
   FavoritesMovies? widgetFavoritesMovies;
   bool toDecouvrir = false;
+  bool isLoadingMovies = true; // Ajout de cette ligne
+  bool isLoadingCategories = true; // Ajout de cette ligne
   Navigation navigation = Navigation.getInstance();
 
   @override
@@ -42,6 +44,7 @@ class _AccueilState extends State<Accueil> {
     var fetchedMovies = await movieService.fetchMovies();
     setState(() {
       movies = fetchedMovies.reversed.toList();
+      isLoadingMovies = false; // Mise à jour de l'état de chargement
     });
   }
 
@@ -51,6 +54,7 @@ class _AccueilState extends State<Accueil> {
     fetchedCategories.shuffle();
     setState(() {
       categories = fetchedCategories.take(3).toList();
+      isLoadingCategories = false; // Mise à jour de l'état de chargement
     });
   }
 
@@ -60,17 +64,19 @@ class _AccueilState extends State<Accueil> {
       return Decouvrir();
     } else {
       return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Accueil',
-              style: GoogleFonts.sora(
-                fontSize: 24,
-              ),
+        appBar: AppBar(
+          title: Text(
+            'Accueil',
+            style: GoogleFonts.sora(
+              fontSize: 24,
             ),
-            backgroundColor: Colors.black,
-            centerTitle: false,
           ),
-          body: SingleChildScrollView(
+          backgroundColor: Colors.black,
+          centerTitle: false,
+        ),
+        body: isLoadingMovies || isLoadingCategories // Ajout de cette condition
+          ? Center(child: CircularProgressIndicator()) // Affichage de l'indicateur de chargement
+          : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -98,29 +104,28 @@ class _AccueilState extends State<Accueil> {
                           final bool? shouldRefresh = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => FutureBuilder(
-                                    future: Navigation.getInstance()
-                                        .toMovieDetailsPage(
-                                            user, movies[index]),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                          child: SizedBox(
-                                            height: 40,
-                                            width: 40,
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                        );
-                                      } else if (snapshot.hasError) {
-                                        return Text('Erreur: ${snapshot.error}',
-                                            style: GoogleFonts.sora(
-                                              fontSize: 24,
-                                            ));
-                                      } else {
-                                        return snapshot.data!;
-                                      }
-                                    })),
+                              builder: (context) => FutureBuilder(
+                                future: Navigation.getInstance()
+                                    .toMovieDetailsPage(user, movies[index]),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                      child: SizedBox(
+                                        height: 40,
+                                        width: 40,
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text('Erreur: ${snapshot.error}',
+                                        style: GoogleFonts.sora(
+                                          fontSize: 24,
+                                        ));
+                                  } else {
+                                    return snapshot.data!;
+                                  }
+                                })),
                           );
                           if (shouldRefresh == true && user != null) {
                             setState(() {
@@ -145,8 +150,8 @@ class _AccueilState extends State<Accueil> {
                   ),
                 ),
                 widgetFavoritesMovies != null
-                    ? widgetFavoritesMovies!
-                    : SizedBox(height: 0),
+                  ? widgetFavoritesMovies!
+                  : SizedBox(height: 0),
                 ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -190,32 +195,31 @@ class _AccueilState extends State<Accueil> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async {
-                                  final bool? shouldRefresh =
-                                      await Navigator.push(
+                                  final bool? shouldRefresh = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => FutureBuilder(
-                                            future: Navigation.getInstance()
-                                                .toMovieDetailsPage(user,
-                                                    moviesByCategory[index]),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    height: 40,
-                                                    width: 40,
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                );
-                                              } else if (snapshot.hasError) {
-                                                return Text(
-                                                    'Erreur: ${snapshot.error}');
-                                              } else {
-                                                return snapshot.data!;
-                                              }
-                                            })),
+                                      builder: (context) => FutureBuilder(
+                                        future: Navigation.getInstance()
+                                            .toMovieDetailsPage(user,
+                                                moviesByCategory[index]),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                              child: SizedBox(
+                                                height: 40,
+                                                width: 40,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          } else if (snapshot.hasError) {
+                                            return Text(
+                                                'Erreur: ${snapshot.error}');
+                                          } else {
+                                            return snapshot.data!;
+                                          }
+                                        })),
                                   );
                                   if (shouldRefresh == true && user != null) {
                                     setState(() {
