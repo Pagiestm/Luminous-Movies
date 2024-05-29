@@ -22,6 +22,7 @@ class _MaListe extends State<MaListe> {
   List<Movie> movies = [];
   User? user = UserSession.getUser();
   bool toDecouvrir = false;
+  bool isLoading = true;
   Navigation navigation = Navigation.getInstance();
 
   @override
@@ -35,6 +36,11 @@ class _MaListe extends State<MaListe> {
       var fetchedMovies = await MovieService().fetchMoviesByFavorites(user!.id);
       setState(() {
         movies = fetchedMovies.toList();
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
       });
     }
   }
@@ -67,89 +73,97 @@ class _MaListe extends State<MaListe> {
           backgroundColor: Colors.black,
           centerTitle: false,
         ),
-        body: Padding(
-          padding: EdgeInsets.zero,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(height: 10),
-            GridView.count(
-              shrinkWrap: true,
-              childAspectRatio: 0.7,
-              crossAxisCount: 3,
-              children: List.generate(movies.length, (index) {
-                return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FutureBuilder(
-                                    future: toMovieDetailsPage(index),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    Colors.red.shade900),
-                                          ),
-                                        );
-                                      } else if (snapshot.hasError) {
-                                        return Text(
-                                            'Erreur: ${snapshot.error}');
-                                      } else {
-                                        return snapshot.data!;
-                                      }
-                                    },
-                                  )));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(movies[index].image,
-                            fit: BoxFit.cover),
-                      ),
-                    ));
-              }),
-            ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Center(
+        body: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: EdgeInsets.zero,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Vous arrivez à la fin de votre liste',
-                      style: GoogleFonts.sora(
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.center,
+                    SizedBox(height: 10),
+                    GridView.count(
+                      shrinkWrap: true,
+                      childAspectRatio: 0.7,
+                      crossAxisCount: 3,
+                      children: List.generate(movies.length, (index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FutureBuilder(
+                                  future: toMovieDetailsPage(index),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                  Colors.red.shade900),
+                                        ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text('Erreur: ${snapshot.error}');
+                                    } else {
+                                      return snapshot.data!;
+                                    }
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                movies[index].image,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                     ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.red.shade900,
-                      ),
-                      onPressed: () {
-                        setState(() => toDecouvrir = true);
-                        navigation.setIndex(2);
-                      },
-                      child: Text(
-                        'Voir plus de film',
-                        style: GoogleFonts.sora(
-                          fontSize: 14,
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Vous arrivez à la fin de votre liste',
+                              style: GoogleFonts.sora(
+                                fontSize: 20,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 20),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.red.shade900,
+                              ),
+                              onPressed: () {
+                                setState(() => toDecouvrir = true);
+                                navigation.setIndex(2);
+                              },
+                              child: Text(
+                                'Voir plus de film',
+                                style: GoogleFonts.sora(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
+                    SizedBox(height: 80),
+                    Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 48)),
                   ],
                 ),
               ),
-            ),
-            SizedBox(height: 80),
-            Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 48)),
-          ]),
-        ),
       );
     }
   }
