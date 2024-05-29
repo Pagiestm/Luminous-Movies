@@ -58,19 +58,23 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   }
 
   void addToFavorite() {
-    FavoritesService().add(user!.id, widget.movie.id).then((value) => {
-          setState(() {
-            widget.isFavorite = !widget.isFavorite;
-          })
-        });
+    if (user != null) {
+      FavoritesService().add(user!.id, widget.movie.id).then((value) => {
+            setState(() {
+              widget.isFavorite = !widget.isFavorite;
+            })
+          });
+    }
   }
 
   void removeFromFavorite() {
-    FavoritesService().remove(user!.id, widget.movie.id).then((value) => {
-          setState(() {
-            widget.isFavorite = !widget.isFavorite;
-          })
-        });
+    if (user != null) {
+      FavoritesService().remove(user!.id, widget.movie.id).then((value) => {
+            setState(() {
+              widget.isFavorite = !widget.isFavorite;
+            })
+          });
+    }
   }
 
   void addRating(rating) {
@@ -83,11 +87,13 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     bool matchUserFound = false;
     int OPACITY_RATING = 100;
 
-    for (var value in listRatings) {
-      if (value.users == user!.id) {
-        matchUserFound = true;
-        ratingUser = value;
-        break;
+    if (user != null) {
+      for (var value in listRatings) {
+        if (value.users == user!.id) {
+          matchUserFound = true;
+          ratingUser = value;
+          break;
+        }
       }
     }
 

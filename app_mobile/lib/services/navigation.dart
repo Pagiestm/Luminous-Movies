@@ -15,20 +15,23 @@ class Navigation {
 
   static int index = 0;
 
-  void setIndex(int value){
+  void setIndex(int value) {
     index = value;
     selectedIndex();
   }
 
   Stream<int> selectedIndex() async* {
-      yield index;
+    yield index;
   }
 
-    Future<Widget> toMovieDetailsPage(User? user, movie) async {
-      if (user != null) {
-        return MovieDetailsPage(movie: movie, isFavorite: await FavoritesService().fetchFavoriteByMovieAndUser(movie.id, user.id));
-      }
-      
-      return MovieDetailsPage(movie: movie, isFavorite: false);
+  Future<Widget> toMovieDetailsPage(User? user, movie) async {
+    if (user != null) {
+      return MovieDetailsPage(
+          movie: movie,
+          isFavorite: await FavoritesService()
+              .fetchFavoriteByMovieAndUser(movie.id, user.id));
+    }
+
+    return MovieDetailsPage(movie: movie, isFavorite: false);
   }
 }
