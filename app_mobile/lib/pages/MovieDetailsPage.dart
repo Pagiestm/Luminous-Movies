@@ -77,8 +77,32 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     }
   }
 
-  void addRating(rating) {
-    print(rating);
+  void addRating(user, movie, ratingId, rating) async {
+    bool isUser = false;
+
+    for (var value in listRatings) {
+      if (value.users == user!.id) {
+        isUser = true;
+        break;
+      }
+    }
+
+    if (isUser) {
+      await RatingService()
+          .changeRating(user.id, movie.id, ratingId, rating.toString());
+      fetchRatingByMovie(widget.movie.id).then((ratings) {
+        setState(() {
+          listRatings = ratings;
+        });
+      });
+    } else {
+      await RatingService().addRating(user.id, movie.id, rating.toString());
+      fetchRatingByMovie(widget.movie.id).then((ratings) {
+        setState(() {
+          listRatings = ratings;
+        });
+      });
+    }
   }
 
   @override
@@ -297,7 +321,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                           totalRating = totalRating / snapshot.data!.length;
 
                           return Text(
-                            "${totalRating}/5",
+                            "${totalRating % 1 == 0 ? totalRating.round() : totalRating.toStringAsFixed(1)}/5",
                             style: GoogleFonts.sora(
                               fontSize: 14,
                               color: Colors.white,
@@ -339,7 +363,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                   // Centrer les éléments horizontalement
                                   children: [
                                     IconButton(
-                                      onPressed: () => addRating(1),
+                                      onPressed: () => addRating(
+                                          user, widget.movie, ratingUser.id, 1),
                                       icon: Material(
                                         color: Colors.transparent,
                                         child: SvgPicture.asset(
@@ -354,7 +379,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: () => addRating(2),
+                                      onPressed: () => addRating(
+                                          user, widget.movie, ratingUser.id, 2),
                                       icon: Material(
                                         color: Colors.transparent,
                                         child: SvgPicture.asset(
@@ -369,7 +395,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: () => addRating(3),
+                                      onPressed: () => addRating(
+                                          user, widget.movie, ratingUser.id, 3),
                                       icon: Material(
                                         color: Colors.transparent,
                                         child: SvgPicture.asset(
@@ -385,7 +412,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: () => addRating(4),
+                                      onPressed: () => addRating(
+                                          user, widget.movie, ratingUser.id, 4),
                                       icon: Material(
                                         color: Colors.transparent,
                                         child: SvgPicture.asset(
@@ -400,7 +428,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: () => addRating(5),
+                                      onPressed: () => addRating(
+                                          user, widget.movie, ratingUser.id, 5),
                                       icon: Material(
                                         color: Colors.transparent,
                                         child: SvgPicture.asset(
@@ -428,7 +457,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                 // Centrer les éléments horizontalement
                                 children: [
                                   IconButton(
-                                    onPressed: () => addRating(1),
+                                    onPressed: () =>
+                                        addRating(user, widget.movie, "", 1),
                                     icon: Material(
                                       color: Colors.transparent,
                                       child: SvgPicture.asset(
@@ -440,7 +470,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () => addRating(2),
+                                    onPressed: () =>
+                                        addRating(user, widget.movie, "", 2),
                                     icon: Material(
                                       color: Colors.transparent,
                                       child: SvgPicture.asset(
@@ -452,7 +483,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () => addRating(3),
+                                    onPressed: () =>
+                                        addRating(user, widget.movie, "", 3),
                                     icon: Material(
                                       color: Colors.transparent,
                                       child: SvgPicture.asset(
@@ -465,7 +497,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () => addRating(4),
+                                    onPressed: () =>
+                                        addRating(user, widget.movie, "", 4),
                                     icon: Material(
                                       color: Colors.transparent,
                                       child: SvgPicture.asset(
@@ -477,7 +510,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () => addRating(5),
+                                    onPressed: () =>
+                                        addRating(user, widget.movie, "", 5),
                                     icon: Material(
                                       color: Colors.transparent,
                                       child: SvgPicture.asset(
