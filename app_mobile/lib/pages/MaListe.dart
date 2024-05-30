@@ -5,8 +5,8 @@ import 'package:luminous_movies/models/users.dart';
 import 'package:luminous_movies/pages/Decouvrir.dart';
 import 'package:luminous_movies/pages/MovieDetailsPage.dart';
 import 'package:luminous_movies/services/favorites/favorites.dart';
-import 'package:luminous_movies/services/navigation.dart';
 import 'package:luminous_movies/services/movies/movies.dart';
+import 'package:luminous_movies/services/navigation.dart';
 
 import '../services/users/users_session.dart';
 import 'Connexion.dart';
@@ -62,109 +62,112 @@ class _MaListe extends State<MaListe> {
       return Decouvrir();
     } else {
       return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Ma liste',
-            style: GoogleFonts.sora(
-              fontSize: 24,
-              color: Colors.white,
+          appBar: AppBar(
+            title: Text(
+              'Ma liste',
+              style: GoogleFonts.sora(
+                fontSize: 24,
+                color: Colors.white,
+              ),
             ),
+            backgroundColor: Colors.black,
+            centerTitle: false,
           ),
-          backgroundColor: Colors.black,
-          centerTitle: false,
-        ),
-        body: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: EdgeInsets.zero,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 10),
-                    GridView.count(
-                      shrinkWrap: true,
-                      childAspectRatio: 0.7,
-                      crossAxisCount: 3,
-                      children: List.generate(movies.length, (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FutureBuilder(
-                                  future: toMovieDetailsPage(index),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Colors.red.shade900),
-                                        ),
-                                      );
-                                    } else if (snapshot.hasError) {
-                                      return Text('Erreur: ${snapshot.error}');
-                                    } else {
-                                      return snapshot.data!;
-                                    }
-                                  },
+          body: isLoading
+              ? Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 10),
+                        GridView.count(
+                          shrinkWrap: true,
+                          childAspectRatio: 0.7,
+                          crossAxisCount: 3,
+                          children: List.generate(movies.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FutureBuilder(
+                                      future: toMovieDetailsPage(index),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.red.shade900),
+                                            ),
+                                          );
+                                        } else if (snapshot.hasError) {
+                                          return Text(
+                                              'Erreur: ${snapshot.error}');
+                                        } else {
+                                          return snapshot.data!;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    movies[index].image,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                movies[index].image,
-                                fit: BoxFit.cover,
-                              ),
+                          }),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Vous arrivez à la fin de votre liste',
+                                  style: GoogleFonts.sora(
+                                    fontSize: 20,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 20),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.red.shade900,
+                                  ),
+                                  onPressed: () {
+                                    setState(() => toDecouvrir = true);
+                                    navigation.setIndex(2);
+                                  },
+                                  child: Text(
+                                    'Voir plus de film',
+                                    style: GoogleFonts.sora(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                      }),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Text(
-                              'Vous arrivez à la fin de votre liste',
-                              style: GoogleFonts.sora(
-                                fontSize: 20,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 20),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.red.shade900,
-                              ),
-                              onPressed: () {
-                                setState(() => toDecouvrir = true);
-                                navigation.setIndex(2);
-                              },
-                              child: Text(
-                                'Voir plus de film',
-                                style: GoogleFonts.sora(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
-                      ),
+                        SizedBox(height: 80),
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 48)),
+                      ],
                     ),
-                    SizedBox(height: 80),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 0, 0, 48)),
-                  ],
-                ),
-              ),
-      );
+                  ),
+                ));
     }
   }
 }

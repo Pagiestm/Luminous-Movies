@@ -321,7 +321,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                           totalRating = totalRating / snapshot.data!.length;
 
                           return Text(
-                            "${totalRating % 1 == 0 ? totalRating.round() : totalRating.toStringAsFixed(1)}/5",
+                            "${totalRating % 1 == 0 ? totalRating.round() : totalRating.toStringAsFixed(1)}/5 (${snapshot.data!.length} note${snapshot.data!.length == 1 ? "" : "s"})",
                             style: GoogleFonts.sora(
                               fontSize: 14,
                               color: Colors.white,
