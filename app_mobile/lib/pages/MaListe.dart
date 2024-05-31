@@ -84,6 +84,8 @@ class _MaListe extends State<MaListe> {
                         SizedBox(height: 10),
                         GridView.count(
                           shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          // Ajoutez cette ligne
                           childAspectRatio: 0.7,
                           crossAxisCount: 3,
                           children: List.generate(movies.length, (index) {
