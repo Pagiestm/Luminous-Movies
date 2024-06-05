@@ -199,7 +199,6 @@ class MyProfil extends State<Profil> {
                                 MaterialStateProperty.all(Colors.red.shade900)),
                         onPressed: () async {
                           String newEmail = emailController.text;
-                          print("Nouvel email: $newEmail");
                           await UserAuth()
                               .updateUser(user!.id, newEmail, user!.pseudo);
                           ElegantNotification.success(
@@ -292,7 +291,6 @@ class MyProfil extends State<Profil> {
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.red.shade900)),
                         onPressed: () {
-                          print("Mot de passe");
                         },
                         child: Text(
                           'Modifier votre mot de passe',
@@ -366,7 +364,6 @@ class MyProfil extends State<Profil> {
                         try {
                           await SessionManager().setString("user", "");
                           UserSession.user = null;
-                          print("Déconnexion réussie");
                           setState(() => toLogin = true);
                         } catch (e) {
                           print("Erreur lors de la déconnexion : $e");
