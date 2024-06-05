@@ -268,18 +268,20 @@ class InscriptionState extends State<Inscription> {
                                       "Inscription",
                                       style: GoogleFonts.sora(
                                         fontSize: 24,
+                                        color: Colors.black
                                       ),
                                     ),
                                     description: Text(
                                       "Validation de l'inscription.",
                                       style: GoogleFonts.sora(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: Colors.black,
                                       ),
                                     ),
                                   ).show(context)
                                 })
                             .catchError((err) => throw err)
+                            .then((value) => setState(() => toLogin = true))
                             .whenComplete(
                                 () => setState(() => isLoading = false));
                       }

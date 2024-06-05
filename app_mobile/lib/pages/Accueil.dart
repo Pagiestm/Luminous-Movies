@@ -158,7 +158,6 @@ class _AccueilState extends State<Accueil> {
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     var moviesByCategory = [];
-                    print(widgetFavoritesMovies);
 
                     for (var movie in movies) {
                       for (var cat in movie.categories) {

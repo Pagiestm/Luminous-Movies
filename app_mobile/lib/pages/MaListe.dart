@@ -90,8 +90,8 @@ class _MaListe extends State<MaListe> {
                           crossAxisCount: 3,
                           children: List.generate(movies.length, (index) {
                             return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
+                              onTap: () async {
+                                final bool? shouldRefresh = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => FutureBuilder(
@@ -116,6 +116,11 @@ class _MaListe extends State<MaListe> {
                                     ),
                                   ),
                                 );
+                                if (shouldRefresh == true && user != null) {
+                                  setState(() {
+                                    fetchFavoritesMovies();
+                                  });
+                                }
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(4.0),
