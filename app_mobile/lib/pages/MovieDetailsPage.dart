@@ -123,18 +123,30 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: Material(
-            color: Colors.transparent,
-            child: SvgPicture.asset(
-              "assets/icons/arrow-left.svg",
-              width: 32,
-              height: 32,
-              color: Colors.grey.shade700,
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(true),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Material(
+                  color: Colors.transparent,
+                  child: SvgPicture.asset(
+                    "assets/icons/arrow-left.svg",
+                    width: 32,
+                    height: 32,
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(4.0)),
+                Text("Retour",
+                    style: GoogleFonts.sora(fontSize: 20, color: Colors.grey)),
+              ],
             ),
           ),
-          onPressed: () => Navigator.of(context).pop(true),
         ),
         actions: <Widget>[
           user != null
