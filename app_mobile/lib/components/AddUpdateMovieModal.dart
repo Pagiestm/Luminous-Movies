@@ -76,10 +76,8 @@ class AddMovieModalState extends State<AddUpdateMovieModal> {
             backgroundColor: Colors.grey[800],
             surfaceTintColor: Colors.transparent,
             title: widget.updatingMovie != null ? Text('Modifier un film') : Text('Ajouter un film'),
-            content: SizedBox(
-              width: double.maxFinite,
-              height: double.maxFinite,
-              child: Expanded(
+            content: Column(
+              children: [Expanded(
                 child: SingleChildScrollView (
                   child: Column(
                     children: <Widget>[
@@ -300,7 +298,7 @@ class AddMovieModalState extends State<AddUpdateMovieModal> {
                     ]
                   ),
                 ),
-              ),
+              ),]
             ),
             actions: <Widget>[
               isLoading ? 
