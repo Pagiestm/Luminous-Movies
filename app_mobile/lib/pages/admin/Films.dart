@@ -4,6 +4,8 @@ import 'package:luminous_movies/models/movies.dart';
 import '../../services/movies/movies.dart';
 import '../../components/AddUpdateMovieModal.dart';
 import 'package:elegant_notification/elegant_notification.dart';
+import '../../navbar.dart';
+import '../../services/navigation.dart';
 
 class Films extends StatefulWidget {
   const Films({super.key});
@@ -40,6 +42,16 @@ class FilmsState extends State<Films> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               AppBar(
+                leading: BackButton(
+                  onPressed: () {
+                    Navigation.getInstance().setIndex(4);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NavBar()),
+                      );
+                  },
+                ),
                   title: Text('Films', style: GoogleFonts.getFont('Sora')),
                   backgroundColor: Colors.black,
                   actions: <Widget>[
