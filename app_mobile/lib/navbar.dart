@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import './services/navigation.dart';
 import 'pages/Accueil.dart';
@@ -60,6 +61,10 @@ class _NavBarState extends State<NavBar> {
                   highlightColor: Colors.transparent,
                 ),
                 child: BottomNavigationBar(
+                  selectedFontSize: 12,
+                  selectedLabelStyle: GoogleFonts.sora(),
+                  unselectedFontSize: 10,
+                  unselectedLabelStyle: GoogleFonts.sora(),
                   items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                       icon: Material(
@@ -79,7 +84,7 @@ class _NavBarState extends State<NavBar> {
                           color: Colors.red.shade900,
                         ),
                       ),
-                      label: 'Accueil',
+                      label: "Accueil",
                     ),
                     BottomNavigationBarItem(
                       icon: Material(
